@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\type;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -18,8 +20,14 @@ class AdminController extends Controller
     {
         return view('admin.form');
     }
+    public function useraccounts()
+    {
+        $users = User::all();
+        return view('admin.useraccounts',compact('users'));
+    }
     public function table()
     {
-        return view('admin.table');
+        $type = type::all();
+        return view('admin.table',compact('type'));
     }
 }

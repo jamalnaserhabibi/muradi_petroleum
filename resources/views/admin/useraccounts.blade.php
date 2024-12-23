@@ -12,14 +12,14 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>DataTables</h1>
+                            <h1>User Accounts</h1>
                         </div>
-                        <div class="col-sm-6">
+                        {{-- <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active">DataTables</li>
                             </ol>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </section>
@@ -28,88 +28,38 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
-                                                      <div class="card">
-                                <div class="card-header">
+                            <div class="card">
+                                {{-- <div class="card-header">
                                     <h3 class="card-title">DataTable with default features</h3>
-                                </div>
+                                </div> --}}
 
                                 <div class="card-body">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
-                                                <th>Rendering engine</th>
-                                                <th>Browser</th>
-                                                <th>Platform(s)</th>
-                                                <th>Engine version</th>
-                                                <th>CSS grade</th>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                               
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach($users as $user)
                                             <tr>
-                                                <td>Trident</td>
-                                                <td>Internet
-                                                    Explorer 4.0
-                                                </td>
-                                                <td>Win 95+</td>
-                                                <td> 4</td>
-                                                <td>X</td>
-                                            </tr>
-                                           
-                                        
-                                            
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th>Rendering engine</th>
-                                                <th>Browser</th>
-                                                <th>Platform(s)</th>
-                                                <th>Engine version</th>
-                                                <th>CSS grade</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-            
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                                                      <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Types</h3>
-                                </div>
-
-                                <div class="card-body">
-                                    <table id="example1" class="table table-bordered table-striped">
-                                        <thead>
-                                          <tr>
-                                            <td>Type</td>
-                                            <td>Type code</td>
-                                          </tr>
-                                        </thead>
-                                        
-                                        <tbody>
-                                           
-                                           
-                                            @foreach($type as $type)
-                                            <tr>
-                                                    <td>{{ $type->typeName }}</td> <!-- Adjust this to display the appropriate user property -->
-                                                    <td>{{ $type->typeCode }}</td> <!-- Adjust this to display the appropriate user property -->
+                                                    <td>{{ $user->name }}</td> <!-- Adjust this to display the appropriate user property -->
+                                                    <td>{{ $user->email }}</td> <!-- Adjust this to display the appropriate user property -->
                                                 </tr>
                                                 @endforeach
                                             
                                         </tbody>
+                                        {{-- <tfoot>
+                                            <tr>
+                                                <th>Rendering engine</th>
+                                                <th>Browser</th>
+                                                <th>Platform(s)</th>
+                                                <th>Engine version</th>
+                                                <th>CSS grade</th>
+                                            </tr>
+                                        </tfoot> --}}
                                     </table>
                                 </div>
 
@@ -123,6 +73,7 @@
 
             </section>
 
+          
          
 
         </div>

@@ -12,8 +12,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
+use function Laravel\Prompts\table;
+
 class RegisteredUserController extends Controller
 {
+    public function index()
+    {
+       
+    }
     /**
      * Display the registration view.
      */

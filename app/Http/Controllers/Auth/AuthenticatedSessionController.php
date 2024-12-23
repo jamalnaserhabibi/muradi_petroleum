@@ -11,29 +11,19 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
     public function create(): View
     {
-        return view('auth.login');
+        return view('admin/login');
     }
-
-    /**
-     * Handle an incoming authentication request.
-     */
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect('admin/dashboard');
     }
-
-    /**
-     * Destroy an authenticated session.
-     */
+// this is the main destroy 
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,15 +27,16 @@
     <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
 
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-  @yield('CustomCss')
+
+    @yield('CustomCss')
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
-                width="60">
+            <img class="animation__shake" src="img/logo.png" alt="Muradi Petroleum" height="120">
         </div>
 
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -55,9 +57,10 @@
             <ul class="navbar-nav ml-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                    <a class="nav-link" data-widget="navbar-search" role="button">
                         <i class="fas fa-search"></i>
                     </a>
+
                     <div class="navbar-search-block">
                         <form class="form-inline">
                             <div class="input-group input-group-sm">
@@ -102,8 +105,9 @@
                         <a href="#" class="dropdown-item">
 
                             <div class="media">
-                                <img src="dist/img/user8-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 img-circle mr-3">
+                                <img src="" class="img-circle elevation-2" alt="User Image">
+
+
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         John Pierce
@@ -113,7 +117,6 @@
                                     <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
                                 </div>
                             </div>
-
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
@@ -164,54 +167,74 @@
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="" role="button">
+                    <a class="nav-link" data-widget="fullscreen" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true"
-                        href="#" role="button">
-                        <i class="fas fa-th-large"></i>
+
+
+
+
+                <li class="nav-item dropdown user-menu">
+                    <a href="#" class="nav-link" data-toggle="dropdown">
+                        <img src="dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2"
+                            alt="User Image">
+                        <span class="d-none d-md-inline">{{ strtoupper(Auth::user()->name) }} </span>
+                        <!-- Change this to dynamic user name -->
                     </a>
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <!-- User image and name -->
+                        <li class="user-header bg-primary">
+                            <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                            <p>
+                                {{ strtoupper(Auth::user()->name) }} <!-- Replace with dynamic user role -->
+                                <small>Member since Jan. 2019</small>
+                            </p>
+                        </li>
+                        <!-- User actions -->
+                        <li class="user-footer">
+                            <a href="#" class="btn btn-default btn-flat">Profile</a>
+                            <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right">Sign out</a>
+                        </li>
+                    </ul>
                 </li>
+
             </ul>
+
+
         </nav>
 
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-            <a href="index3.html" class="brand-link d-flex justify-content-center" style="font-weight: bold; font-family: Arial, sans-serif;">
-                <img src="img/logo.png" alt="Logo" class="brand-image img-circle elevation-3"                   >
+            <a href="index3.html" class="brand-link">
+                <img src="img/logo.png" alt="AdminLTE Logo" class="brand-image">
                 <span class="brand-text font-weight-light">Muradi Petroleum</span>
             </a>
 
             <div class="sidebar">
-
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Sulaiman Muradi</a>
-                    </div>
-                </div>
-
-
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
-
-                      
                         <li class="nav-item">
-                            <a href="pages/widgets.html" class="nav-link">
+                            <a href="{{ route('admin.dashboard') }}" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
-                       
+                        <li class="nav-item">
+                            <a href="{{ route('admin.useraccounts') }}" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    User Accounts
+                                </p>
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
@@ -247,8 +270,9 @@
                                 </li>
                             </ul>
                         </li>
-                   
-                    
+
+
+
                     </ul>
                 </nav>
 
@@ -257,13 +281,13 @@
         </aside>
         @yield('content')
 
-        <footer class="main-footer">
+        {{-- <footer class="main-footer">
             <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io/">AdminLTE.io</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
                 <b>Version</b> 3.2.0
             </div>
-        </footer>
+        </footer> --}}
 
         <aside class="control-sidebar control-sidebar-dark">
 
@@ -303,7 +327,6 @@
     <script src="dist/js/adminlte2167.js?v=3.2.0"></script>
 
     <script src="dist/js/demo.js"></script>
-
     <script src="dist/js/pages/dashboard.js"></script>
     <script>
         $(document).ready(function() {
