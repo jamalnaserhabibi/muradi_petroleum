@@ -17,7 +17,6 @@
 .profileImage {
   -o-object-fit: cover !important;
      object-fit: cover !important;
-  width: 100% !important;
 }
 
 .user-footer {
