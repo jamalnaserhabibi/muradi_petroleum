@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Muradi Petroleum</title>
     <base href="{{ asset('admin-lte') }}/" />
+    <link rel="stylesheet" href="admincss/useraccounts/styleforall.css">
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
 
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
 
-    <link rel="stylesheet" href="../../../code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="ionicons/2.0.1/css/ionicons.min.css">
 
     <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
@@ -179,24 +180,22 @@
 
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link" data-toggle="dropdown">
-                        <img src="dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2"
+                        <img src="{{ asset('storage/' .Auth::user()->profile_photo) }}" class="user-image profileImage img-circle elevation-2"
                             alt="User Image">
                         <span class="d-none d-md-inline">{{ strtoupper(Auth::user()->name) }} </span>
-                        <!-- Change this to dynamic user name -->
+                        
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <!-- User image and name -->
                         <li class="user-header bg-primary">
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ asset('storage/' .Auth::user()->profile_photo) }}" class="img-circle profileImage elevation-2" alt="User Image">
                             <p>
                                 {{ strtoupper(Auth::user()->name) }} <!-- Replace with dynamic user role -->
-                                <small>Member since Jan. 2019</small>
+                                <small>{{ strtoupper(Auth::user()->usertype) }}</small>
                             </p>
                         </li>
-                        <!-- User actions -->
+                       
                         <li class="user-footer">
-                            <a href="#" class="btn btn-default btn-flat">Profile</a>
-                            <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right">Sign out</a>
+                            <a href="{{ route('logout') }}" class="btn btn-default btn-flat">LogOut!</a>
                         </li>
                     </ul>
                 </li>
@@ -209,7 +208,7 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-            <a href="index3.html" class="brand-link">
+            <a href="{{ route('admin.dashboard') }}" class="brand-link">
                 <img src="img/logo.png" alt="AdminLTE Logo" class="brand-image">
                 <span class="brand-text font-weight-light">Muradi Petroleum</span>
             </a>

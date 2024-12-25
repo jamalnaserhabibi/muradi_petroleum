@@ -17,10 +17,10 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     
 
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::get('/admin/register', [RegisteredUserController::class, 'create'])->name('register');
 
-    Route::post('add', [RegisteredUserController::class, 'store']);
-
+    Route::post('register', [RegisteredUserController::class, 'store'])->name('addnewuser');
+    Route::delete('/admin/useraccounts/{user}', [RegisteredUserController::class, 'destroy'])->name('users.destroy');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/form', [AdminController::class, 'form'])->name('admin.form');
     Route::get('/admin/table', [AdminController::class, 'table'])->name('admin.table');

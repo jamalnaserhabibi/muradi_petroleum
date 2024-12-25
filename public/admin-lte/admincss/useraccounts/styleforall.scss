@@ -1,0 +1,77 @@
+.useraccounts{
+    td,th{
+        text-align: center;
+    }
+
+    .useraccountsimage {
+        width: 3rem;
+        height: 3rem;
+        margin: -10px;
+        border-radius: 50%;
+        object-fit: cover;
+transition: .2s ease-in-out;
+        &:hover {
+            transform: scale(2.2);
+        }
+    }
+}
+.profileImage{
+    object-fit: cover!important;
+}
+.user-footer{
+    display: flex;
+    justify-content: center!important;
+    align-items: center!important;
+}
+
+#success-alert{
+    position: fixed !important;
+    top: 20px!important;
+    transform: translateX(-50%);
+left: 50%!important;
+z-index: 2000!important;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)!important;
+
+}
+.login-page{
+    // background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../img/bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    // align-items: flex-end!important;
+    flex-direction: row-reverse!important;
+    justify-content:space-evenly !important;
+    @media (max-width: 768px) {
+    flex-direction: column!important;
+
+        align-items:center!important;
+
+    }
+    .login-box{
+        .card{
+            box-shadow: none;
+        }
+        transition: .2s ease-in-out;
+        background-color: white;
+        padding: 10px;
+        border-radius: 10px;
+        margin-right: 50px!important; // Adjust the margin as needed
+
+        @media (max-width: 768px) {
+            margin-right: 0!important;
+        }
+        &:hover{
+        // border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+    }
+    .graphicBox{
+       img{
+            width: 35rem;
+            @media (max-width: 768px) {
+                width: 25rem;
+            }
+       }
+    }
+}
