@@ -14,6 +14,12 @@
   transform: scale(2.2);
 }
 
+.profileImage {
+  -o-object-fit: cover !important;
+     object-fit: cover !important;
+  width: 100% !important;
+}
+
 .user-footer {
   display: flex;
   justify-content: center !important;
