@@ -1,4 +1,56 @@
+.brannedbtn{
+    background-color: #ff0080!important;
+    color: white!important;
+    transition: 0.2s ease-in-out;
+    &:hover{
+    background-color: #9f0050!important;
+
+    color: white;
+
+    }
+}
+.brand-image{
+    margin-bottom: 10px;
+    // height: 90px!important;
+    // height: 90px!important;
+    object-fit: contain;
+    max-height: 80px!important;
+    max-width: 80px!important;
+}
+.usernameinlayout{
+    font-weight: bold;
+    color: #ff0080!important;
+
+    a{
+        color: #ff0080!important;
+        cursor: pointer;
+    }
+}
+/* Petrol */
+.petrol-bg {
+    background-color: #008C45; /* Green */
+}
+
+/* Super Petrol */
+.super-petrol-bg {
+    background-color: #00b7ff; /* Bright Red/Orange */
+}
+
+/* Diesel */
+.diesel-bg {
+    background-color: #df9900; /* Dark Green */
+}
+
+/* Gas */
+.gas-bg {
+    background-color: #ff0080; /* Golden Yellow */
+}
+
 .useraccounts{
+     tbody tr:hover {
+        background-color: #f1f1f1; /* Light gray background on hover */
+        cursor: pointer; /* Change cursor to pointer on hover */
+    }
     td,th{
         text-align: center;
     }
@@ -9,7 +61,7 @@
         margin: -10px;
         border-radius: 50%;
         object-fit: cover;
-transition: .2s ease-in-out;
+        transition: .2s ease-in-out;
         &:hover {
             transform: scale(2.2);
         }
@@ -17,7 +69,17 @@ transition: .2s ease-in-out;
 }
 .profileImage{
     object-fit: cover!important;
-   
+    border: 1px solid #ff0080;
+   width: 3rem!important;
+   height: 3rem!important;
+   margin: -0.8rem!important;
+}
+.profileImageView{
+    object-fit: cover!important;
+    border: 1px solid #ff0080;
+   width: 8rem!important;
+   height: 8rem!important;
+   margin: -0.5rem!important;
 }
 .user-footer{
     display: flex;
@@ -74,5 +136,25 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)!important;
                 width: 25rem;
             }
        }
+    }
+}
+
+
+@media print {
+    .useraccounts th:nth-child(5), 
+    .useraccounts td:nth-child(5) {
+        display: none;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .useraccountsimage {
+        display: inline-block !important; /* Ensure visibility */
+        max-width: 100px; /* Adjust as needed */
+        height: auto;
     }
 }

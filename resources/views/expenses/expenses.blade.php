@@ -11,7 +11,7 @@
                 <div class="container-fluid">
                     <div  class="row mb-2">
                         <div class="col-6">
-                            <h1>User Accounts</h1>
+                            <h1>Expenses</h1>
                         </div>
                         <div class="col-6 d-flex align-items-center justify-content-end">
                                 
@@ -27,7 +27,7 @@
                             </script> 
                             </ol>
                         @endif
-                            <a href="{{ route('register') }}" class="btn brannedbtn">Add New</a>
+                            <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">Add New</a>
                         </div>
                     </div>
                 </div>
@@ -44,52 +44,34 @@
                                     <table id="example1" class="table table-bordered table-striped useraccounts">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Type</th>
-                                                <th>Ph</th>
+                                                <th>Item</th>
+                                                <th>Amount</th>
+                                                <th>Category</th>
+                                                <th>Info</th>
+                                                <th>Date</th>
                                                 <th></th>
-                                               
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($users as $user)
-                                            @if($user->name === 'Developer')
-                                            @continue
-                                        @endif
+                                            @foreach ($expenses as $expense)
                                             <tr>
-                                                
-                                                <td>{{ $user->id }}</td>
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->usertype }}</td>
+                                                <td>{{ $expense->item }}</td>
+                                                <td>{{ $expense->amount }}</td>
+                                                <td>{{ $expense->category }}</td>
+                                                <td>{{ $expense->description }}</td>
+                                                <td>{{ $expense->updated_at }}</td>
                                                 <td>
-                                                    <img src="{{ asset('storage/' . $user->profile_photo) }}" 
-                                                         alt="Profile Photo" 
-                                                        class="useraccountsimage">
-                                                         
-                                                </td>
-                                                <td>
-                                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                                        @if($user->id !== auth()->id())
+                                                    <a href="{{ route('expenses.edit', $expense) }}" class="btn btn-warning" >Edit</a>
+                                                    <form action="{{ route('expenses.destroy', $expense) }}"  method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">
-                                                            Delete
-                                                        </button>
-                                                        @endif
+                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
                                                     </form>
+                                                </td>
                                             </tr>
-                                            @endforeach
+                                        @endforeach
+                                      
                                         </tbody>
-                                        {{-- <tfoot>
-                                            <tr>
-                                                <th>Rendering engine</th>
-                                                <th>Browser</th>
-                                                <th>Platform(s)</th>
-                                                <th>Engine version</th>
-                                                <th>CSS grade</th>
-                                            </tr>
-                                        </tfoot> --}}
                                     </table>
                                 </div>
 
@@ -136,7 +118,6 @@
             "autoWidth": false,
             "buttons": ["excel", "pdf", "print"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-       
     });
 </script>
 

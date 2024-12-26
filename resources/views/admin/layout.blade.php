@@ -47,102 +47,35 @@
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
                             class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
+                <li class="nav-item d-none d-sm-inline-block usernameinlayout">
+                    <a class="nav-link">{{strtoupper(Auth::user()->name)}}</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
+                    <a class="nav-link">|</a></li>
+                <li class="nav-item d-none d-sm-inline-block usernameinlayout">
+                    <a class="nav-link">{{strtoupper(Auth::user()->usertype)}}</a>
+
                 </li>
             </ul>
 
             <ul class="navbar-nav ml-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" role="button">
-                        <i class="fas fa-search"></i>
+                {{-- <li class="nav-item">
+                    <a class="nav-link">
+                        <i class="far fa-clock"></i>
+                        <span id="currentDateTime"></span>
                     </a>
-
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                    aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
                 </li>
+                <script>
+                    function updateDateTime() {
+                        var now = new Date();
+                        var formattedDateTime = now.toLocaleString();
+                        document.getElementById('currentDateTime').textContent = formattedDateTime;
+                    }
+                    setInterval(updateDateTime, 1000);
+                    updateDateTime();
+                </script> --}}
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-
-                            <div class="media">
-                                <img src="dist/img/user1-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Brad Diesel
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-
-                            <div class="media">
-                                <img src="" class="img-circle elevation-2" alt="User Image">
-
-
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">I got your message bro</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-
-                            <div class="media">
-                                <img src="dist/img/user3-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i
-                                                class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
+                {{-- <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
                         <span class="badge badge-warning navbar-badge">15</span>
@@ -167,35 +100,32 @@
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
-                </li>
+                </li> --}}
 
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" role="button">
                         <i class="fas fa-expand-arrows-alt"></i>
                     </a>
                 </li>
-
-
-
-
                 <li class="nav-item dropdown user-menu">
-                    <a href="#" class="nav-link" data-toggle="dropdown">
-                        <img src="{{ asset('storage/' .Auth::user()->profile_photo) }}" class="user-image profileImage img-circle elevation-2"
-                            alt="User Image">
-                        <span class="d-none d-md-inline">{{ strtoupper(Auth::user()->name) }} </span>
-                        
+                    <a href="#" class="nav-link"  data-toggle="dropdown">
+                        <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
+                            class="user-image profileImage img-circle elevation-2" alt="User Image">
+                        {{-- <span class="d-none d-md-inline">{{ strtoupper(Auth::user()->name) }} </span> --}}
+
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <li class="user-header bg-primary">
-                            <img src="{{ asset('storage/' .Auth::user()->profile_photo) }}" class="img-circle profileImage elevation-2" alt="User Image">
+                    <ul  class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <li class="user-header" >
+                            <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
+                                class="img-circle profileImageView elevation-2" alt="User Image">
                             <p>
                                 {{ strtoupper(Auth::user()->name) }} <!-- Replace with dynamic user role -->
                                 <small>{{ strtoupper(Auth::user()->usertype) }}</small>
                             </p>
                         </li>
-                       
+
                         <li class="user-footer">
-                            <a href="{{ route('logout') }}" class="btn btn-default btn-flat">LogOut!</a>
+                            <a href="{{ route('logout') }}" class="btn  w-100">LogOut!</a>
                         </li>
                     </ul>
                 </li>
@@ -208,14 +138,24 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-            <a href="{{ route('admin.dashboard') }}" class="brand-link">
+            <a href="{{ route('admin.dashboard') }}" class="brand-link d-flex justify-content-center align-items-center flex-column h-15" >
                 <img src="img/logo.png" alt="AdminLTE Logo" class="brand-image">
                 <span class="brand-text font-weight-light">Muradi Petroleum</span>
             </a>
 
+            <div class="form-inline mr-2 ml-2 mt-2">
+                <div class="input-group" data-widget="sidebar-search">
+                  <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                  <div class="input-group-append">
+                    <button class="btn btn-sidebar">
+                      <i class="fas fa-search fa-fw"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             <div class="sidebar">
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link">
@@ -233,44 +173,100 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('expenses') }}" class="nav-link">
+                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                <p>
+                                    Expenses
+                                </p>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
-                                    Charts
+                                    Sales
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="pages/charts/chartjs.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>ChartJS</p>
+                                        <i class="fas fa-gas-pump nav-icon"></i> <!-- Icon for Petrol -->
+                                        <p>Petrol</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="pages/charts/flot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Flot</p>
+                                        <i class="fas fa-oil-can nav-icon"></i> <!-- Icon for Super Petrol -->
+                                        <p>Super Petrol</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="pages/charts/inline.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inline</p>
+                                        <i class="fas fa-truck-pickup nav-icon"></i> <!-- Icon for Diesel -->
+                                        <p>Diesel</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="pages/charts/uplot.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>uPlot</p>
+                                        <i class="fas fa-burn nav-icon"></i> <!-- Icon for Gas -->
+                                        <p>Gas</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-
-
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fas fa-shopping-cart"></i>
+                                <p>
+                                    Purchase
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="pages/charts/chartjs.html" class="nav-link">
+                                        <i class="fas fa-gas-pump nav-icon"></i> <!-- Icon for Petrol -->
+                                        <p>Petrol</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/flot.html" class="nav-link">
+                                        <i class="fas fa-oil-can nav-icon"></i> <!-- Icon for Super Petrol -->
+                                        <p>Super Petrol</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/inline.html" class="nav-link">
+                                        <i class="fas fa-truck-pickup nav-icon"></i> <!-- Icon for Diesel -->
+                                        <p>Diesel</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="pages/charts/uplot.html" class="nav-link">
+                                        <i class="fas fa-burn nav-icon"></i> <!-- Icon for Gas -->
+                                        <p>Gas</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-gas-pump"></i>
+                                <p>
+                                    Towers
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-sticky-note"></i>
+                                <p>
+                                    Note
+                                </p>
+                            </a>
 
                     </ul>
                 </nav>
