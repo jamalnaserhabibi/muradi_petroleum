@@ -42,8 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers/customers',[CustomerController::class, 'customer'])->name('customers');
     //customerAddForm
     Route::get('/customers/form',[CustomerController::class, 'customeraddform'])->name('customeradd');
-    
-    Route::post('/customers/store', [CustomerController::class, 'store'])->name('customerstore');
+    //customerStore
+    Route::post('/customers/form', [CustomerController::class, 'store'])->name('customerstore');
     // Route::get('/customers/customers/{customers}/edit',[CustomerController::class, 'edit'])->name('customers.edit');
     // Route::delete('/customers/customers/{customers}',[CustomerController::class, 'destroy'])->name('customers.destroy');
     // Route::patch('/customers/{customers}', [CustomerController::class, 'update'])->name('customers.update');

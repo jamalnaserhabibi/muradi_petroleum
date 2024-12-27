@@ -17,7 +17,8 @@ class CustomerController extends Controller
         return view('customers.customers',compact('customer'));
     }
     public function store(Request $request)
-    {
+    {   
+        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'company' => 'nullable|string|max:255',
@@ -26,8 +27,8 @@ class CustomerController extends Controller
             'document' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:500',
         ]);
-
+     
         Customers::create($request->all());
-        return redirect()->route('customers/customers')->with('success','Customer added successfully');
+        return redirect()->route('customers')->with('success','Customer added successfully');
     }
 }
