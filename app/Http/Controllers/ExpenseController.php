@@ -4,11 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Expense;
+
 class ExpenseController extends Controller
 {
+    public function filterdate(Request $request)
+    {
+        $query = Expense::query();
+
+        if ($request->start_date && $request->end_date) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        }
+
+        if ($request->category) {
+            $query->where('category', $request->category);
+        }
+
+        $expenses = $query->get();
+
+        return view('expenses.expenses', compact('expenses'));
+    }
+
     public function expenses()
     {
-        $expenses = Expense::all();
+        $startOfMonth = now()->startOfMonth();
+        $endOfMonth = now()->endOfMonth();
+    
+        $expenses = Expense::whereBetween('date', [$startOfMonth, $endOfMonth])->get();
         return view('expenses.expenses', compact('expenses'));
     }
     public function create()
@@ -21,7 +42,7 @@ class ExpenseController extends Controller
         $request->validate([
             'item' => 'required|string|max:255',
             'amount' => 'required|numeric',
-            'description' => 'string|max:255',
+            'description' => 'nullable|max:255',
             'category' => 'required|string|max:255',
         ]);
 
@@ -31,7 +52,7 @@ class ExpenseController extends Controller
             'description' => $request->input('description'),
             'category' => $request->input('category'),
         ]);
-    
+
         return redirect()->route('expenses')->with('success', 'Expense Added successfully.');
     }
 
@@ -47,7 +68,7 @@ class ExpenseController extends Controller
     public function update(Request $request, Expense $expense)
     {
         $request->validate([
-            'description' => 'required|string|max:255',
+            'description' => 'nullable|max:255',
             'amount' => 'required|numeric',
             'item' => 'string|max:255',
             'category' => 'required|string|max:255',

@@ -47,7 +47,7 @@
                                                 <th>ID</th>
                                                 <th>Name</th>
                                                 <th>Type</th>
-                                                <th>Ph</th>
+                                                <th>Photo</th>
                                                 <th></th>
                                                
                                             </tr>
@@ -134,7 +134,26 @@
             "responsive": true,
             "lengthChange": false,
             "autoWidth": false,
-            "buttons": ["excel", "pdf", "print"]
+            "buttons": [
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Exclude the last column (Action column)
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Exclude the last column (Action column)
+                    }
+                },
+                {
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Exclude the last column (Action column)
+                    }
+                }
+            ]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
        
     });

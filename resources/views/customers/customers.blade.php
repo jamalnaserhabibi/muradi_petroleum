@@ -11,8 +11,7 @@
             <div class="container-fluid">
 
                 <div class="searchBar row mb-2">
-                        <h1>Expenses of {{ $expenses[1]->date->format('F') }} </h1>
-
+                        <h1 class="nav-icon fas fa-users"> Customers</h1>
                         <form id="filter-form" action="{{ route('expensefilterdate') }}" method="GET">
                             <input type="hidden" name="start_date" id="start-date">
                             <input type="hidden" name="end_date" id="end-date">
@@ -49,7 +48,7 @@
                             </div>
                         </form>
 
-                        <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">Add New</a>
+                        <a href="{{ route('customeradd') }}" class="btn brannedbtn">Add New</a>
 
                         @if (session('success'))
                             <ol>
@@ -79,33 +78,36 @@
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
-                                            <th>Item</th>
-                                            <th>Amount</th>
-                                            <th>Category</th>
+                                            <th>Name</th>
+                                            <th>Company</th>
+                                            <th>Contact</th>
+                                            <th>Document</th>
                                             <th>Date</th>
+                                            <th>Entered By</th>
                                             <th>Description</th>
-                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($expenses as $expense)
+                                        @foreach ($customer as $customer)
                                             <tr>
-                                                <td>{{ $expense->item }}</td>
-                                                <td>{{ $expense->amount }}</td>
-                                                <td>{{ $expense->category }}</td>
-                                                <td>{{ $expense->date->format('d M Y') }}</td>
-                                                <td>{{ $expense->description }}</td>
-                                                <td>
-                                                    <a href="{{ route('expenses.edit', $expense) }}"
+                                                <td>{{ $customer->name }}</td>
+                                                <td>{{ $customer->company }}</td>
+                                                <td>{{ $customer->contact }}</td>
+                                                <td>{{ $customer->document }}</td>
+                                                <td>{{ $customer->date->format('d M Y') }}</td>
+                                                <td>{{ $customer->created_by }}</td>
+                                                <td>{{ $customer->description }}</td>
+                                                {{-- <td>
+                                                    <a href="{{ route('customers.edit', $customer) }}"
                                                         class="btn pt-0 pb-0 btn-warning">Edit</a>
-                                                    <form action="{{ route('expenses.destroy', $expense) }}" method="POST"
+                                                    <form action="{{ route('customers.destroy', $customer) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn pt-0 pb-0 btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                                                            onclick="return confirm('Are you sure you want to delete this customer?')">Delete</button>
                                                     </form>
-                                                </td>
+                                                </td> --}}
                                             </tr>
                                         @endforeach
 

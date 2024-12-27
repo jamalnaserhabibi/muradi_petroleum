@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Expense extends Model
+class Customers extends Model
 {
     public $timestamps = true;
-
+    protected $table = 'customers';
     protected $fillable = [
+        'name',
+        'company',
+        'date',
+        'contact',
+        'created_by',
+        'document',
         'description',
-        'amount',
-        'item',
-        'category',
-        // 'date',
     ];
     protected $casts = [
         'date' => 'date',

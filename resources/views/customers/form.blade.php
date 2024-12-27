@@ -24,7 +24,7 @@
                         <div class="card mt-3">
                             <div class="card-header brannedbtn">
                               
-                                <h3 class="card-title ">Add Expense</h3>
+                                <h3 class="card-title ">Add Customer</h3>
                             </div>
                             @if(session('success'))
                             <ol>
@@ -38,7 +38,7 @@
                             </script> 
                             </ol>
                         @endif
-                            <form action="{{ isset($expense) ? route('expenses.update', $expense->id) : route('expenseadd') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ isset($expense) ? route('customer.edit', $expense->id) : route('customeradd') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 
     @if(isset($expense))
