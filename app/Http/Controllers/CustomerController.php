@@ -18,7 +18,7 @@ class CustomerController extends Controller
     }
     public function store(Request $request)
     {   
-        // dd($request->all());
+        dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'company' => 'nullable|string|max:255',
@@ -26,6 +26,8 @@ class CustomerController extends Controller
             'created_by' => 'nullable|string|max:255',
             'document' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:500',
+            // as
+           
         ]);
      
         Customers::create($request->all());
