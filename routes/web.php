@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/expenses/filter', [ExpenseController::class, 'filterdate'])->name('expensefilterdate');
     Route::delete('/expenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
     Route::patch('/expenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
-    Route::get('/expenses/form{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
+    Route::get('/expenses/form/{expense}/edit', [ExpenseController::class, 'edit'])->name('expenses.edit');
     Route::get('/expenses/form', [ExpenseController::class, 'expenseadd'])->name('expenseaddform');
     Route::get('/admin/table', [AdminController::class, 'table'])->name('admin.table');
     Route::get('/admin/useraccounts', [AdminController::class, 'useraccounts'])->name('admin.useraccounts');
@@ -44,9 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers/form',[CustomerController::class, 'customeraddform'])->name('customeradd');
     //customerStore
     Route::post('/customers/form', [CustomerController::class, 'store'])->name('customerstore');
-    // Route::get('/customers/customers/{customers}/edit',[CustomerController::class, 'edit'])->name('customers.edit');
-    // Route::delete('/customers/customers/{customers}',[CustomerController::class, 'destroy'])->name('customers.destroy');
-    // Route::patch('/customers/{customers}', [CustomerController::class, 'update'])->name('customers.update');
+    // load to update form
+    Route::get('/customers/form/{customer}/edit',[CustomerController::class, 'edit'])->name('customer.edit');
+    
+    Route::delete('/customers/customers/{customer}',[CustomerController::class, 'destroy'])->name('customers.destroy');
+    Route::patch('/customers/{customer}', [CustomerController::class, 'update'])->name('customer.update');
 
 });
 

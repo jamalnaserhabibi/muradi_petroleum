@@ -8,13 +8,20 @@
   color: white;
 }
 
+.totalamount {
+  font-size: 20px;
+}
+
 .searchBar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 10px;
-  align-items: start;
+  padding: 0 8px;
+  align-items: center;
   flex-wrap: wrap;
+}
+.searchBar h2 {
+  font-size: 20px;
 }
 .searchBar form {
   height: 2.4rem;
@@ -57,12 +64,17 @@
   background-color: #ff0080; /* Golden Yellow */
 }
 
+.graybg {
+  background-color: antiquewhite;
+}
+
 .useraccounts tbody tr:hover {
   background-color: #f1f1f1; /* Light gray background on hover */
   cursor: pointer; /* Change cursor to pointer on hover */
 }
 .useraccounts td, .useraccounts th {
   text-align: center;
+  padding: 0.5rem;
 }
 .useraccounts .useraccountsimage {
   width: 3rem;
@@ -109,6 +121,9 @@
   z-index: 2000 !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
 }
+#success-alert #example1_filter {
+  display: flex !important;
+}
 
 .login-page {
   background-size: cover;
@@ -148,6 +163,7 @@
 @media (max-width: 768px) {
   .login-page .graphicBox img {
     width: 25rem;
+    display: none;
   }
 }
 
@@ -155,15 +171,5 @@
   .useraccounts th:nth-child(5),
   .useraccounts td:nth-child(5) {
     display: none;
-  }
-  img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-  .useraccountsimage {
-    display: inline-block !important; /* Ensure visibility */
-    max-width: 100px; /* Adjust as needed */
-    height: auto;
   }
 }/*# sourceMappingURL=styleforall.css.map */

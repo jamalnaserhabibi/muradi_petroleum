@@ -9,16 +9,23 @@
 
     }
 }
+.totalamount{
+    font-size: 20px;
+}
 .searchBar{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 0 10px;
-    align-items: start;
+    padding: 0 8px;
+    align-items: center;
     flex-wrap: wrap;
     // border: 1px solid red;
     // margin-bottom: -20px;
     // height: 3rem;
+    h2{
+        font-size: 20px;
+        // padding-top: 4px;
+    }
 form{
     height: 2.4rem;
 }
@@ -59,7 +66,9 @@ form{
 .gas-bg {
     background-color: #ff0080; /* Golden Yellow */
 }
-
+.graybg{
+    background-color: antiquewhite;
+}
 .useraccounts{
      tbody tr:hover {
         background-color: #f1f1f1; /* Light gray background on hover */
@@ -67,6 +76,7 @@ form{
     }
     td,th{
         text-align: center;
+        padding: 0.5rem;
     }
 
     .useraccountsimage {
@@ -108,7 +118,9 @@ form{
 left: 50%!important;
 z-index: 2000!important;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)!important;
-
+#example1_filter{
+display: flex!important;
+}
 }
 .login-page{
     // background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../img/bg.jpg') no-repeat center center fixed;
@@ -121,6 +133,7 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)!important;
     justify-content:space-evenly !important;
     @media (max-width: 768px) {
     flex-direction: column!important;
+    
 
         align-items:center!important;
 
@@ -148,6 +161,7 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)!important;
             width: 35rem;
             @media (max-width: 768px) {
                 width: 25rem;
+                display: none;
             }
        }
     }
@@ -160,15 +174,5 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)!important;
         display: none;
     }
 
-    img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-    }
-
-    .useraccountsimage {
-        display: inline-block !important; /* Ensure visibility */
-        max-width: 100px; /* Adjust as needed */
-        height: auto;
-    }
+   
 }

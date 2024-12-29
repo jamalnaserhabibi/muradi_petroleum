@@ -16,9 +16,14 @@ class CustomerController extends Controller
         $customer = Customers::all();
         return view('customers.customers',compact('customer'));
     }
+    public function edit(Customers $customer)
+    {
+        // dd($customer);
+        return view('customers.form',compact('customer'));
+    }
     public function store(Request $request)
     {   
-        dd($request->all());
+        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'company' => 'nullable|string|max:255',
@@ -26,11 +31,32 @@ class CustomerController extends Controller
             'created_by' => 'nullable|string|max:255',
             'document' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:500',
-            // as
-           
         ]);
      
         Customers::create($request->all());
         return redirect()->route('customers')->with('success','Customer added successfully');
+    }
+
+    public function update(Request $request, Customers $customer)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'company' => 'nullable|string|max:255',
+            'date' => 'nullable|date',
+            'created_by' => 'nullable|string|max:255',
+            'document' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:500',
+        ]);
+
+        $customer->update($request->all());
+
+        return redirect()->route('customers')->with('success', 'Customer updated successfully!');
+    }
+
+    public function destroy(Customers $customer)
+    {
+        $customer->delete();
+
+        return redirect()->route('customers')->with('success', 'Customer Deleted successfully.');
     }
 }

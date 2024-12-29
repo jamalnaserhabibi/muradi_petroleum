@@ -11,44 +11,10 @@
             <div class="container-fluid">
 
                 <div class="searchBar row mb-2">
-                        <h1 class="nav-icon fas fa-users"> Customers</h1>
-                        <form id="filter-form" action="{{ route('expensefilterdate') }}" method="GET">
-                            <input type="hidden" name="start_date" id="start-date">
-                            <input type="hidden" name="end_date" id="end-date">
-                            <!-- Date Range Picker and Category Dropdown -->
-                            <div class="form-group d-flex">
-                                <!-- Date Range Picker -->
-                                <div>
-                                    {{-- <label>Date range:</label> --}}
-                                    <div class="input-group">
-                                        <button type="button" class="btn btn-default float-right" id="daterange-btn">
-                                            <i class="far fa-calendar-alt"></i> Date Range
-                                            <i class="fas fa-caret-down"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                        <h2 class="nav-icon"> Customers</h2>
+                    
 
-                                <!-- Category Filter -->
-                                <div class="ml-3">
-                                    {{-- <label>Category:</label> --}}
-                                    <select id="category-filter" name="category" class="form-control">
-                                        <option value="">All Categories</option>
-                                        <option value="personal" {{ request('category') == 'personal' ? 'selected' : '' }}>
-                                            Personal</option>
-                                        <option value="family" {{ request('category') == 'family' ? 'selected' : '' }}>
-                                            Family</option>
-                                        <option value="tank" {{ request('category') == 'tank' ? 'selected' : '' }}>Tank
-                                        </option>
-                                        <option value="office" {{ request('category') == 'office' ? 'selected' : '' }}>
-                                            Office</option>
-                                        <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
-
-                        <a href="{{ route('customeradd') }}" class="btn brannedbtn">Add New</a>
+                        <a href="{{ route('customeradd') }}" class="btn brannedbtn fluid-right">+ New</a>
 
                         @if (session('success'))
                             <ol>
@@ -83,8 +49,9 @@
                                             <th>Contact</th>
                                             <th>Document</th>
                                             <th>Date</th>
-                                            <th>Entered By</th>
+                                            <th>AddedBy</th>
                                             <th>Description</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,21 +64,31 @@
                                                 <td>{{ $customer->date->format('d M Y') }}</td>
                                                 <td>{{ $customer->created_by }}</td>
                                                 <td>{{ $customer->description }}</td>
-                                                {{-- <td>
-                                                    <a href="{{ route('customers.edit', $customer) }}"
-                                                        class="btn pt-0 pb-0 btn-warning">Edit</a>
-                                                    <form action="{{ route('customers.destroy', $customer) }}" method="POST"
+                                                <td>
+                                                    <a href="{{ route('customer.edit', $customer) }}"
+                                                        class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit"></a>
+                                                    <form action="{{ route('customers.destroy', $customer->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger"
-                                                            onclick="return confirm('Are you sure you want to delete this customer?')">Delete</button>
+                                                        <button type="submit" title="Delete" class="btn pt-0 pb-0 btn-danger"
+                                                            onclick="return confirm('Are you sure you want to delete this customer?')">
+                                                        <li class="fas fa-trash"></li></button>
                                                     </form>
-                                                </td> --}}
+                                                </td>
                                             </tr>
                                         @endforeach
 
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="1">Total</th>
+                                            <th  id="totafooter">{{ \App\Models\Customers::count() }}</th> <!-- Footer for the total amount -->
+                                            <th colspan="6"></th>
+
+                                            
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
 
@@ -188,18 +165,23 @@
                 "autoWidth": false,
                 "buttons": [{
                         extend: 'excel',
+                        footer: true,
                         exportOptions: {
                             columns: ':not(:last-child)' // Exclude the last column (Action column)
                         }
                     },
                     {
                         extend: 'pdf',
+                        footer: true,
+
                         exportOptions: {
                             columns: ':not(:last-child)' // Exclude the last column (Action column)
                         }
                     },
                     {
                         extend: 'print',
+                        footer: true,
+
                         exportOptions: {
                             columns: ':not(:last-child)' // Exclude the last column (Action column)
                         }
