@@ -138,25 +138,26 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-            <a href="{{ route('admin.dashboard') }}" class="brand-link d-flex justify-content-center align-items-center flex-column h-15" >
+            <a href="{{ route('admin.dashboard') }}" class="brand-link d-flex justify-content-center align-items-center flex-column" >
                 <img src="img/logo.png" alt="AdminLTE Logo" class="brand-image">
                 <span class="brand-text font-weight-light">Muradi Petroleum</span>
             </a>
-
-            <div class="form-inline mr-2 ml-2 mt-2">
-                <div class="input-group" data-widget="sidebar-search">
-                  <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                  <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                      <i class="fas fa-search fa-fw"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
+ 
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu"
                         data-accordion="false">
+                        <div class="form-inline mb-1">
+                            <div class="input-group" data-widget="sidebar-search">
+                              <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                              <div class="input-group-append">
+                                <button class="btn btn-sidebar">
+                                  <i class="fas fa-search fa-fw"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
                         <li class="nav-item">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
@@ -181,8 +182,6 @@
                                 </p>
                             </a>
                         </li>
-
-                        
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-line"></i>
@@ -254,6 +253,14 @@
                             </ul>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('employees') }}" class="nav-link">
+                                <i class="nav-icon fas fa-user-tie"></i>
+                                <p>
+                                    Employees
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('customers') }}" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
@@ -279,7 +286,6 @@
 
                     </ul>
                 </nav>
-
             </div>
 
         </aside>

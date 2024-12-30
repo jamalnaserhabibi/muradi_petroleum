@@ -96,7 +96,7 @@
                                         @foreach ($expenses as $expense)
                                             <tr>
                                                 <td>{{ $expense->item }}</td>
-                                                <td>{{ $expense->amount }}</td>
+                                                <td>{{ number_format($expense->amount, 2) }}</td>
                                                 <td>{{ $expense->category }}</td>
                                                 <td>{{ $expense->date->format('d M Y') }}</td>
                                                 <td>{{ $expense->description }}</td>
@@ -107,9 +107,11 @@
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger " title="Delete"
+                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger"
+                                                            title="Delete"
                                                             onclick="return confirm('Are you sure you want to delete this user?')">
-                                                        <li class="fas fa-trash"></li></button>
+                                                            <li class="fas fa-trash"></li>
+                                                        </button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -119,10 +121,8 @@
                                     <tfoot>
                                         <tr>
                                             <th colspan="1">Total</th>
-                                            <th  id="total-footer"></th> <!-- Footer for the total amount -->
+                                            <th id="total-footer"></th> <!-- Footer for the total amount -->
                                             <th colspan="4"></th>
-
-                                            
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -235,7 +235,7 @@
                     search: 'applied'
                 }).every(function() {
                     const rowData = this.data();
-                    const amount = parseFloat(rowData[1]); // Assuming 'Amount' is the 2nd column (index 1)
+                    const amount = parseFloat(rowData[1].replace(/,/g, ''));// Assuming 'Amount' is the 2nd column (index 1)
                     if (!isNaN(amount)) {
                         total += amount;
                     }
@@ -246,26 +246,27 @@
 
             // Add a label for the total amount
             const totalLabel = $('<h2>')
-    .addClass('ml-3') // Add styling
-    .attr('id', 'total-amount-label')
-    .text('Total: 0.00'); // Initial value
+                .addClass('ml-3') // Add styling
+                .attr('id', 'total-amount-label')
+                .text('Total: 0.00'); // Initial value
 
-$('.totalamount').children().eq(0).after(totalLabel);
+            $('.totalamount').children().eq(0).after(totalLabel);
 
-// Update both the footer and the <h2> label
-function updateFooterTotal() {
+            // Update both the footer and the <h2> label
+                function updateFooterTotal() {
     const total = calculateTotal();
-    $('#total-footer').text(total+".00"); // Update the footer cell with the total
-    totalLabel.text(`Total: ${total}`); // Update the <h2> label with the total
+    const formattedTotal = parseFloat(total).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    $('#total-footer').text(formattedTotal); // Update the footer cell with the formatted total
+    totalLabel.text(`Total: ${formattedTotal}`); // Update the <h2> label with the formatted total
 }
 
-// Update total after DataTable initialization
-updateFooterTotal();
+            // Update total after DataTable initialization
+            updateFooterTotal();
 
-// Update total on table draw (e.g., pagination, search)
-table.on('draw', function() {
-    updateFooterTotal();
-});
+            // Update total on table draw (e.g., pagination, search)
+            table.on('draw', function() {
+                updateFooterTotal();
+            });
         });
     </script>
 @endsection

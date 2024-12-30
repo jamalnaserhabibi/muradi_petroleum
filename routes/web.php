@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
 
 Route::get('/', function () {
     return view('admin/login');
@@ -37,6 +38,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
+    //employee
+    Route::get('/employees/employees',[EmployeeController::class, 'employees'])->name('employees');
+    //load form
+    Route::get('/employees/employees/addemployee',[EmployeeController::class, 'addemployee'])->name('addemployee');
+    //load for update
+    Route::get('/employees/employees/{employee}',[EmployeeController::class, 'edit'])->name('editemployee');
+    //add to db
+    Route::post('/employees/employees',[EmployeeController::class, 'store'])->name('employeeadd');
+
+    Route::delete('/employees/employees/{employee}',[EmployeeController::class, 'destroy'])->name('employee.delete');
+
+    Route::patch('/employees/form/{employee}', [EmployeeController::class, 'update'])->name('employee.update');
+
+
     //customer
     //customerTableView
     Route::get('/customers/customers',[CustomerController::class, 'customer'])->name('customers');
