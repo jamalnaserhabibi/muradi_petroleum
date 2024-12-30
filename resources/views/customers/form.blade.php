@@ -37,7 +37,7 @@
                                     </script>
                                 </ol>
                             @endif
-                            <form
+                            {{-- <form --}}
                                 action="{{ isset($customer) ? route('customer.update', $customer) : route('customerstore') }}"
                                 method="POST" enctype="multipart/form-data">
                                 @csrf
