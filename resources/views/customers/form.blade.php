@@ -36,7 +36,7 @@
                                         }, 4000); // 2000ms = 2 seconds
                                     </script>
                                 </ol>
-                            @endif
+                            @endif                          
                             <form
                                 action="{{ isset($customer) ? route('customer.update', $customer) : route('customerstore') }}"
                                 method="POST" enctype="multipart/form-data">
