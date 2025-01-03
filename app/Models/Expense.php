@@ -13,6 +13,7 @@ class Expense extends Model
         'amount',
         'item',
         'category',
+     'document',
         // 'date',
     ];
     protected $casts = [

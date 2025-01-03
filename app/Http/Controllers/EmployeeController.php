@@ -8,8 +8,11 @@ class EmployeeController extends Controller
 {
     public function employees()
     {
+
         $employees = Employee::all();
-        return view('employees.employees', compact('employees'));
+
+        $totalSalaries = $employees->sum('salary');
+        return view('employees.employees', compact('employees','totalSalaries'));
     }
     public function addemployee()
     {

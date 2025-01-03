@@ -40,12 +40,18 @@
                                     <option value="">All Category</option>
                                     <option value="personal" {{ request('category') == 'personal' ? 'selected' : '' }}>
                                         Personal</option>
-                                    <option value="family" {{ request('category') == 'family' ? 'selected' : '' }}>
-                                        Family</option>
+                                    <option value="Tank Maintenance"
+                                        {{ request('category') == 'Tank Maintenance' ? 'selected' : '' }}>Tank Maintenance
+                                    </option>
+                                    <option value="Staff Salary"
+                                        {{ request('category') == 'Staff Salary' ? 'selected' : '' }}>Staff Salary</option>
                                     <option value="tank" {{ request('category') == 'tank' ? 'selected' : '' }}>Tank
                                     </option>
-                                    <option value="office" {{ request('category') == 'office' ? 'selected' : '' }}>
-                                        Office</option>
+                                    <option value="Fuel" {{ request('category') == 'Fuel' ? 'selected' : '' }}>Fuel
+                                    </option>
+                                    <option value="Tax" {{ request('category') == 'Tax' ? 'selected' : '' }}>Tax</option>
+                                    <option value="office" {{ request('category') == 'office' ? 'selected' : '' }}>Office
+                                    </option>
                                     <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other
                                     </option>
                                 </select>
@@ -87,6 +93,7 @@
                                             <th>Amount</th>
                                             <th>Category</th>
                                             <th>Date</th>
+                                            {{-- <th>Document</th> --}}
                                             <th>Description</th>
                                             <th></th>
                                         </tr>
@@ -99,7 +106,17 @@
                                                 <td>{{ number_format($expense->amount, 2) }}</td>
                                                 <td>{{ $expense->category }}</td>
                                                 <td>{{ $expense->date->format('d M Y') }}</td>
-                                                <td>{{ $expense->description }}</td>
+                                                <td>
+                                                    @if ($expense->document)
+                                                        <a href="{{ asset('storage/' . $expense->document) }}"  target="_blank">
+                                                            {{ $expense->description }}   
+                                                            {{-- <img class="useraccountsimage" src={{ asset('storage/' . $expense->document) }} alt="Document"> --}}
+                                                        </a>
+                                                    @else
+                                                    {{ $expense->description }} (No Document)
+                                                    @endif
+                                                </td>
+                                                {{-- <td></td> --}}
                                                 <td>
                                                     <a href="{{ route('expenses.edit', $expense) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit"></a>
@@ -185,21 +202,18 @@
             );
 
             // Category Filter
-            document.getElementById('category-filter').addEventListener('change', function() {
+                document.getElementById('category-filter').addEventListener('change', function() {
+              
                 document.getElementById('filter-form').submit();
             });
-        });
-    </script>
 
-    {{-- <script src="dist/js/demo.js"></script> --}}
 
-    <script>
-        $(function() {
-            // Initialize DataTable and store the instance
+            $(function() {
+         
             const table = $("#example1").DataTable({
                 "responsive": true,
                 "lengthChange": false,
-
+                // "dom": 'fBrtip',
                 "autoWidth": false,
                 "buttons": [{
                         extend: 'excel',
@@ -212,14 +226,14 @@
                         extend: 'pdf',
                         footer: true,
                         exportOptions: {
-                            columns: ':not(:last-child)' // Exclude the last column (Action column)
+                            columns: ':not(:last-child)'  
                         }
                     },
                     {
                         extend: 'print',
                         footer: true,
                         exportOptions: {
-                            columns: ':not(:last-child)' // Exclude the last column (Action column)
+                            columns: ':not(:last-child)'  
                         }
                     }
                 ]
@@ -235,12 +249,13 @@
                     search: 'applied'
                 }).every(function() {
                     const rowData = this.data();
-                    const amount = parseFloat(rowData[1].replace(/,/g, ''));// Assuming 'Amount' is the 2nd column (index 1)
+                    const amount = parseFloat(rowData[1].replace(/,/g,
+                    ''));  
                     if (!isNaN(amount)) {
                         total += amount;
                     }
                 });
-                return total; // Format total to 2 decimal places
+                return total;  
             }
 
 
@@ -253,12 +268,15 @@
             $('.totalamount').children().eq(0).after(totalLabel);
 
             // Update both the footer and the <h2> label
-                function updateFooterTotal() {
-    const total = calculateTotal();
-    const formattedTotal = parseFloat(total).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-    $('#total-footer').text(formattedTotal); // Update the footer cell with the formatted total
-    totalLabel.text(`Total: ${formattedTotal}`); // Update the <h2> label with the formatted total
-}
+            function updateFooterTotal() {
+                const total = calculateTotal();
+                const formattedTotal = parseFloat(total).toLocaleString('en-US', {
+                    minimumFractionDigits: 1,
+                    maximumFractionDigits: 1
+                });
+                $('#total-footer').text(formattedTotal);  
+                totalLabel.text(`Total: ${formattedTotal}`); 
+            }
 
             // Update total after DataTable initialization
             updateFooterTotal();
@@ -268,5 +286,9 @@
                 updateFooterTotal();
             });
         });
+        });
     </script>
+
+    {{-- <script src="dist/js/demo.js"></script> --}}
+ 
 @endsection

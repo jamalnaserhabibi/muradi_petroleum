@@ -61,9 +61,7 @@
                                     <input class="form-control form-control mb-3" name="salary" type="number"
                                         id="employeeSalary" placeholder="Salary"
                                         value="{{ old('salary', $employee->salary ?? '') }}" required>
-                                    @error('description')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                   
                                     <!-- Category Dropdown -->
                                 
                                 
@@ -77,9 +75,13 @@
                                             <label class="btn brannedbtn fileinput-button">
                                                 <i class="fas fa-image"></i>
                                                 <span>Photo</span>
-                                                <input type="file" name="photo" class="d-none" required id="profile_photo" onchange="previewImage()">
+                                                <input type="file" name="photo" class="d-none"  id="profile_photo" onchange="previewImage()">
                                             </label>
-                                            <img id="profile_preview"    src="{{ $employee->photo ? asset('storage/' . $employee->photo) : '#' }}"  alt="Profile Photo" style="border-radius:50%;{{ $employee->photo ? 'block' : 'none' }} width: 60px;height: 60px;object-fit:cover;margin:-15px; margin-left: 25px;margin-top: -10px">
+                                            <img id="profile_preview"    
+
+                                            
+                                            src="{{ isset($employee) && $employee->photo ? asset('storage/' .  $employee->photo) : '#' }}"  
+                                            alt="Profile Photo" style="border-radius:50%;{{ isset($employee) && $employee->photo ? 'display:block' : 'display:none' ;}} width: 60px;height: 60px;object-fit:cover;margin:-15px; margin-left: 25px;margin-top: -10px">
                                             <!-- Image Preview -->
                                      </div>
                                     <div class="card-footer bg-white d-flex justify-content-center">

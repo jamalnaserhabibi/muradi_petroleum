@@ -27,6 +27,7 @@
                             </ol>
                         @endif
                         <a href="{{ route('addemployee') }}" class="btn brannedbtn">+ New</a>
+                        <a href="{{ route('expenseaddform',['amount' => $totalSalaries, 'category' => 'Staff Salary','item' => 'Salary of '],) }}" class="btn brannedbtn ml-1">Pay Salary</a>
                     </div>
                 </div>
             </div>
