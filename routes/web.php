@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('admin/login');
@@ -64,6 +66,19 @@ Route::middleware('auth')->group(function () {
     
     Route::delete('/customers/customers/{customer}',[CustomerController::class, 'destroy'])->name('customers.destroy');
     Route::patch('/customers/{customer}', [CustomerController::class, 'update'])->name('customer.update');
+
+
+    //purchase
+    Route::get('/purchase/purchase', [PurchaseController::class, 'purchase'])->name('purchase');
+    Route::get('/purchase/form', [PurchaseController::class, 'purchaseform'])->name('addpurchaseform');
+    Route::post('/purchase/form/adds', [PurchaseController::class, 'purchaseadd'])->name('purchaseadd');
+    Route::delete('/purchase/{id}/delete', [PurchaseController::class, 'purchasedelete'])->name('purchasedelete');
+    
+    Route::patch('/purchase/form/{id}/update', [PurchaseController::class, 'purchaseupdate'])->name('purchaseupdate');
+    Route::get('/purchase/form/{id}/edit', [PurchaseController::class, 'purchaseedit'])->name('purchaseedit');
+
+    //product
+    Route::get('/filter-purchases', [PurchaseController::class, 'filter'])->name('purchasefilter');
 
 });
 

@@ -253,6 +253,14 @@
                             </ul>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('purchase') }}" class="nav-link">
+                                <i class="nav-icon fas fas fa-shopping-cart"></i>
+                                <p>
+                                    Purchase
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('employees') }}" class="nav-link">
                                 <i class="nav-icon fas fa-user-tie"></i>
                                 <p>
