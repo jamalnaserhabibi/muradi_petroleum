@@ -65,20 +65,28 @@
                                 
                                     @error('amount')
                                         <span class="text-danger">{{ $message }}</span>
-                                    @enderror <!-- Amount Input -->
+                                    @enderror 
                                     <input class="form-control form-control mb-3" name="amount" type="number"
                                         id="expenseAmount" placeholder="Amount"
                                         value="{{ old('amount', $purchase->amount ?? request('amount')) }}" required>
 
-                                    <input class="form-control form-control mb-3" name="heaviness" type="number"   min="0.1" 
-                                    max="1.9" 
-                                    step="0.1" 
+                                    @error('heaviness')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    <input class="form-control form-control mb-3" name="heaviness" type="number"   min="700" 
+                                    max="1000" 
+                                    step="10" 
                                         id="expenseAmount" placeholder="Weight"
                                         value="{{ old('amount', $purchase->heaviness ?? request('heaviness')) }}" required>
                                     
+
+                                    @error('rate')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                     <input class="form-control form-control mb-3" name="rate" type="number"
-                                        id="expenseAmount" placeholder="Rate"
+                                        id="expenseAmount" placeholder="Ton Rate"
                                         value="{{ old('amount', $purchase->rate ?? request('rate')) }}" required>
+                                    
                                     
                                     <textarea class="form-control form-control" name="details" id="details" rows="4"
                                         placeholder="Description">{{ old('description', $purchase->details ?? '') }}</textarea>

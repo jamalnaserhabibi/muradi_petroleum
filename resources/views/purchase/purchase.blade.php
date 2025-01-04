@@ -96,7 +96,7 @@
                                                 <td>{{ $purchase->heaviness }}</td>
                                                 <td>{{ number_format($purchase->rate ,2)}}</td>
                                                 <td>{{ number_format($purchase->rate * $purchase->amount,2)}}</td>
-                                                <td>{{ number_format(($purchase->amount/$purchase->heaviness)*1000,2)  }}</td>
+                                                <td>{{ number_format((1000000/$purchase->heaviness)*$purchase->amount,2)  }}</td>
                                                 <td>{{ $purchase->date->format('d M Y') }}</td>
                                                 <td>{{ $purchase->details }}</td>
                                                 <td>
@@ -120,9 +120,9 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="1">Total</th>
-                                            <th id="total-footer"></th> <!-- Footer for the total amount -->
-                                            <th colspan="4"></th>
+                                            <th colspan="0">Total</th>
+                                            {{-- <th id="total-footer"></th> <!-- Footer for the total amount --> --}}
+                                            {{-- <th colspan="0"></th> --}}
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -226,48 +226,51 @@
             table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
             // Calculate total of the "Amount" column
-            function calculateTotal() {
-                let total = 0;
-                table.rows({
-                    search: 'applied'
-                }).every(function() {
-                    const rowData = this.data();
-                    const amount = parseFloat(rowData[1].replace(/,/g,
-                    ''));  
-                    if (!isNaN(amount)) {
-                        total += amount;
-                    }
-                });
-                return total;  
+            function calculateColumnTotal(columnIndex) {
+        let total = 0;
+        table.rows({ search: 'applied' }).every(function() {
+            const rowData = this.data();
+            const value = parseFloat(rowData[columnIndex].replace(/,/g, '')); // Remove commas
+            if (!isNaN(value)) {
+                total += value;
             }
+        });
+        return total;
+    }
 
+    // Update the footer with calculated totals
+    function updateFooterTotals() {
+        const tonTotal = calculateColumnTotal(1); // Ton column
+        const amountTotal = calculateColumnTotal(4); // Total Amount column
+        const literTotal = calculateColumnTotal(5); // Total Liter column
 
-            // Add a label for the total amount
-            const totalLabel = $('<h2>')
-                .addClass('ml-3') // Add styling
-                .attr('id', 'total-amount-label')
-                .text('Total: 0.00'); // Initial value
+        // Format the totals
+        const formattedTonTotal = tonTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const formattedAmountTotal = amountTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const formattedLiterTotal = literTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-            $('.totalamount').children().eq(0).after(totalLabel);
+        // Update the footer
+        $('#total-footer-ton').text(formattedTonTotal);
+        $('#total-footer-amount').text(formattedAmountTotal);
+        $('#total-footer-liter').text(formattedLiterTotal);
+    }
 
-            // Update both the footer and the <h2> label
-            function updateFooterTotal() {
-                const total = calculateTotal();
-                const formattedTotal = parseFloat(total).toLocaleString('en-US', {
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1
-                });
-                $('#total-footer').text(formattedTotal);  
-                totalLabel.text(`Total: ${formattedTotal}`); 
-            }
+    // Add footer cells for Total Amount and Total Liter
+    $('#example1 tfoot tr').append('<th id="total-footer-ton" ></th>');
+    $('#example1 tfoot tr').append('<th colspan="2"></th>');
+    $('#example1 tfoot tr').append('<th id="total-footer-amount" ></th>');
+    $('#example1 tfoot tr').append('<th id="total-footer-liter"></th>');
+    $('#example1 tfoot tr').append('<th colspan="2"></th>');
+    $('#example1 tfoot tr').append('<th colspan="2"></th>');
+   
+    
+    // Initial footer update
+    updateFooterTotals();
 
-            // Update total after DataTable initialization
-            updateFooterTotal();
-
-            // Update total on table draw (e.g., pagination, search)
-            table.on('draw', function() {
-                updateFooterTotal();
-            });
+    // Update totals on table draw (e.g., pagination, search)
+    table.on('draw', function() {
+        updateFooterTotals();
+    });
         });
         });
     </script>

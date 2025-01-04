@@ -29,7 +29,7 @@ class PurchaseController extends Controller
     {   
         $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id',  
-            'heaviness' => 'required|numeric|min:0.1|max:1.9',  
+            'heaviness' => 'required|numeric|min:700|max:1000',  
             'amount' => 'required|numeric|min:0', 
             'rate' => 'required|numeric|min:0',  
             'details' => 'nullable|string|max:255',  
@@ -52,7 +52,7 @@ class PurchaseController extends Controller
     {   
         $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id', // Ensure product exists
-            'heaviness' => 'required|numeric|min:0.1|max:1.9', // Weight constraints
+            'heaviness' => 'required|numeric|min:700|max:1000',  
             'amount' => 'required|numeric|min:0', // Weight constraints
             'rate' => 'required|numeric|min:0', // Ensure rate is a positive number
             'details' => 'nullable|string|max:255', // Optional description
@@ -66,23 +66,24 @@ class PurchaseController extends Controller
             'rate' => $validatedData['rate'],
             'details' => $validatedData['details'] ?? null,
         ]);
+        return redirect()->route('purchase')->with('success', 'Purchase Added successfully.');
 
-        $startOfMonth = now()->startOfMonth();
-        $endOfMonth = now()->endOfMonth();
+        // $startOfMonth = now()->startOfMonth();
+        // $endOfMonth = now()->endOfMonth();
 
         // Fetch purchases within the current month, including related product data
-        $purchases = Purchase::with('product')
-            ->whereBetween('date', [$startOfMonth, $endOfMonth])
-            ->get();
+        // $purchases = Purchase::with('product')
+        //     ->whereBetween('date', [$startOfMonth, $endOfMonth])
+        //     ->get();
 
-        // Fetch unique products for the dropdown
-        $products = Purchase::with('product')
-            ->get()
-            ->pluck('product')
-            ->unique('id');
+        // // Fetch unique products for the dropdown
+        // $products = Purchase::with('product')
+        //     ->get()
+        //     ->pluck('product')
+        //     ->unique('id');
 
         // Pass the fetched data to the view
-        return view('purchase.purchase', compact('purchases', 'products'));
+        // return view('purchase.purchase', compact('purchases', 'products'));
     }
     public function purchaseform()
     {
