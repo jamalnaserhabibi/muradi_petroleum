@@ -115,38 +115,40 @@ class PurchaseController extends Controller
     }
 
     public function filter(Request $request)
-    {
-        // Fetch unique products for the dropdown
-        $products = Purchase::with('product')
-            ->get()
-            ->pluck('product')
-            ->unique('id');
-    
-        // Initialize query for filtering purchases
-        $query = Purchase::query();
-    
-        // Apply date filter if provided
-        if (!$request->filled('start_date') && !$request->filled('end_date')) {
-            // Set the date range to this month's start and end
-            $startOfMonth = now()->startOfMonth();
-            $endOfMonth = now()->endOfMonth();
-            $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
-        } else {
-            // If date range is provided, filter accordingly
-            if ($request->filled('start_date') && $request->filled('end_date')) {
-                $query->whereBetween('date', [$request->start_date, $request->end_date]);
-            }
+{
+    // Fetch unique products for checkboxes
+    $products = Purchase::with('product')
+        ->get()
+        ->pluck('product')
+        ->unique('id');
+
+    // Initialize query for filtering purchases
+    $query = Purchase::query();
+
+    // Apply date filter if provided
+    if (!$request->filled('start_date') && !$request->filled('end_date')) {
+        // Default to the current month's date range
+        $startOfMonth = now()->startOfMonth();
+        $endOfMonth = now()->endOfMonth();
+        $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+    } else {
+        // If date range is provided, filter accordingly
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $query->whereBetween('date', [$request->start_date, $request->end_date]);
         }
-    
-        // Apply product filter if provided
-        if ($request->filled('product_id')) {
-            $query->where('product_id', $request->product_id);
-        }
-    
-        // Fetch purchases (all if no filters applied)
-        $purchases = $query->with('product')->get();
-    
-        // Pass data to the view
-        return view('purchase.purchase', compact('purchases', 'products'));
     }
+
+    // Apply product filter if provided
+    if ($request->filled('product_id')) {
+        // Ensure product_id is treated as an array for multiple selections
+        $productIds = $request->input('product_id', []);
+        $query->whereIn('product_id', $productIds);
+    }
+
+    // Fetch purchases (all if no filters applied)
+    $purchases = $query->with('product')->get();
+
+    // Pass data to the view
+    return view('purchase.purchase', compact('purchases', 'products'));
+}
 }

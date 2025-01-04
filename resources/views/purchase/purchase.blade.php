@@ -4,6 +4,8 @@
     <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 @endsection
 @section('content')
     <div class="content-wrapper">
@@ -21,7 +23,6 @@
                         <input type="hidden" name="start_date" id="start-date">
                         <input type="hidden" name="end_date" id="end-date">
                         <div class="form-group d-flex">
-                            <!-- Date Range Picker -->
                             <div>
                                 {{-- <label>Date range:</label> --}}
                                 <div class="input-group">
@@ -32,12 +33,13 @@
                                 </div>
                             </div>
 
-                            <div class="ml-4">
-                              
-                                <select id="product-filter" name="product_id" class="form-control">
-                                    <option value="">All Types</option>
+                            <div class="dropdown ml-4">
+                                {{-- <label for="product-filter">Select</label> --}}
+                                <select id="product-filter" name="product_id[]" class="select2 form-control"
+                                    multiple="multiple" data-placeholder="Type" style="width:100%">
                                     @foreach ($products as $product)
-                                        <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                                        <option value="{{ $product->id }}"
+                                            {{ in_array($product->id, request('product_id', [])) ? 'selected' : '' }}>
                                             {{ $product->product_name }}
                                         </option>
                                     @endforeach
@@ -92,11 +94,12 @@
                                         @foreach ($purchases as $purchase)
                                             <tr>
                                                 <td>{{ $purchase->product->product_name }}</td>
-                                                <td>{{ $purchase->amount  }}<sup>T</sub></td>
+                                                <td>{{ $purchase->amount }}</td>
                                                 <td>{{ $purchase->heaviness }}</td>
-                                                <td>{{ number_format($purchase->rate ,2)}}</td>
-                                                <td>{{ number_format($purchase->rate * $purchase->amount,2)}}</td>
-                                                <td>{{ number_format((1000000/$purchase->heaviness)*$purchase->amount,2)  }}</td>
+                                                <td>{{ number_format($purchase->rate, 2) }}</td>
+                                                <td>{{ number_format($purchase->rate * $purchase->amount, 2) }}</td>
+                                                <td>{{ number_format((1000000 / $purchase->heaviness) * $purchase->amount, 2) }}
+                                                </td>
                                                 <td>{{ $purchase->date->format('d M Y') }}</td>
                                                 <td>{{ $purchase->details }}</td>
                                                 <td>
@@ -145,6 +148,22 @@
 @endsection
 
 @section('CustomScript')
+    <script src="plugins/select2/js/select2.full.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize Select2 with Bootstrap4 theme
+            $('.select2').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Select Products',
+                allowClear: true
+            });
+
+            // Auto-submit on change
+            $('#product-filter').on('change', function() {
+                $('#filter-form').submit();
+            });
+        });
+    </script>
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -157,8 +176,11 @@
     <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
     {{-- commented for the sidebar btn not worked --}}
     {{-- <script src="dist/js/adminlte.min2167.js?v=3.2.0"></script> --}}
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Date Range Picker
@@ -185,96 +207,108 @@
             );
 
             // Category Filter
-                document.getElementById('product-filter').addEventListener('change', function() {
-              
+            document.getElementById('product-filter').addEventListener('change', function() {
+
                 document.getElementById('filter-form').submit();
             });
 
 
             $(function() {
-         
-            const table = $("#example1").DataTable({
-                "responsive": false,
-                "lengthChange": false,
-                // "dom": 'Bfrtip',
-                "autoWidth": false,
-                "buttons": [{
-                        extend: 'excel',
-                        footer: true,
-                        exportOptions: {
-                            columns: ':not(:last-child)' // Exclude the last column (Action column)
+
+                const table = $("#example1").DataTable({
+                    "responsive": false,
+                    "lengthChange": false,
+                    // "dom": 'Bfrtip',
+                    "autoWidth": false,
+                    "buttons": [{
+                            extend: 'excel',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)' // Exclude the last column (Action column)
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)'
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)'
+                            }
                         }
-                    },
-                    {
-                        extend: 'pdf',
-                        footer: true,
-                        exportOptions: {
-                            columns: ':not(:last-child)'  
+                    ]
+                    
+                });
+
+                // Append buttons to the container
+                table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+                // Calculate total of the "Amount" column
+                function calculateColumnTotal(columnIndex) {
+                    let total = 0;
+                    table.rows({
+                        search: 'applied'
+                    }).every(function() {
+                        const rowData = this.data();
+                        const value = parseFloat(rowData[columnIndex].replace(/,/g,
+                            '')); // Remove commas
+                        if (!isNaN(value)) {
+                            total += value;
                         }
-                    },
-                    {
-                        extend: 'print',
-                        footer: true,
-                        exportOptions: {
-                            columns: ':not(:last-child)'  
-                        }
-                    }
-                ]
+                    });
+                    return total;
+                }
+
+                // Update the footer with calculated totals
+                function updateFooterTotals() {
+                    const tonTotal = calculateColumnTotal(1); // Ton column
+                    const amountTotal = calculateColumnTotal(4); // Total Amount column
+                    const literTotal = calculateColumnTotal(5); // Total Liter column
+
+                    // Format the totals
+                    const formattedTonTotal = tonTotal.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                    const formattedAmountTotal = amountTotal.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+                    const formattedLiterTotal = literTotal.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+
+                    // Update the footer
+                    $('#total-footer-ton').text(formattedTonTotal);
+                    $('#total-footer-amount').text(formattedAmountTotal);
+                    $('#total-footer-liter').text(formattedLiterTotal);
+                }
+
+                // Add footer cells for Total Amount and Total Liter
+                $('#example1 tfoot tr').append('<th id="total-footer-ton" ></th>');
+                $('#example1 tfoot tr').append('<th colspan="2"></th>');
+                $('#example1 tfoot tr').append('<th id="total-footer-amount" ></th>');
+                $('#example1 tfoot tr').append('<th id="total-footer-liter"></th>');
+                $('#example1 tfoot tr').append('<th colspan="2"></th>');
+                $('#example1 tfoot tr').append('<th colspan="2"></th>');
+
+
+                // Initial footer update
+                updateFooterTotals();
+
+                // Update totals on table draw (e.g., pagination, search)
+                table.on('draw', function() {
+                    updateFooterTotals();
+                });
             });
-
-            // Append buttons to the container
-            table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-            // Calculate total of the "Amount" column
-            function calculateColumnTotal(columnIndex) {
-        let total = 0;
-        table.rows({ search: 'applied' }).every(function() {
-            const rowData = this.data();
-            const value = parseFloat(rowData[columnIndex].replace(/,/g, '')); // Remove commas
-            if (!isNaN(value)) {
-                total += value;
-            }
-        });
-        return total;
-    }
-
-    // Update the footer with calculated totals
-    function updateFooterTotals() {
-        const tonTotal = calculateColumnTotal(1); // Ton column
-        const amountTotal = calculateColumnTotal(4); // Total Amount column
-        const literTotal = calculateColumnTotal(5); // Total Liter column
-
-        // Format the totals
-        const formattedTonTotal = tonTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        const formattedAmountTotal = amountTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        const formattedLiterTotal = literTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-        // Update the footer
-        $('#total-footer-ton').text(formattedTonTotal);
-        $('#total-footer-amount').text(formattedAmountTotal);
-        $('#total-footer-liter').text(formattedLiterTotal);
-    }
-
-    // Add footer cells for Total Amount and Total Liter
-    $('#example1 tfoot tr').append('<th id="total-footer-ton" ></th>');
-    $('#example1 tfoot tr').append('<th colspan="2"></th>');
-    $('#example1 tfoot tr').append('<th id="total-footer-amount" ></th>');
-    $('#example1 tfoot tr').append('<th id="total-footer-liter"></th>');
-    $('#example1 tfoot tr').append('<th colspan="2"></th>');
-    $('#example1 tfoot tr').append('<th colspan="2"></th>');
-   
-    
-    // Initial footer update
-    updateFooterTotals();
-
-    // Update totals on table draw (e.g., pagination, search)
-    table.on('draw', function() {
-        updateFooterTotals();
-    });
-        });
         });
     </script>
 
     {{-- <script src="dist/js/demo.js"></script> --}}
- 
 @endsection

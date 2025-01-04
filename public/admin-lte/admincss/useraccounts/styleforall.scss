@@ -10,7 +10,7 @@
     }
 }
 .totalamount{
-    font-size: 20px;
+    // font-size: 20px;
 }
 .searchBar{
     display: flex;
@@ -26,8 +26,17 @@
         font-size: 20px;
         // padding-top: 4px;
     }
-form{
+    form{
+    // border: 1px solid red;
+    width: auto;
     height: 2.4rem;
+    .dropdown{
+    //     // border: 1px solid rgb(0, 225, 127);
+    //     // width: 10rem;
+    //     select{
+    //     font-size: 10px;
+        }
+    // }
 }
 }
 .brand-image{
