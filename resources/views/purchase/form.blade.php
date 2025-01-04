@@ -48,15 +48,14 @@
                                     @method('PATCH')
                                 @endif
                                 <div class="card-body mt-3">
-                                    @error('product_id')
+                                @error('product_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                                 <!-- Type Dropdown -->
                                 <select class="form-control mb-3" name="product_id" id="product" required>
                                     <option value="" disabled {{ isset($purchase) ? '' : 'selected' }}>Type</option>
                                     @foreach ($products as $product)
-                                        <option value="{{ $product->id }}" 
-                                            {{ old('product_id', $purchase->product_id ?? '') == $product->id ? 'selected' : '' }}>
+                                        <option value="{{ $product->id }}" {{ old('product_id', $purchase->product_id ?? '') == $product->id ? 'selected' : '' }}>
                                             {{ $product->product_name }}
                                         </option>
                                         

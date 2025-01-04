@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customers;
+use App\Models\CustomerTypes;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     public function customeraddform()
     {
-        return view('customers.form');
+        $customerTypes = CustomerTypes::select('id', 'customer_type')->get();
+        
+        return view('customers.form',compact('customerTypes'));
     }
     public function customer()
     {
@@ -18,8 +21,9 @@ class CustomerController extends Controller
     }
     public function edit(Customers $customer)
     {
-        // dd($customer);
-        return view('customers.form',compact('customer'));
+        $customerTypes = CustomerTypes::select('id', 'customer_type')->get();
+
+        return view('customers.form',compact('customer','customerTypes'));
     }
     public function store(Request $request)
     {   
@@ -28,6 +32,7 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'company' => 'nullable|string|max:255',
             'date' => 'nullable|date',
+            'customer_type' =>'required|exists:customer_types,id',
             'created_by' => 'nullable|string|max:255',
             'document' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:500',
@@ -43,6 +48,7 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'company' => 'nullable|string|max:255',
             'date' => 'nullable|date',
+            'customer_type' =>'required|exists:customer_types,id',
             'created_by' => 'nullable|string|max:255',
             'document' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:500',

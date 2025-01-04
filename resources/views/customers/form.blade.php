@@ -53,11 +53,23 @@
                                         id="expenseName" placeholder="Name" value="{{ old('name', $customer->name ?? '') }}"
                                         required>
 
+
                                     <input class="form-control form-control mb-3" name="created_by" type="hidden"
                                         id="expenseName" value="{{ (Auth::user()->name) }}"
                                       >
 
-
+                                      @error('product_id')
+                                      <span class="text-danger">{{ $message }}</span>
+                                  @enderror
+                                  <!-- Type Dropdown -->
+                                  <select class="form-control mb-3" name="customer_type" id="product" required>
+                                    <option value="" disabled {{ old('customer_type', $customer->customer_type ?? null) === null ? 'selected' : '' }}>Type</option>
+                                    @foreach ($customerTypes as $customerType)
+                                        <option value="{{ $customerType->id }}" {{ old('customer_type', $customer->customer_type ?? null) == $customerType->id ? 'selected' : '' }}>
+                                            {{ $customerType->customer_type }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                     @error('company')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror <!-- company Input -->
@@ -84,7 +96,7 @@
                                     @enderror
                                     <!-- Description Input -->
                                     <textarea class="form-control form-control" name="description" id="customersDescription" rows="4"
-                                        placeholder="Description">{{ old('description', $customer->description ?? '') }}</textarea>
+                                  placeholder="Description">{{ old('description', $customer->description ?? '') }}</textarea>
                                     <div class="card-footer bg-white d-flex justify-content-center">
                                         <button type="submit" class="btn brannedbtn w-100">
                                             {{ isset($customer) ? 'Update Customer' : 'Add Customer' }}</button>

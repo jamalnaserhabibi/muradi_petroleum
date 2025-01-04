@@ -11,7 +11,7 @@ class Customers extends Model
     protected $fillable = [
         'name',
         'company',
-        // 'date',
+        'customer_type', // Ensure this field is fillable if it's used in forms
         'contact',
         'created_by',
         'document',
@@ -20,4 +20,10 @@ class Customers extends Model
     protected $casts = [
         'date' => 'date',
     ];
+
+    // Define the relationship with the CustomerTypes model
+    public function customerType()
+    {
+        return $this->belongsTo(CustomerTypes::class, 'customer_type', 'id');
+    }
 }

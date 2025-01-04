@@ -47,9 +47,10 @@
                                             <th>Name</th>
                                             <th>Company</th>
                                             <th>Contact</th>
+                                            <th>Customer Type</th>
                                             <th>Document</th>
                                             <th>Date</th>
-                                            <th>AddedBy</th>
+                                            {{-- <th>AddedBy</th> --}}
                                             <th>Description</th>
                                             <th></th>
                                         </tr>
@@ -60,9 +61,10 @@
                                                 <td>{{ $customer->name }}</td>
                                                 <td>{{ $customer->company }}</td>
                                                 <td>{{ $customer->contact }}</td>
+                                                <td>{{ $customer->customerType->customer_type }}</td>
                                                 <td>{{ $customer->document }}</td>
                                                 <td>{{ $customer->date->format('d M Y') }}</td>
-                                                <td>{{ $customer->created_by }}</td>
+                                                {{-- <td>{{ $customer->created_by }}</td> --}}
                                                 <td>{{ $customer->description }}</td>
                                                 <td>
                                                     <a href="{{ route('customer.edit', $customer) }}"
