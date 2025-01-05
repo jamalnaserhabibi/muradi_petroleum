@@ -216,8 +216,48 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>                   
+                        <li class="nav-item">
+                            <a href="{{ route('purchase') }}" class="nav-link">
+                                <i class="nav-icon fas fas fa-shopping-cart"></i>
+                                <p>
+                                    Purchase
+                                </p>
+                            </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('employees') }}" class="nav-link">
+                                <i class="nav-icon fas fa-user-tie"></i>
+                                <p>
+                                    Employees
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('customers') }}" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Customers
+                                </p>
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-contract"></i>
+                                <p>
+                                    Contracts
+                                </p>
+                            </a>
+                        </li> --}}
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-sticky-note"></i>
+                                <p>
+                                    Note
+                                </p>
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fas fa-shopping-cart"></i>
                                 <p>
@@ -251,48 +291,8 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('purchase') }}" class="nav-link">
-                                <i class="nav-icon fas fas fa-shopping-cart"></i>
-                                <p>
-                                    Purchase
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('employees') }}" class="nav-link">
-                                <i class="nav-icon fas fa-user-tie"></i>
-                                <p>
-                                    Employees
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('customers') }}" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Customers
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-gas-pump"></i>
-                                <p>
-                                    Towers
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-sticky-note"></i>
-                                <p>
-                                    Note
-                                </p>
-                            </a>
-
-                    </ul>
+                        </li> --}}
+                        </ul>
                 </nav>
             </div>
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ContractController;
 
 Route::get('/', function () {
     return view('admin/login');
@@ -79,6 +80,15 @@ Route::middleware('auth')->group(function () {
 
     //product
     Route::get('/filter-purchases', [PurchaseController::class, 'filter'])->name('purchasefilter');
+
+
+    //contractForm
+    Route::get('/customers/CustomerContractForm', [ContractController::class, 'findCustomer'])->name('CustomerContract');
+    Route::get('/customers/CustomerContractForm/{id}', [ContractController::class, 'contractedit'])->name('contractedit');
+    Route::patch('/customers/CustomerContractForm/{id}/update', [ContractController::class, 'update'])->name('contractUpdate');
+    Route::post('/customers/CustomerContractForm/store', [ContractController::class, 'store'])->name('contractstore');
+
+
 
 });
 

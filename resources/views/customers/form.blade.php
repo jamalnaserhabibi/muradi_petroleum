@@ -36,7 +36,7 @@
                                         }, 4000); // 2000ms = 2 seconds
                                     </script>
                                 </ol>
-                            @endif                          
+                            @endif
                             <form
                                 action="{{ isset($customer) ? route('customer.update', $customer) : route('customerstore') }}"
                                 method="POST" enctype="multipart/form-data">
@@ -55,35 +55,37 @@
 
 
                                     <input class="form-control form-control mb-3" name="created_by" type="hidden"
-                                        id="expenseName" value="{{ (Auth::user()->name) }}"
-                                      >
+                                        id="expenseName" value="{{ Auth::user()->name }}">
 
-                                      @error('product_id')
-                                      <span class="text-danger">{{ $message }}</span>
-                                  @enderror
-                                  <!-- Type Dropdown -->
-                                  <select class="form-control mb-3" name="customer_type" id="product" required>
-                                    <option value="" disabled {{ old('customer_type', $customer->customer_type ?? null) === null ? 'selected' : '' }}>Type</option>
-                                    @foreach ($customerTypes as $customerType)
-                                        <option value="{{ $customerType->id }}" {{ old('customer_type', $customer->customer_type ?? null) == $customerType->id ? 'selected' : '' }}>
-                                            {{ $customerType->customer_type }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                    @error('product_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    <!-- Type Dropdown -->
+                                    <select class="form-control mb-3" name="customer_type" id="product" required>
+                                        <option value="" disabled
+                                            {{ old('customer_type', $customer->customer_type ?? null) === null ? 'selected' : '' }}>
+                                            Type</option>
+                                        @foreach ($customerTypes as $customerType)
+                                            <option value="{{ $customerType->id }}"
+                                                {{ old('customer_type', $customer->customer_type ?? null) == $customerType->id ? 'selected' : '' }}>
+                                                {{ $customerType->customer_type }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                     @error('company')
                                         <span class="text-danger">{{ $message }}</span>
-                                    @enderror <!-- company Input -->
+                                    @enderror
                                     <input class="form-control form-control mb-3" name="company" type="text"
                                         id="expensecompany" placeholder="Company"
                                         value="{{ old('amount', $customer->company ?? '') }}" required>
-                                        
+
                                     @error('contact')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror <!--Contact Input -->
-                                    <input class="form-control form-control mb-3" name="contact" type="text"  
+                                    <input class="form-control form-control mb-3" name="contact" type="text"
                                         id="customersContact" placeholder="Contact"
                                         value="{{ old('Contact', $customer->contact ?? '') }}" required>
-                                    
+
                                     @error('document')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror <!-- document Input -->
@@ -91,15 +93,20 @@
                                         id="documentcompany" placeholder="Document"
                                         value="{{ old('document', $customer->document ?? '') }}" required>
 
-                                   @error('description')
+                                    @error('description')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                     <!-- Description Input -->
-                                    <textarea class="form-control form-control" name="description" id="customersDescription" rows="4"
-                                  placeholder="Description">{{ old('description', $customer->description ?? '') }}</textarea>
+                                    <textarea class="form-control form-control" name="description" id="customersDescription" rows="2"
+                                        placeholder="Description">{{ old('description', $customer->description ?? '') }}</textarea>
                                     <div class="card-footer bg-white d-flex justify-content-center">
                                         <button type="submit" class="btn brannedbtn w-100">
-                                            {{ isset($customer) ? 'Update Customer' : 'Add Customer' }}</button>
+                                            {{ isset($customer) ? 'Update Customer' : 'Next' }}
+                                        </button>
+                                        @if (isset($customer))
+                                            <a href="{{ route('contractedit', $customer->id) }}"
+                                                class="btn brannedbtn w-100 ml-4">Next</a>
+                                        @endif
                                     </div>
                                 </div>
 

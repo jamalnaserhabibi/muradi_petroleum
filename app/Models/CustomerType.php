@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CustomerTypes extends Model
+class CustomerType extends Model
 {
     public $timestamps = true;
     protected $table = 'customer_types';

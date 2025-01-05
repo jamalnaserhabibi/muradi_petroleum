@@ -123,9 +123,15 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="0">Total</th>
-                                            {{-- <th id="total-footer"></th> <!-- Footer for the total amount --> --}}
-                                            {{-- <th colspan="0"></th> --}}
+                                            <th>Total</th>
+                                            <th id="total-footer-ton"></th> <!-- Ton column -->
+                                            <th></th> <!-- Empty cell to keep alignment -->
+                                            <th></th> <!-- Empty cell to keep alignment -->
+                                            <th id="total-footer-amount"></th> <!-- Total Amount column -->
+                                            <th id="total-footer-liter"></th> <!-- Total Liter column -->
+                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
+                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
+                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -216,7 +222,7 @@
             $(function() {
 
                 const table = $("#example1").DataTable({
-                    "responsive": false,
+                    "responsive": true,
                     "lengthChange": false,
                     // "dom": 'Bfrtip',
                     "autoWidth": false,
@@ -289,17 +295,6 @@
                     $('#total-footer-amount').text(formattedAmountTotal);
                     $('#total-footer-liter').text(formattedLiterTotal);
                 }
-
-                // Add footer cells for Total Amount and Total Liter
-                $('#example1 tfoot tr').append('<th id="total-footer-ton" ></th>');
-                $('#example1 tfoot tr').append('<th colspan="2"></th>');
-                $('#example1 tfoot tr').append('<th id="total-footer-amount" ></th>');
-                $('#example1 tfoot tr').append('<th id="total-footer-liter"></th>');
-                $('#example1 tfoot tr').append('<th colspan="2"></th>');
-                $('#example1 tfoot tr').append('<th colspan="2"></th>');
-
-
-                // Initial footer update
                 updateFooterTotals();
 
                 // Update totals on table draw (e.g., pagination, search)
@@ -309,6 +304,4 @@
             });
         });
     </script>
-
-    {{-- <script src="dist/js/demo.js"></script> --}}
 @endsection

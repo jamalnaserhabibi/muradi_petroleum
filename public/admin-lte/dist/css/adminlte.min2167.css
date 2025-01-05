@@ -51822,7 +51822,7 @@ blockquote.quote-gray-dark h6 {
 }
 .bg-white,
 .bg-white > a {
-    color: #1f2d3d !important;
+    /* color: #1f2d3d !important; */
 }
 .bg-white.btn:hover {
     border-color: #e6e6e6;

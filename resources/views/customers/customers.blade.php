@@ -39,19 +39,22 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">
+                        <div class="card">  
                             <div class="card-body">
+                                {{-- {{$customer}} --}}
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
                                             <th>Company</th>
                                             <th>Contact</th>
-                                            <th>Customer Type</th>
+                                            <th>Type</th>
+                                            <th>Rate</th>
+                                            <th>Product</th>
                                             <th>Document</th>
                                             <th>Date</th>
                                             {{-- <th>AddedBy</th> --}}
-                                            <th>Description</th>
+                                            <th>Details</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -62,10 +65,12 @@
                                                 <td>{{ $customer->company }}</td>
                                                 <td>{{ $customer->contact }}</td>
                                                 <td>{{ $customer->customerType->customer_type }}</td>
+                                                <td>{{ $customer->contract->rate }}</td>
+                                                <td>{{ $customer['contract']['product']->product_name }}</td>
                                                 <td>{{ $customer->document }}</td>
                                                 <td>{{ $customer->date->format('d M Y') }}</td>
                                                 {{-- <td>{{ $customer->created_by }}</td> --}}
-                                                <td>{{ $customer->description }}</td>
+                                                <td>{{ $customer->description  }} | {{$customer->contract->details}} </td>
                                                 <td>
                                                     <a href="{{ route('customer.edit', $customer) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit"></a>
@@ -77,7 +82,7 @@
                                                             onclick="return confirm('Are you sure you want to delete this customer?')">
                                                         <li class="fas fa-trash"></li></button>
                                                     </form>
-                                                </td>
+                                                 </td>
                                             </tr>
                                         @endforeach
 
@@ -86,7 +91,7 @@
                                         <tr>
                                             <th colspan="1">Total</th>
                                             <th  id="totafooter">{{ \App\Models\Customers::count() }}</th> <!-- Footer for the total amount -->
-                                            <th colspan="6"></th>
+                                            <th colspan="8"></th>
 
                                             
                                         </tr>

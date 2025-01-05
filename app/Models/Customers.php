@@ -24,6 +24,10 @@ class Customers extends Model
     // Define the relationship with the CustomerTypes model
     public function customerType()
     {
-        return $this->belongsTo(CustomerTypes::class, 'customer_type', 'id');
+        return $this->belongsTo(CustomerType::class, 'customer_type', 'id');
+    }
+    public function contract()
+    {
+        return $this->hasOne(Contract::class,'customer_id');
     }
 }

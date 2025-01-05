@@ -3,25 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customers;
-use App\Models\CustomerTypes;
+use App\Models\CustomerType;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     public function customeraddform()
     {
-        $customerTypes = CustomerTypes::select('id', 'customer_type')->get();
+        $customerTypes = CustomerType::select('id', 'customer_type')->get();
         
         return view('customers.form',compact('customerTypes'));
     }
     public function customer()
     {
-        $customer = Customers::all();
+        $customer = Customers::with(['contract.product'])->get();
+        // $customer = Customers::with('contract')->get();
+        // dd($customers);
         return view('customers.customers',compact('customer'));
     }
     public function edit(Customers $customer)
     {
-        $customerTypes = CustomerTypes::select('id', 'customer_type')->get();
+        $customerTypes = CustomerType::select('id', 'customer_type')->get();
 
         return view('customers.form',compact('customer','customerTypes'));
     }
@@ -39,7 +41,7 @@ class CustomerController extends Controller
         ]);
      
         Customers::create($request->all());
-        return redirect()->route('customers')->with('success','Customer added successfully');
+        return redirect()->route('CustomerContract')->with('success','Customer added successfully');
     }
 
     public function update(Request $request, Customers $customer)
