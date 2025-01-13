@@ -14,8 +14,8 @@
 
                 <div class="totalamount searchBar row mb-1">
                     <h2>
-                        Purchases of
-                        {{ isset($purchases) && isset($purchases[0]) ? $purchases[0]->date->format('F') : 'No Data' }}
+                        Sales of
+                        {{-- {{ isset($purchases) && isset($purchases[0]) ? $purchases[0]->date->format('F') : 'No Data' }} --}}
                     </h2>
 
 
@@ -32,28 +32,25 @@
                                     </button>
                                 </div>
                             </div>
-                            {{-- {{$products}}--}}
+                            {{-- {{$towers}} --}}
                             <div class="dropdown ml-4">
                                 {{-- <label for="product-filter">Select</label> --}}
                                 <select id="product-filter" name="product_id[]" class="select2 form-control"
                                 multiple="multiple" data-placeholder="Type" style="width:100%">
-                                @if (count($products) > 0)
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}"
-                                            {{ in_array($product->id, request('product_id', [])) ? 'selected' : '' }}>
-                                            {{ $product->product_name }}
+                                    {{-- @foreach ($towers as $tower)
+                                        <option value="{{ $tower->id }}"
+                                            {{ in_array($tower->id, request('product_id', [])) ? 'selected' : '' }}>
+                                            {{ $tower->name }}
                                         </option>
-                                    @endforeach
-                                @else
-                                    <option value="" disabled>No Data in Purchase</option>
-                                @endif
+                                    @endforeach --}}
+                              
                             </select>
                             
                             </div>
                         </div>
                     </form>
 
-                    <a href="{{ route('addpurchaseform') }}" class="btn brannedbtn">+ New</a>
+                    <a href="{{ route('addsaleinfoform') }}" class="btn brannedbtn">+ New</a>
 
                     @if (session('success'))
                         <ol>
@@ -80,7 +77,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped useraccounts">
+                                {{-- <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
                                             <th>Type</th>
@@ -139,7 +136,7 @@
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                         </tr>
                                     </tfoot>
-                                </table>
+                                </table> --}}
                             </div>
 
                         </div>

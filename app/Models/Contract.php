@@ -21,4 +21,8 @@ class Contract extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+    public function sales()
+    {
+        return $this->hasMany(Sales::class, 'contract_id', 'id');
+    }
 }

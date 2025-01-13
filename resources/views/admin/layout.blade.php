@@ -36,9 +36,9 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
-        <div class="preloader">
+        {{-- <div class="preloader">
             <img class="animation__wobble" src="img/logo.png" alt="Muradi Petroleum" height="120">
-        </div>
+        </div> --}}
 
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 
@@ -183,6 +183,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('sales') }}" class="nav-link">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <p>
+                                    Sales
+                                </p>
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
@@ -193,7 +201,7 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="pages/charts/chartjs.html" class="nav-link">
-                                        <i class="fas fa-gas-pump nav-icon"></i> <!-- Icon for Petrol -->
+                                       <i class="fas fa-gas-pump nav-icon"></i> <!-- Icon for Petrol -->
                                         <p>Petrol</p>
                                     </a>
                                 </li>
@@ -216,7 +224,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>                   
+                        </li>                    --}}
                         <li class="nav-item">
                             <a href="{{ route('purchase') }}" class="nav-link">
                                 <i class="nav-icon fas fas fa-shopping-cart"></i>
@@ -241,22 +249,23 @@
                                 </p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-contract"></i>
+                        <li class="nav-item">
+                            <a href="{{route('towers')}}" class="nav-link">
+                                <i class="fas fa-gas-pump nav-icon"></i>
+
                                 <p>
-                                    Contracts
+                                    Towers
                                 </p>
                             </a>
-                        </li> --}}
-                        <li class="nav-item">
+                        </li>
+                        {{-- <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-sticky-note"></i>
                                 <p>
                                     Note
                                 </p>
                             </a>
-                        </li>
+                        </li> --}}
                         {{-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fas fa-shopping-cart"></i>
@@ -347,6 +356,21 @@
     <script src="dist/js/demo.js"></script>
     <script src="dist/js/pages/dashboard.js"></script>
     <script>
+              $(function () {
+                                $('#reservationdate').datetimepicker({
+                                format: 'YYYY-MM-DD HH:mm A',
+                                // stepping: 5, 
+                                defaultDate: moment().format('YYYY-MM-DD HH:mm A'), 
+                                icons: {
+                                    time: 'fa fa-clock',
+                                    date: 'fa fa-calendar',
+                                    up: 'fa fa-chevron-up',
+                                    down: 'fa fa-chevron-down',
+                                    previous: 'fa fa-chevron-left',
+                                    next: 'fa fa-chevron-right',
+                                    }
+                                });
+                            });
         $(document).ready(function() {
             $('[data-widget="fullscreen"]').on('click', function() {
                 if (!document.fullscreenElement) {

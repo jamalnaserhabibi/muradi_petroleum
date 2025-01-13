@@ -9,6 +9,9 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\salesController;
+use App\Http\Controllers\towerController;
+use App\Models\Serial_Numbers;
 
 Route::get('/', function () {
     return view('admin/login');
@@ -88,6 +91,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/customers/CustomerContractForm/{id}/update', [ContractController::class, 'update'])->name('contractUpdate');
     Route::post('/customers/CustomerContractForm/store', [ContractController::class, 'store'])->name('contractstore');
 
+    //towers
+    Route::get('/towers/addtower', [towerController::class, 'towerform'])->name('addtowerform');
+    Route::post('/towers/store', [towerController::class, 'store'])->name('addtower');
+    Route::get('/towers', [towerController::class, 'towers'])->name('towers');
+    Route::delete('/towers/{id}/delete', [towerController::class, 'destroy'])->name('tower.destroy');
+    Route::get('/towers/{id}/edit', [towerController::class, 'edit'])->name('tower.edit');
+    Route::patch('/towers/{id}/update', [towerController::class, 'update'])->name('towerupdate');
+
+    //serial_numbers
+    Route::get('/sales', [salesController::class, 'saleslist'])->name('sales');
+    Route::get('/sales/addsaleinfoform', [salesController::class, 'saleform'])->name('addsaleinfoform');
+    Route::post('/sales/addsaleinfoform/store', [salesController::class, 'store'])->name('serial_numbers_store');
+    Route::patch('/sales/addsaleinfoform/{id}/update', [salesController::class, 'update'])->name('serial_numbers_update');
+    Route::delete('/sales/addsaleinfoform/{id}/delete', [salesController::class, 'destroy'])->name('serial_numbers_delete');
 
 
 });

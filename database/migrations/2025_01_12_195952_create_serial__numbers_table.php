@@ -11,23 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('serial_numbers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('company')->unique();
+            $table->unsignedBigInteger('tower_id');
+            $table->bigInteger('serial');
             $table->date('date');
-            $table->string('created_by');
-            $table->string('document')->nullable();
-            $table->text('description')->nullable(); 
             $table->timestamps();
+
+            $table->foreign('tower_id')->references('id')->on('towers')->onDelete('cascade');
         });
     }
+   
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('serial__numbers');
     }
 };

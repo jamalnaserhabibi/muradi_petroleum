@@ -109,7 +109,7 @@
                                                 <td>
                                                     @if ($expense->document)
                                                         <a href="{{ asset('storage/' . $expense->document) }}"  target="_blank">
-                                                            {{ $expense->description }}   
+                                                             {{ $expense->description ?? 'Document' }}   
                                                             {{-- <img class="useraccountsimage" src={{ asset('storage/' . $expense->document) }} alt="Document"> --}}
                                                         </a>
                                                     @else
