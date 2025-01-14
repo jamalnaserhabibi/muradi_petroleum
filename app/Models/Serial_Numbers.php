@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Serial_Numbers extends Model
 {
+    protected $table = 'serial_numbers';
     protected $fillable = ['tower_id', 'serial', 'date'];
     
     public function tower()

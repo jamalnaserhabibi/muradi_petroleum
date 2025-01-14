@@ -53,7 +53,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                                 <input class="form-control form-control mb-3" name="serial" type="number" 
-                                id="serial" placeholder="Tower Serial"
+                                id="serial" placeholder="Tower Number"
                                 value="{{ old('serial', $towers->serial ?? request('serial')) }}" required>
 
                                 @error('name')

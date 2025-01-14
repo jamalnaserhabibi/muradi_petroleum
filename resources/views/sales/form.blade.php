@@ -22,12 +22,8 @@
                 <div class="row ">
                     <div class="col-md-12">
                         <div class="card mt-3">
-                            <div class="card-header brannedbtn">
-                                <h3 class="card-title ">Tower's Serial</h3>
-                            </div>
-{{-- {{$towers}} --}}
                             @if (session('success'))
-                                <ol>
+                                {{-- <ol> --}}
                                     <div class="alert alert-success" id="success-alert">
                                         {{ session('success') }}
                                     </div>
@@ -36,18 +32,21 @@
                                             document.getElementById('success-alert').style.display = 'none';
                                         }, 4000); // 2000ms = 2 seconds
                                     </script>
-                                </ol>
+                                {{-- </ol> --}}
                             @endif
                             
                             <form
                                 action="{{ isset($serial_numbers) ? route('serial_numbers_update', $serial_numbers->id) : route('serial_numbers_store') }}"
                                 method="POST">
+                                <div class="card-header brannedbtn">
+                                    <h3 class="card-title ">Tower's Meter</h3>
+                                </div>
                                 @csrf
 
                                 @if (isset($serial_numbers))
                                     @method('PATCH')
                                 @endif
-                            <div class="card-body formserial">
+                                <div class="card-body formserial">
                                 @error('tower_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -68,44 +67,74 @@
                                     id="serial" placeholder="Serial"
                                     value="{{ old('serial', $serial_numbers->serial ?? request('serial')) }}" required>
                                 
-                                    {{-- <div class="form-group ml-3"> --}}
+                                    @error('date')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                                         <div class="input-group date ml-3" id="reservationdate" data-target-input="nearest">
                                             <input type="text" name="date" id="date" class="form-control datetimepicker-input" 
                                                 data-target="#reservationdate" 
-                                                value="{{ old('date', now()->format('Y-m-d H:i')) }}" required />
+                                                value="{{ old('date', now()->format('Y-m-d H:i A')) }}" required />
+                                                
                                             <div class="input-group-append h-10" data-target="#reservationdate" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div>
                                         </div>
-                                    {{-- </div> --}}
 
                                 <div class="ml-3">
                                     <button type="submit" class="btn brannedbtn">
                                         {{ isset($serial_numbers) ? 'Update' : 'Add' }}</button>
                                 </div>
                             </div>
-
-
                             </form>
-                        </div>
+                            <table id="example1" class="table-bordered table-striped serial_table useraccounts">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tower</th>
+                                        <th>Serial</th>
+                                        <th>Sold</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($finalResults as $record)
+                                    <tr>
+                                       
+                                        <td>{{ $record->sid }}</td>
+                                        <td>{{ $record->tower_number }} - {{$record->name}} - {{$record->product_name}}</td>
+                                        <td>{{ $record->serial_number}}</td>
+                                        <td>{{ $record->petrol_sold }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($record->date)->format('Y-m-d h:i A') }}</td>
+                                
+                                        <td>
+                                            <a href="{{route('deleteserialnumber',$record->sid )}}" class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit"></a>
+                                            <form action="{{route('deleteserialnumber',$record->sid )}}" method="POST"
+                                                        style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger"
+                                                            title="Delete"
+                                                            onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                            <li class="fas fa-trash"></li>
+                                                        </button>
+                                                    </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                                {{-- <tfoot>
+                                    <tr>
+                                        <th>Total</th>
+                                        <th id="total-footer-ton"></th> <!-- Ton column -->
+                                    </tr>
+                                </tfoot> --}}
+                            </table>
+                            </div>
                         <div class="card mt-3">
                             <div class="card-header brannedbtn">
                                 <h3 class="card-title ">Sales</h3>
                             </div>
 
-                            @if (session('success'))
-                                <ol>
-                                    <div class="alert alert-success" id="success-alert">
-                                        {{ session('success') }}
-                                    </div>
-                                    <script>
-                                        setTimeout(function() {
-                                            document.getElementById('success-alert').style.display = 'none';
-                                        }, 4000); // 2000ms = 2 seconds
-                                    </script>
-                                </ol>
-                            @endif
-                            
                             {{-- <form
                                 action="{{ isset($purchase) ? route('purchaseupdate', $purchase->id) : route('purchaseadd') }}"
                                 method="POST">

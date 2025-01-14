@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\salesController;
 use App\Http\Controllers\towerController;
+use App\Http\Controllers\serial_numbersController;
 use App\Models\Serial_Numbers;
 
 Route::get('/', function () {
@@ -99,14 +100,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/towers/{id}/edit', [towerController::class, 'edit'])->name('tower.edit');
     Route::patch('/towers/{id}/update', [towerController::class, 'update'])->name('towerupdate');
 
-    //serial_numbers
-    Route::get('/sales', [salesController::class, 'saleslist'])->name('sales');
+    //sales
     Route::get('/sales/addsaleinfoform', [salesController::class, 'saleform'])->name('addsaleinfoform');
-    Route::post('/sales/addsaleinfoform/store', [salesController::class, 'store'])->name('serial_numbers_store');
     Route::patch('/sales/addsaleinfoform/{id}/update', [salesController::class, 'update'])->name('serial_numbers_update');
     Route::delete('/sales/addsaleinfoform/{id}/delete', [salesController::class, 'destroy'])->name('serial_numbers_delete');
 
+    //serial_numbers
+    Route::get('/sales', [serial_numbersController::class, 'tower_serials'])->name('sales');
+    Route::post('/sales/addsaleinfoform/store_serial', [serial_numbersController::class, 'store'])->name('serial_numbers_store');
+    Route::get('/sales/addsaleinfoform/serials', [serial_numbersController::class, 'tower_serials'])->name('towers_info');
+    Route::delete('/serialnumberdelete/{id}', [serial_numbersController::class, 'destroy'])->name('deleteserialnumber');
 
+    
 });
 
 require __DIR__.'/auth.php';

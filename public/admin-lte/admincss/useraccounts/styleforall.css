@@ -89,6 +89,10 @@
   transform: scale(2.2);
 }
 
+.serial_table {
+  margin: 10px;
+}
+
 .profileImage {
   -o-object-fit: cover !important;
      object-fit: cover !important;
@@ -170,8 +174,8 @@
 .formserial {
   display: flex;
   flex-direction: row;
-  border: 1px solid red;
   padding: 10px !important;
+  margin-bottom: -10px;
 }
 .formserial .input-group-append {
   height: calc(2.25rem + 2px);

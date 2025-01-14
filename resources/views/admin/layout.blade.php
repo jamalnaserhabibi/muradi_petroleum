@@ -360,7 +360,7 @@
                                 $('#reservationdate').datetimepicker({
                                 format: 'YYYY-MM-DD HH:mm A',
                                 // stepping: 5, 
-                                defaultDate: moment().format('YYYY-MM-DD HH:mm A'), 
+                                // defaultDate: moment().format('YYYY-MM-DD HH:mm A'), 
                                 icons: {
                                     time: 'fa fa-clock',
                                     date: 'fa fa-calendar',

@@ -80,6 +80,7 @@
 .graybg{
     background-color: antiquewhite;
 }
+
 .useraccounts{
      tbody tr:hover {
         background-color: #f1f1f1; /* Light gray background on hover */
@@ -101,6 +102,9 @@
             transform: scale(2.2);
         }
     }
+}
+.serial_table{
+  margin:10px;
 }
 .profileImage{
     object-fit: cover!important;
@@ -180,8 +184,9 @@ display: flex!important;
 .formserial{
     display: flex;
     flex-direction: row;
-    border: 1px solid red;
+    // border: 1px solid red;
     padding: 10px!important;
+    margin-bottom: -10px;
     .input-group-append{
         height: calc(2.25rem + 2px);
     }

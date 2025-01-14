@@ -20,6 +20,7 @@ class Tower extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    
     public function Serial_Numbers()
     {
         return $this->hasMany(Serial_Numbers::class, 'tower_id', 'id');
@@ -28,4 +29,5 @@ class Tower extends Model
     {
         return $this->hasMany(Sales::class, 'tower_id', 'id');
     }
+    
 }
