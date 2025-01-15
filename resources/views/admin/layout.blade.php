@@ -48,12 +48,13 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block usernameinlayout">
-                    <a class="nav-link">{{strtoupper(Auth::user()->name)}}</a>
+                    <a class="nav-link">{{ strtoupper(Auth::user()->name) }}</a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link">|</a></li>
+                    <a class="nav-link">|</a>
+                </li>
                 <li class="nav-item d-none d-sm-inline-block usernameinlayout">
-                    <a class="nav-link">{{strtoupper(Auth::user()->usertype)}}</a>
+                    <a class="nav-link">{{ strtoupper(Auth::user()->usertype) }}</a>
 
                 </li>
             </ul>
@@ -108,14 +109,14 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown user-menu">
-                    <a href="#" class="nav-link"  data-toggle="dropdown">
+                    <a href="#" class="nav-link" data-toggle="dropdown">
                         <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
                             class="user-image profileImage img-circle elevation-2" alt="User Image">
                         {{-- <span class="d-none d-md-inline">{{ strtoupper(Auth::user()->name) }} </span> --}}
 
                     </a>
-                    <ul  class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <li class="user-header" >
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <li class="user-header">
                             <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
                                 class="img-circle profileImageView elevation-2" alt="User Image">
                             <p>
@@ -138,25 +139,27 @@
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-            <a href="{{ route('admin.dashboard') }}" class="brand-link d-flex justify-content-center align-items-center flex-column" >
+            <a href="{{ route('admin.dashboard') }}"
+                class="brand-link d-flex justify-content-center align-items-center flex-column">
                 <img src="img/logo.png" alt="AdminLTE Logo" class="brand-image">
                 <span class="brand-text font-weight-light">Muradi Petroleum</span>
             </a>
- 
+
             <div class="sidebar">
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview"
+                        role="menu" data-accordion="false">
                         <div class="form-inline mb-1">
                             <div class="input-group" data-widget="sidebar-search">
-                              <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                              <div class="input-group-append">
-                                <button class="btn btn-sidebar">
-                                  <i class="fas fa-search fa-fw"></i>
-                                </button>
-                              </div>
+                                <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                                    aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sidebar">
+                                        <i class="fas fa-search fa-fw"></i>
+                                    </button>
+                                </div>
                             </div>
-                          </div>
+                        </div>
 
                         <li class="nav-item">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link">
@@ -250,7 +253,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('towers')}}" class="nav-link">
+                            <a href="{{ route('towers') }}" class="nav-link">
                                 <i class="fas fa-gas-pump nav-icon"></i>
 
                                 <p>
@@ -301,7 +304,7 @@
                                 </li>
                             </ul>
                         </li> --}}
-                        </ul>
+                    </ul>
                 </nav>
             </div>
 
@@ -356,21 +359,20 @@
     <script src="dist/js/demo.js"></script>
     <script src="dist/js/pages/dashboard.js"></script>
     <script>
-              $(function () {
-                                $('#reservationdate').datetimepicker({
-                                format: 'YYYY-MM-DD HH:mm A',
-                                // stepping: 5, 
-                                // defaultDate: moment().format('YYYY-MM-DD HH:mm A'), 
-                                icons: {
-                                    time: 'fa fa-clock',
-                                    date: 'fa fa-calendar',
-                                    up: 'fa fa-chevron-up',
-                                    down: 'fa fa-chevron-down',
-                                    previous: 'fa fa-chevron-left',
-                                    next: 'fa fa-chevron-right',
-                                    }
-                                });
-                            });
+        $(function() {
+            $('#reservationdate').datetimepicker({
+                format: 'YYYY-MM-DD hh:mm A', // Use 'hh' for 12-hour format with AM/PM
+                defaultDate: moment().format('YYYY-MM-DD hh:mm A'), // Adjust the default date format
+                icons: {
+                    time: 'fa fa-clock',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                }
+            });
+        });
         $(document).ready(function() {
             $('[data-widget="fullscreen"]').on('click', function() {
                 if (!document.fullscreenElement) {

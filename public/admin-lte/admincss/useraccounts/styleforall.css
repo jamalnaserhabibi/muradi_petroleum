@@ -89,6 +89,10 @@
   transform: scale(2.2);
 }
 
+.red_color {
+  color: red;
+}
+
 .serial_table {
   margin: 10px;
 }

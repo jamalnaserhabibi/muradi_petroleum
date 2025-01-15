@@ -80,15 +80,8 @@ class salesController extends Controller
         ]);
     }
     
-
-    public function update(){
-
-        return redirect('sales');
-        
-    }
     public function store(Request $request){
 
- 
     }
     public function destroy(){
 
