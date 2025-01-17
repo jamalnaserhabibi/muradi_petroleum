@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id(); // Primary key
             $table->unsignedBigInteger('customer_id'); // Foreign key to customers table
             $table->unsignedBigInteger('product_id'); // Foreign key to products table
-            $table->decimal('rate', 10, 2); // Decimal field for rate
+            $table->decimal('rate', 10, 2)->default(0.00)->nullable(); // Decimal field for rate
             $table->date('date')->default(now()); // Current date by default
             $table->text('details')->nullable(); // Details, optional
             $table->boolean('isActive')->default(true); // Boolean for active status, default true

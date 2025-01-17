@@ -11,14 +11,12 @@ class CustomerController extends Controller
     public function customeraddform()
     {
         $customerTypes = CustomerType::select('id', 'customer_type')->get();
-        
         return view('customers.form',compact('customerTypes'));
+        
     }
     public function customer()
     {
         $customer = Customers::with(['contract.product'])->get();
-        // $customer = Customers::with('contract')->get();
-        // dd($customers);
         return view('customers.customers',compact('customer'));
     }
     public function edit(Customers $customer)

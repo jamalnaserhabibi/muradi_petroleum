@@ -12,6 +12,7 @@ class Contract extends Model
         'product_id',
         'rate',
         'details',
+        // 'isActive'
     ];
     public function customer()
     {

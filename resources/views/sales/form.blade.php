@@ -22,61 +22,40 @@
                 <div class="row ">
                     <div class="col-md-12">
                         <div class="card mt-3">
-                            @if (session('success'))
-                                {{-- <ol> --}}
-                                <div class="alert alert-success" id="success-alert">
-                                    {{ session('success') }}
-                                </div>
-                                <script>
-                                    setTimeout(function() {
-                                        document.getElementById('success-alert').style.display = 'none';
-                                    }, 4000); // 2000ms = 2 seconds
-                                </script>
-                                {{-- </ol> --}}
-                            @endif
+                            <div class="card-header brannedbtn">
+                                <h3 class="card-title ">Add Sales</h3>
+                            </div>
+
+                            {{-- @if (session('success'))
+                                <ol>
+                                    <div class="alert alert-success" id="success-alert">
+                                        {{ session('success') }}
+                                    </div>
+                                    <script>
+                                        setTimeout(function() {
+                                            document.getElementById('success-alert').style.display = 'none';
+                                        }, 4000); // 2000ms = 2 seconds
+                                    </script>
+                                </ol>
+                            @endif --}}
+
                             <form
-                                action="{{ isset($serialNumber) ? route('serial_numbers_update', $serialNumber->id) : route('serial_numbers_store') }}"
+                                action="{{ isset($sale) ? route('purchaseupdate', $sale->id) : route('purchaseadd') }}"
                                 method="POST">
-                                <div class="card-header brannedbtn">
-                                    <h3 class="card-title ">Tower's Meter</h3>
-                                </div>
                                 @csrf
 
-                                @if (isset($serialNumber))
+                                @if (isset($sale))
                                     @method('PATCH')
                                 @endif
-                                <div class="card-body formserial">
-                                    @error('tower_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    <!-- Type Dropdown -->
-                                    <select class="form-control mb-3" name="tower_id" id="tower_id" required>
-                                        <option value="" disabled {{ isset($serialNumber) ? '' : 'selected' }}>
-                                            Select Tower</option>
-                                        @foreach ($towers as $tower)
-                                            <option value="{{ $tower->id }}"
-                                                {{ old('id', $tower->id ?? '') == ($serialNumber->tower_id ?? '') ? 'selected' : '' }}>
-                                                {{ $tower->serial }} - {{ $tower->name }} -
-                                                {{ $tower->product->product_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('serial')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    <input class="form-control form-control mb-2 ml-3" name="serial" type="number"
-                                        step="1" id="serial" placeholder="Serial"
-                                        value="{{ old('serial', $serialNumber->serial ?? request('serial')) }}" required>
-
+                                <div class="card-body mt-1">
                                     @error('date')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                                    <div class="input-group date ml-3" id="reservationdate" data-target-input="nearest">
+                                    <div class="input-group date mb-3" id="reservationdate" data-target-input="nearest">
                                         <input type="text" name="date" id="date"
                                             class="form-control datetimepicker-input" data-target="#reservationdate"
-                                            value="{{ old('date', isset($serialNumber->date) ? \Carbon\Carbon::parse($serialNumber->date)->format('Y-m-d H:i A') : now()->format('Y-m-d H:i A')) }}" required />
+                                            value="{{ old('date', isset($sale->date) ? \Carbon\Carbon::parse($sale->date)->format('Y-m-d H:i A') : now()->format('Y-m-d H:i A')) }}" required />
 
                                         <div class="input-group-append h-10" data-target="#reservationdate"
                                             data-toggle="datetimepicker">
@@ -84,133 +63,94 @@
                                         </div>
                                     </div>
 
-                                    <div class="ml-3">
-                                        <button type="submit" class="btn brannedbtn">
-                                            {{ isset($serialNumber) ? 'Update' : 'Add' }}</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <table id="example1" class="table-bordered table-striped serial_table useraccounts">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tower</th>
-                                        <th>Serial</th>
-                                        <th>Sold</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($finalResults as $record)
-                                        <tr>
-
-                                            <td>{{ $record->sid }}</td>
-                                            <td>{{ $record->tower_number }} - {{ $record->name }} -
-                                                {{ $record->product_name }}</td>
-                                            <td>{{ $record->serial_number }}</td>
-                                            <td>{{ $record->petrol_sold }}</td>
-
-                                            @if (!empty($record->date) && \Carbon\Carbon::parse($record->date)->isToday())
-                                                <td class="red_color">Today:
-                                                    {{ \Carbon\Carbon::parse($record->date)->format('g:i A') }}</td>
-                                            @elseif(!empty($record->date))
-                                                <td>{{ \Carbon\Carbon::parse($record->date)->format('Y-m-d g:i A') }}</td>
-                                            @endif
-
-
-                                            <td>
-
-                                                <form action="{{ route('editserialnumber', $record->sid) }}" method="POST"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn pt-0 pb-0 btn-warning fa fa-edit"
-                                                        title="Edit"></button>
-                                                </form>
-
-                                                <form action="{{ route('deleteserialnumber', $record->sid) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn pt-0 pb-0 btn-danger" title="Delete"
-                                                        onclick="return confirm('Are you sure you want to delete this purchase?')">
-                                                        <li class="fas fa-trash"></li>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                {{-- <tfoot>
-                                    <tr>
-                                        <th>Total</th>
-                                        <th id="total-footer-ton"></th> <!-- Ton column -->
-                                    </tr>
-                                </tfoot> --}}
-                            </table>
-                        </div>
-                        <div class="card mt-3">
-                            <div class="card-header brannedbtn">
-                                <h3 class="card-title ">Sales</h3>
-                            </div>
-
-                            {{-- <form
-                                action="{{ isset($purchase) ? route('purchaseupdate', $purchase->id) : route('purchaseadd') }}"
-                                method="POST">
-                                @csrf
-
-                                @if (isset($purchase))
-                                    @method('PATCH')
-                                @endif
-                                <div class="card-body mt-3">
-                                @error('product_id')
+                                @error('contract_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+
                                 <!-- Type Dropdown -->
-                                <select class="form-control mb-3" name="product_id" id="product" required>
-                                    <option value="" disabled {{ isset($purchase) ? '' : 'selected' }}>Type</option>
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}" {{ old('product_id', $purchase->product_id ?? '') == $product->id ? 'selected' : '' }}>
-                                            {{ $product->product_name }}
+                                {{-- <select class="form-control mb-3" name="contract_id" id="contract" required>
+                                    <option value="" disabled {{ isset($sale) ? '' : 'selected' }}>Customer</option>
+                                    @foreach ($customers as $customer)
+                                        <option value="{{ $customer->contract->id }}" {{ old('id', $sale->contract_id ?? '') ==  $customer->contract->id ? 'selected' : '' }}>
+                                            {{ $customer->contract->id }} - {{ $customer->name }}-{{ $customer->company }}-{{ $customer->contract->product->product_name}}-{{ $customer->contract->rate}}
                                         </option>
-                                        
+                                    @endforeach
+                                </select> --}}
+                                <select class="form-control mb-3" name="contract_id" id="contract" required>
+                                    <option value="" disabled {{ isset($sale) ? '' : 'selected' }}>Customer</option>
+                                    @foreach ($customers as $customer)
+                                        <option 
+                                            value="{{ $customer->contract->id }}" 
+                                            data-rate="{{ $customer->contract->rate }}" 
+                                            {{ old('id', $sale->contract_id ?? '') == $customer->contract->id ? 'selected' : '' }}>
+                                            {{ $customer->contract->id }} - {{ $customer->name }} - {{ $customer->company }} - {{ $customer->contract->product->product_name }} - {{ $customer->contract->rate }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 
+
+                                @error('tower_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                <!-- Type Dropdown -->
+                                <select class="form-control mb-3" name="tower_id" id="tower" required>
+                                    <option value="" disabled {{ isset($sale) ? '' : 'selected' }}>Tower</option>
+                                    @foreach ($towers as $tower)
+                                        <option value="{{ $tower->id }}" {{ old('id', $tower->id ?? '') ==  $tower->id ? 'selected' : '' }}>
+                                            {{ $tower->serial }} - {{ $tower->name }} -{{ $tower->product->product_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                     @error('amount')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror 
                                     <input class="form-control form-control mb-3" name="amount" type="number" step="0.01"
-                                        id="expenseAmount" placeholder="Amount"
-                                        value="{{ old('amount', $purchase->amount ?? request('amount')) }}" required>
-
-                                    @error('heaviness')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    <input class="form-control form-control mb-3" name="heaviness" type="number"   min="700" 
-                                    max="1000" 
-                                    step="1" 
-                                        id="expenseAmount" placeholder="Weight"
-                                        value="{{ old('amount', $purchase->heaviness ?? request('heaviness')) }}" required>
-                                    
-
+                                        id="saleAmount" placeholder="Amount"
+                                        value="{{ old('amount', $sale->amount ?? request('amount')) }}" required>
                                     @error('rate')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                    <input class="form-control form-control mb-3" name="rate" type="number" 
-                                        id="purchaseAmount" placeholder="Ton Rate"
-                                        value="{{ old('amount', $purchase->rate ?? request('rate')) }}" required>
+
+                                    {{-- <input class="form-control form-control mb-3" name="rate" type="number"   min="0.1" 
+                                    step="1" 
+                                        id="expenseAmount" placeholder="Rate"
+                                        value="{{ old('amount', $sale->rate ?? request('rate')) }}" required> --}}
+
+                                        <input class="form-control form-control mb-3" name="rate" type="number" min="0.1" step="1" 
+                                        id="expenseAmount" placeholder="Rate" 
+                                        value="{{ old('amount', $sale->rate ?? request('rate')) }}" required>
                                     
+                                    <script>
+                                        document.getElementById('contract').addEventListener('change', function () {
+                                            // Get the selected option
+                                            const selectedOption = this.options[this.selectedIndex];
+                                            
+                                            // Get the rate from the data attribute
+                                            const rate = selectedOption.getAttribute('data-rate');
+                                            
+                                            // Reference the rate input
+                                            const rateInput = document.getElementById('expenseAmount');
+                                            
+                                            // Update the rate input value
+                                            rateInput.value = rate || '';
                                     
-                                    <textarea class="form-control form-control" name="details" id="details" rows="4"
-                                        placeholder="Description">{{ old('description', $purchase->details ?? '') }}</textarea>
+                                            // Check if the rate is greater than 1 and disable the input
+                                            if (rate && parseFloat(rate) > 1) {
+                                                rateInput.disabled = true;
+                                            } else {
+                                                rateInput.disabled = false;
+                                            }
+                                        });
+                                    </script>
+                                        
+                                    <textarea class="form-control form-control" name="details" id="details" rows="2"
+                                        placeholder="Description">{{ old('description', $sale->details ?? '') }}</textarea>
                                     <div class="card-footer bg-white d-flex justify-content-center">
                                         <button type="submit" class="btn brannedbtn w-100">
-                                            {{ isset($purchase) ? 'Update Purchase' : 'Add Purchase' }}</button>
+                                            {{ isset($sale) ? 'Update Sale' : 'Add Sale' }}</button>
                                     </div>
                                 </div>
-
-
-                            </form> --}}
+                            </form>
                         </div>
                     </div>
                 </div>

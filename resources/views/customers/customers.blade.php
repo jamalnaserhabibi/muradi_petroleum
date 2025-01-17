@@ -53,6 +53,7 @@
                                             <th>Product</th>
                                             <th>Document</th>
                                             <th>Date</th>
+                                            <th>Status</th>
                                             {{-- <th>AddedBy</th> --}}
                                             <th>Details</th>
                                             <th></th>
@@ -69,6 +70,12 @@
                                                 <td>{{ $customer['contract']['product']->product_name }}</td>
                                                 <td>{{ $customer->document }}</td>
                                                 <td>{{ $customer->date->format('d M Y') }}</td>
+                                                <td>{{ $customer->contract->isActive }}</td>
+                                                {{-- <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                                    <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                                    <label class="custom-control-label" for="customSwitch3">ss</label>
+                                                    </div> --}}
+                                                    
                                                 {{-- <td>{{ $customer->created_by }}</td> --}}
                                                 <td>{{ $customer->description  }} | {{$customer->contract->details}} </td>
                                                 <td>
@@ -91,7 +98,7 @@
                                         <tr>
                                             <th colspan="1">Total</th>
                                             <th  id="totafooter">{{ \App\Models\Customers::count() }}</th> <!-- Footer for the total amount -->
-                                            <th colspan="8"></th>
+                                            <th colspan="9"></th>
 
                                             
                                         </tr>
@@ -170,7 +177,11 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": [{
+                "buttons": [
+                {
+                    extend: 'colvis'
+                },
+                {
                         extend: 'excel',
                         footer: true,
                         exportOptions: {

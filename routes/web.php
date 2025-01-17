@@ -99,19 +99,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/towers/{id}/delete', [towerController::class, 'destroy'])->name('tower.destroy');
     Route::get('/towers/{id}/edit', [towerController::class, 'edit'])->name('tower.edit');
     Route::patch('/towers/{id}/update', [towerController::class, 'update'])->name('towerupdate');
+    
+    //sales
+    
+    //serial_numbers
+    Route::post('/meter_reading/addsaleinfoform/store_serial', [serial_numbersController::class, 'store'])->name('serial_numbers_store');
+    Route::get('/meter_reading', [serial_numbersController::class, 'meter_reading'])->name('meter_reading');
+    Route::post('/meter_reading/addsaleinfoform/{id}/edit', [serial_numbersController::class, 'edit'])->name('editserialnumber');
+    Route::patch('/meter_reading/addsaleinfoform/{id}/update', [serial_numbersController::class, 'update'])->name('serial_numbers_update');
+    Route::get('/meter_reading/addsaleinfoform/serials', [serial_numbersController::class, 'sales'])->name('towers_info');
+    Route::delete('/serialnumberdelete/{id}', [serial_numbersController::class, 'destroy'])->name('deleteserialnumber');
+
 
     //sales
-    Route::get('/sales/addsaleinfoform', [salesController::class, 'saleform'])->name('addsaleinfoform');
-    Route::delete('/sales/addsaleinfoform/{id}/delete', [salesController::class, 'destroy'])->name('serial_numbers_delete');
-
-    //serial_numbers
-    Route::get('/sales', [serial_numbersController::class, 'tower_serials'])->name('sales');
-    Route::post('/sales/addsaleinfoform/store_serial', [serial_numbersController::class, 'store'])->name('serial_numbers_store');
-
-    Route::post('/sales/addsaleinfoform/{id}/edit', [serial_numbersController::class, 'edit'])->name('editserialnumber');
-    Route::patch('/sales/addsaleinfoform/{id}/update', [serial_numbersController::class, 'update'])->name('serial_numbers_update');
-    Route::get('/sales/addsaleinfoform/serials', [serial_numbersController::class, 'tower_serials'])->name('towers_info');
-    Route::delete('/serialnumberdelete/{id}', [serial_numbersController::class, 'destroy'])->name('deleteserialnumber');
+    Route::get('/sales/form', [salesController::class, 'salesform'])->name('addnewsaleform');
+    Route::get('/sales/sales', [salesController::class, 'sales'])->name('sales');
 
     
 });

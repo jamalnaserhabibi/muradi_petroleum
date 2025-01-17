@@ -18,7 +18,6 @@
                         {{-- {{ isset($purchases) && isset($purchases[0]) ? $purchases[0]->date->format('F') : 'No Data' }} --}}
                     </h2>
 
-
                     <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">
                         <input type="hidden" name="start_date" id="start-date">
                         <input type="hidden" name="end_date" id="end-date">
@@ -37,12 +36,12 @@
                                 {{-- <label for="product-filter">Select</label> --}}
                                 <select id="product-filter" name="product_id[]" class="select2 form-control"
                                 multiple="multiple" data-placeholder="Type" style="width:100%">
-                                    {{-- @foreach ($towers as $tower)
+                                    @foreach ($towers as $tower)
                                         <option value="{{ $tower->id }}"
                                             {{ in_array($tower->id, request('product_id', [])) ? 'selected' : '' }}>
                                             {{ $tower->name }}
                                         </option>
-                                    @endforeach --}}
+                                    @endforeach
                               
                             </select>
                             
@@ -50,7 +49,7 @@
                         </div>
                     </form>
 
-                    <a href="{{ route('addsaleinfoform') }}" class="btn brannedbtn">+ New</a>
+                    <a href="{{route('addnewsaleform')}}" class="btn brannedbtn">+ New</a>
 
                     @if (session('success'))
                         <ol>
