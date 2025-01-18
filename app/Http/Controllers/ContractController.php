@@ -72,5 +72,27 @@ class ContractController extends Controller
         return view('customers/CustomerContractForm', compact('latestCustomer', 'contract', 'products'));
  
     }
-
+    public function updateStatus(Request $request)
+    {
+        // Validate the incoming data
+        $validated = $request->validate([
+            'customer_id' => 'required|exists:contracts,id',
+            'is_active' => 'required|boolean',
+        ]);
+    
+        // Find the customer's contract and update the status
+        $contract = Contract::find($request->customer_id);
+        
+        if ($contract) {
+            $contract->isActive = $request->is_active;
+            $contract->save();
+    
+            // Return a JSON response indicating success
+            return response()->json(['success' => true, 'message' => 'Contract status updated successfully.']);
+        }
+    
+        // If contract wasn't found, return error response
+        return response()->json(['success' => false, 'message' => 'Failed to update contract status.']);
+    }
+    
 }

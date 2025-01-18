@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sales extends Model
 {
-    protected $fillable = ['contract_id', 'tower_id', 'amount', 'rate', 'description'];
+    protected $fillable = ['contract_id', 'tower_id', 'amount', 'rate','date', 'description'];
 
     public function contract()
     {

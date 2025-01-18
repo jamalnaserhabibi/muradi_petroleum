@@ -91,7 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers/CustomerContractForm/{id}', [ContractController::class, 'contractedit'])->name('contractedit');
     Route::patch('/customers/CustomerContractForm/{id}/update', [ContractController::class, 'update'])->name('contractUpdate');
     Route::post('/customers/CustomerContractForm/store', [ContractController::class, 'store'])->name('contractstore');
-
+    Route::post('/updatecontractstatus', [ContractController::class, 'updateStatus']);
     //towers
     Route::get('/towers/addtower', [towerController::class, 'towerform'])->name('addtowerform');
     Route::post('/towers/store', [towerController::class, 'store'])->name('addtower');
@@ -114,6 +114,7 @@ Route::middleware('auth')->group(function () {
     //sales
     Route::get('/sales/form', [salesController::class, 'salesform'])->name('addnewsaleform');
     Route::get('/sales/sales', [salesController::class, 'sales'])->name('sales');
+    Route::post('/sales/add', [salesController::class, 'store'])->name('addsale');
 
     
 });

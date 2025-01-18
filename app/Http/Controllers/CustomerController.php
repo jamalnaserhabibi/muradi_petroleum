@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    
     public function customeraddform()
     {
         $customerTypes = CustomerType::select('id', 'customer_type')->get();

@@ -7,12 +7,11 @@
     <title>Muradi Petroleum</title>
     <base href="{{ asset('admin-lte') }}/" />
     <link rel="stylesheet" href="admincss/useraccounts/styleforall.css">
-
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
-
+    <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-
+   
     <link rel="stylesheet" href="ionicons/2.0.1/css/ionicons.min.css">
 
     <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -359,10 +358,10 @@
     <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 
     <script src="plugins/summernote/summernote-bs4.min.js"></script>
-
     <script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 
     <script src="dist/js/adminlte2167.js?v=3.2.0"></script>
+    <script src="plugins/select2/js/select2.full.min.js"></script>
 
     <script src="dist/js/demo.js"></script>
     <script src="dist/js/pages/dashboard.js"></script>
@@ -392,9 +391,59 @@
                 }
             });
         });
+  $(document).ready(function() {
+    // Initialize select2 on the dropdown
+    $('#contract').select2();
+    $('#tower').prop('disabled', true);
+    // Event listener for contract selection change
+    $('#contract').on('change', function() {
+        // Get the selected option and its data-rate attribute
+        const selectedOption = this.options[this.selectedIndex];
+        const rate = selectedOption.getAttribute('data-rate');
+        
+        // Update the value of the rate input
+        const rateInput = $('#rate'); // Use jQuery to select the input
+        rateInput.val(rate || ''); // Set the value to the rate or an empty string if no rate is found
+
+        // If rate is greater than 1, disable the input field
+        if (rate && parseFloat(rate) > 1) {
+            rateInput.prop('readonly', true);
+        } else {
+            rateInput.prop('readonly', false);
+        }
+
+
+        var selectedProduct = $(this).find('option:selected').data('product');
+        if (selectedProduct) {
+                $('#amount').prop('disabled', false);
+                $('#rate').prop('disabled', false);
+                $('#date').prop('disabled', false);
+                $('#tower').prop('disabled', false);
+            } else {
+                $('#amount').prop('disabled', true);
+                $('#rate').prop('disabled', true);
+                $('#date').prop('disabled', true);
+                $('#tower').prop('disabled', true);
+            }
+            
+            // Filter tower options based on the selected product
+            $('#tower option').each(function () {
+                var towerProduct = $(this).data('product');
+                
+                // Show only the towers that match the selected product
+                if (towerProduct === selectedProduct || selectedProduct === undefined) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+    });
+
+    // Trigger the change event on page load to populate the rate input if a contract is pre-selected
+    $('#contract').trigger('change');
+});
+
     </script>
     @yield('CustomScript')
 </body>
-
-
 </html>
