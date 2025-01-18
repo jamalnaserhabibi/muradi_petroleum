@@ -48,7 +48,7 @@
                                                 data-product="{{ $customer->contract->product->product_name }}"
                                                 data-rate="{{ $customer->contract->rate }}"
                                                 {{ old('id', $sale->contract_id ?? '') == $customer->contract->id ? 'selected' : '' }}>
-                                                {{ $customer->contract->id }} - {{ $customer->name }} - 
+                                              {{ $customer->name }} - 
                                                 {{ $customer->company }} - {{ $customer->contract->product->product_name }} - 
                                                 {{ $customer->contract->rate }}
                                             </option>
