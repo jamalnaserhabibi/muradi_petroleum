@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Muradi Petroleum</title>
@@ -23,7 +22,7 @@
 
     <link rel="stylesheet" href="dist/css/adminlte.min2167.css?v=3.2.0">
 
-    <link rel="stylesheet" href="{{mix('node_modules/persian-datepicker/dist/css/persian-datepicker.min.css')}}">
+    <link rel="stylesheet" href="persian-datepicker/dist/css/persian-datepicker.min.css">
 
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 
@@ -365,48 +364,30 @@
 
     <script src="dist/js/adminlte2167.js?v=3.2.0"></script>
     <script src="plugins/select2/js/select2.full.min.js"></script>
+    <script src="persian-datepicker/dist/js/persian-datepicker.min.js"></script>
 
     <script src="dist/js/demo.js"></script>
     <script src="dist/js/pages/dashboard.js"></script>
-    <script type="module" src="{{ mix('resources/js/app.js')}}"></script>
 
-    <!-- Persian Datepicker JS -->
-    <script src="{{mix('node_modules/persian-datepicker/dist/js/persian-datepicker.min.js')}}"></script>
-    <script src="{{mix('node_modules/persian-date/dist/persian-date.min.js')}}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 
     <script>
       
 
-$(function () {
-    // Initialize Persian Datepicker
-    $(document).ready(function () {
-        // Get current Jalali date and time in English numbers
-        const now = new persianDate().toLocale('en').format('YYYY/MM/DD HH:mm A');
-        console.log(now);
-        $('#date').persianDatepicker({
-            format: 'YYYY/MM/DD HH:mm a', // Includes time
-            initialValueType: 'persian', // Ensure Jalali format
-            initialValue: true, // Set initial value with the current time
-            autoClose: true, // Auto-close after selection
-            timePicker: {
-                initialValue: true, // Enable time picker with initial value
-                enabled: true, // Allow time selection
-                meridiem: {
-                    enabled: true // Use 24-hour format (disable AM/PM)
+        $(function() {
+            $('#reservationdate').datetimepicker({
+                format: 'YYYY-MM-DD hh:mm A', // Use 'hh' for 12-hour format with AM/PM
+                defaultDate: moment().format('YYYY-MM-DD hh:mm A'), // Adjust the default date format
+                icons: {
+                    time: 'fa fa-clock',
+                    date: 'fa fa-calendar',
+                    up: 'fa fa-chevron-up',
+                    down: 'fa fa-chevron-down',
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
                 }
-            },
-            calendar: {
-                persian: {
-                    locale: 'en' // Use English numbers
-                }
-            },
-            observer: true,
-            altField: '#altField', // Optional: Use for additional data
-            });
-            $('#date').persianDatepicker('setDate', now);
             });
         });
-
         $(document).ready(function() {
             $('[data-widget="fullscreen"]').on('click', function() {
                 if (!document.fullscreenElement) {

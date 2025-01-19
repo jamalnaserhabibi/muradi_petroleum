@@ -80,7 +80,7 @@
                                     @enderror
 
                                     <input class="form-control form-control mb-3" name="rate" type="number"
-                                        min="0.1" id="rate" placeholder="Rate"
+                                        min="1" id="rate" placeholder="Rate"
                                         value="{{ old('rate', $sale->rate ?? request('rate')) }}" required>
                                         <div class="input-group date mb-3" id="reservationdate" data-target-input="nearest">
                                             <input type="text" name="date" id="date"

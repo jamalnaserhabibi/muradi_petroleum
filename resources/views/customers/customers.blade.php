@@ -69,7 +69,7 @@
                                                 <td>{{ $customer->contract->rate }}</td>
                                                 <td>{{ $customer['contract']['product']->product_name }}</td>
                                                 <td>{{ $customer->document }}</td>
-                                                <td>{{ $customer->date->format('d M Y') }}</td>
+                                                <td> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($customer->date)}}</td>
                                                 <td>
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input isActiveSwitch" 

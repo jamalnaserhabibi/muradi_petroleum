@@ -57,7 +57,7 @@
                                                 {{-- <td>{{ $employee->id }}</td> --}}
                                                 <td>{{ $employee->fullname }}</td>
                                                 <td>{{ number_format($employee->salary, 2) }}</td>
-                                                <td>{{ $employee->date->format('d M Y') }}</td>
+                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($employee->date); }}</td>
                                                 <td>
                                                     @if ($employee->photo)
                                                         <img src="{{ asset('storage/' . $employee->photo) }}"

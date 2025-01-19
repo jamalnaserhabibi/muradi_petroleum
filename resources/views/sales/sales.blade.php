@@ -15,7 +15,8 @@
                 <div class="totalamount searchBar row mb-1">
                     <h2>
                         Sales of
-                        {{-- {{ isset($purchases) && isset($purchases[0]) ? $purchases[0]->date->format('F') : 'No Data' }} --}}
+                        {{ isset($sales) && isset($sales[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($sales[0]->date) : 'No Data' }}
+
                     </h2>
 
                     <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">
@@ -34,14 +35,16 @@
                             {{-- {{$towers}} --}}
                             <div class="dropdown ml-4">
                                 {{-- <label for="product-filter">Select</label> --}}
-                                <select id="product-filter" name="product_id[]" class="select2 form-control"
+                                <select id="product-filter" name="tower_id[]" class="select2 form-control"
                                 multiple="multiple" data-placeholder="Type" style="width:100%">
-                                    @foreach ($towers as $tower)
-                                        <option value="{{ $tower->id }}"
-                                            {{ in_array($tower->id, request('product_id', [])) ? 'selected' : '' }}>
-                                            {{ $tower->name }}
-                                        </option>
-                                    @endforeach
+                                @foreach ($sales as $sale)
+                                @if ($sale->tower) <!-- Check if the tower relationship exists -->
+                                    <option value="{{ $sale->tower->id }}"
+                                        {{ in_array($sale->tower->id, request('product_id', [])) ? 'selected' : '' }}>
+                                        {{ $sale->tower->name }}
+                                    </option>
+                                @endif
+                            @endforeach
                               
                             </select>
                             
@@ -76,15 +79,15 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                {{-- <table id="example1" class="table table-bordered table-striped useraccounts">
+                                <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
-                                            <th>Type</th>
-                                            <th>Ton</th>
-                                            <th>Weight</th>
-                                            <th>Ton Rate</th>
-                                            <th>Total Amount</th>
-                                            <th>Total Liter</th>
+                                            <th>Customer</th>
+                                            <th>Tower</th>
+                                            <th>Product</th>
+                                            <th>Rate</th>
+                                            <th>Amount</th>
+                                            <th>Total</th>
                                             <th>Date</th>
                                             <th>Details</th>
                                             <th></th>
@@ -92,29 +95,28 @@
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($purchases as $purchase)
+                                        @foreach ($sales as $sale)
                                             <tr>
-                                                <td>{{ $purchase->product->product_name }}</td>
-                                                <td>{{ $purchase->amount }}</td>
-                                                <td>{{ $purchase->heaviness }}</td>
-                                                <td>{{ number_format($purchase->rate, 2) }}</td>
-                                                <td>{{ number_format($purchase->rate * $purchase->amount, 2) }}</td>
-                                                <td>{{ number_format((1000000 / $purchase->heaviness) * $purchase->amount, 2) }}
-                                                </td>
-                                                <td>{{ $purchase->date->format('d M Y') }}</td>
-                                                <td>{{ $purchase->details }}</td>
+                                                <td> {{ $sale->contract->customer->name }} - {{ $sale->contract->customer->company }} </td>
+                                                <td>{{ $sale->tower->serial}}-{{ $sale->tower->name}}</td>
+                                                <td>{{ $sale->contract->product->product_name }}</td>
+                                                <td>{{ number_format($sale->rate, 0) }}</td>
+                                                <td>{{ $sale->amount }}</td>
+                                                <td>{{ $sale->amount *$sale->rate }}</td>
+                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($sale->date); }}</td>
+                                                <td>{{ $sale->details }}</td>
                                                 <td>
-                                                    <a href="{{ route('purchaseedit', $purchase->id) }}"
+                                                    <a href="{{ route('editsale', $sale->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                     </a>
 
-                                                    <form action="{{ route('purchasedelete', $purchase) }}" method="POST"
+                                                    <form action="{{ route('saledelete', $sale->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn pt-0 pb-0 btn-danger"
                                                             title="Delete"
-                                                            onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                            onclick="return confirm('Are you sure you want to delete this Sale?')">
                                                             <li class="fas fa-trash"></li>
                                                         </button>
                                                     </form>
@@ -135,7 +137,7 @@
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                         </tr>
                                     </tfoot>
-                                </table> --}}
+                                </table>
                             </div>
 
                         </div>
@@ -292,7 +294,7 @@
                     });
 
                     // Update the footer
-                    $('#total-footer-ton').text(formattedTonTotal);
+                    // $('#total-footer-ton').text(formattedTonTotal);
                     $('#total-footer-amount').text(formattedAmountTotal);
                     $('#total-footer-liter').text(formattedLiterTotal);
                 }

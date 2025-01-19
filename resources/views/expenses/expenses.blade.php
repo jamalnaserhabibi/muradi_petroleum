@@ -13,7 +13,8 @@
                 <div class="totalamount searchBar row mb-1">
                     <h2>
                         Expenses of
-                        {{ isset($expenses) && isset($expenses[0]) ? $expenses[0]->date->format('F') : 'No Data' }}
+                        {{ isset($expenses) && isset($expenses[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($expenses[0]->date) : 'No Data' }}
+
                     </h2>
 
 
@@ -105,7 +106,7 @@
                                                 <td>{{ $expense->item }}</td>
                                                 <td>{{ number_format($expense->amount, 2) }}</td>
                                                 <td>{{ $expense->category }}</td>
-                                                <td>{{ $expense->date->format('d M Y') }}</td>
+                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($expense->date); }}</td>
                                                 <td>
                                                     @if ($expense->document)
                                                         <a href="{{ asset('storage/' . $expense->document) }}"  target="_blank">

@@ -30,4 +30,5 @@ class Tower extends Model
         return $this->hasMany(Sales::class, 'tower_id', 'id');
     }
     
+    
 }

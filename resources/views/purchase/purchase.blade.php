@@ -15,7 +15,8 @@
                 <div class="totalamount searchBar row mb-1">
                     <h2>
                         Purchases of
-                        {{ isset($purchases) && isset($purchases[0]) ? $purchases[0]->date->format('F') : 'No Data' }}
+                        {{ isset($purchases) && isset($purchases[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($purchases[0]->date) : 'No Data' }}
+
                     </h2>
 
 
@@ -101,11 +102,16 @@
                                                 <td>{{ $purchase->product->product_name }}</td>
                                                 <td>{{ $purchase->amount }}</td>
                                                 <td>{{ $purchase->heaviness }}</td>
-                                                <td>{{ number_format($purchase->rate, 2) }}</td>
-                                                <td>{{ number_format($purchase->rate * $purchase->amount, 2) }}</td>
-                                                <td>{{ number_format((1000000 / $purchase->heaviness) * $purchase->amount, 2) }}
+                                                <td>{{ $purchase->rate}}</td>
+                                                <td>{{ number_format($purchase->rate * $purchase->amount, 0) }}</td>
+                                                <td>
+                                                @if ($purchase->product->product_name === "Gas")
+                                                {{ number_format($purchase->amount * $purchase->heaviness,0)}}
+                                                @else
+                                                {{ number_format((1000000 / $purchase->heaviness) * $purchase->amount, 0) }}
+                                                @endif
                                                 </td>
-                                                <td>{{ $purchase->date->format('d M Y') }}</td>
+                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($purchase->date); }}</td>
                                                 <td>{{ $purchase->details }}</td>
                                                 <td>
                                                     <a href="{{ route('purchaseedit', $purchase->id) }}"
@@ -283,16 +289,16 @@
 
                     // Format the totals
                     const formattedTonTotal = tonTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
+                        minimumFractionDigits: 3,
+                        maximumFractionDigits: 3
                     });
                     const formattedAmountTotal = amountTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
                     });
                     const formattedLiterTotal = literTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
                     });
 
                     // Update the footer

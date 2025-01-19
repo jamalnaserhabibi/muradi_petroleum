@@ -1,4 +1,12 @@
 @extends('admin.layout')
+@section('CustomCss')
+    <link rel="stylesheet" href="admincss/useraccounts/styleforall.css">
+    <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+@endsection
 @section('content')
     <div class="content-wrapper">
         {{-- <section class="content-header">
@@ -73,16 +81,20 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                                    <div class="input-group date ml-3" id="reservationdate" data-target-input="nearest">
-                                        <input type="text" name="date" id="date"
-                                            class="form-control datetimepicker-input" data-target="#reservationdate"
-                                            value="{{ old('date', isset($serialNumber->date) ? \Carbon\Carbon::parse($serialNumber->date)->format('Y-m-d H:i A') : now()->format('Y-m-d H:i A')) }}" required />
-
-                                        <div class="input-group-append h-10" data-target="#reservationdate"
-                                            data-toggle="datetimepicker">
-                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    <div class="input-group date ml-3" id="reservationdate">
+                                        <input 
+                                            type="text" 
+                                            name="date" 
+                                            id="date" 
+                                            class="form-control" 
+                                            {{-- value="{{ old('date', isset($serialNumber->date) ? \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($serialNumber->date))->format('Y/m/d') : \Morilog\Jalali\Jalalian::now()->format('Y/m/d')) }}"  --}}
+                                            required 
+                                        />
+                                        <div  class="input-group-append h-10">
+                                            <div  class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div>
+                                    
 
                                     <div class="ml-3">
                                         <button type="submit" class="btn brannedbtn">
@@ -90,69 +102,148 @@
                                     </div>
                                 </div>
                             </form>
-                            <table id="example1" class="table-bordered table-striped serial_table useraccounts">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tower</th>
-                                        <th>Serial</th>
-                                        <th>Sold</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($finalResults as $record)
-                                        <tr>
-
-                                            <td>{{ $record->sid }}</td>
-                                            <td>{{ $record->tower_number }} - {{ $record->name }} -
-                                                {{ $record->product_name }}</td>
-                                            <td>{{ $record->serial_number }}</td>
-                                            <td>{{ $record->petrol_sold }}</td>
-
-                                            @if (!empty($record->date) && \Carbon\Carbon::parse($record->date)->isToday())
-                                                <td class="red_color">Today:
-                                                    {{ \Carbon\Carbon::parse($record->date)->format('g:i A') }}</td>
-                                            @elseif(!empty($record->date))
-                                                <td>{{ \Carbon\Carbon::parse($record->date)->format('Y-m-d g:i A') }}</td>
-                                            @endif
-
-
-                                            <td>
-
-                                                <form action="{{ route('editserialnumber', $record->sid) }}" method="POST"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    <button type="submit" class="btn pt-0 pb-0 btn-warning fa fa-edit"
-                                                        title="Edit"></button>
-                                                </form>
-
-                                                <form action="{{ route('deleteserialnumber', $record->sid) }}"
-                                                    method="POST" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn pt-0 pb-0 btn-danger" title="Delete"
-                                                        onclick="return confirm('Are you sure you want to delete this purchase?')">
-                                                        <li class="fas fa-trash"></li>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                {{-- <tfoot>
-                                    <tr>
-                                        <th>Total</th>
-                                        <th id="total-footer-ton"></th> <!-- Ton column -->
-                                    </tr>
-                                </tfoot> --}}
-                            </table>
+                         
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-striped useraccounts">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tower</th>
+                                            <th>Serial</th>
+                                            <th>Sold</th>
+                                            <th>Date</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($finalResults as $record)
+                                            <tr>
+                                                <td>{{ $record->sid }}</td>
+                                                <td>{{ $record->tower_number }} - {{ $record->name }} -  {{ $record->product_name }}</td>
+                                                <td>{{ $record->serial_number }}</td>
+                                                <td>{{ $record->petrol_sold }}</td>
+    
+                                                @if (!empty($record->date) && \Carbon\Carbon::parse($record->date)->isToday())
+                                                    <td class="red_color">Today:
+                                                        {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($record->date); }}
+                                                    </td>
+                                                @elseif(!empty($record->date))
+                                                    <td> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($record->date); }}</td>
+                                                @endif
+    
+                                                <td>
+    
+                                                    <form action="{{ route('editserialnumber', $record->sid) }}" method="POST"
+                                                        class="d-inline">
+                                                        @csrf
+                                                        <button type="submit" class="btn pt-0 pb-0 btn-warning fa fa-edit"
+                                                            title="Edit"></button>
+                                                    </form>
+    
+                                                    <form action="{{ route('deleteserialnumber', $record->sid) }}"
+                                                        method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger" title="Delete"
+                                                            onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                            <li class="fas fa-trash"></li>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    {{-- <tfoot>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th id="total-footer-ton"></th> <!-- Ton column -->
+                                        </tr>
+                                    </tfoot> --}}
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
 
     </div>
 @endsection
+
+
+@section('CustomScript')
+     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="plugins/jszip/jszip.min.js"></script>
+    <script src="plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+
+    {{-- commented for the sidebar btn not worked --}}
+    {{-- <script src="dist/js/adminlte.min2167.js?v=3.2.0"></script> --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $(function() {
+
+                const table = $("#example1").DataTable({
+                    "responsive": true,
+                    "lengthChange": false,
+                    // "dom": 'tBfrip',
+                    "autoWidth": false,
+                    "buttons": [{
+                            extend: 'excel',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)' // Exclude the last column (Action column)
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)'
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)'
+                            }
+                        }
+                    ]
+                    
+                });
+
+                // Append buttons to the container
+                table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+            });
+        });
+    </script>
+@endsection
+

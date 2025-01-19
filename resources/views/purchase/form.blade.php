@@ -65,7 +65,7 @@
                                     @error('amount')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror 
-                                    <input class="form-control form-control mb-3" name="amount" type="number" step="0.01"
+                                    <input class="form-control form-control mb-3" name="amount" type="number" step="0.001"
                                         id="expenseAmount" placeholder="Amount"
                                         value="{{ old('amount', $purchase->amount ?? request('amount')) }}" required>
 
@@ -73,7 +73,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                     <input class="form-control form-control mb-3" name="heaviness" type="number"   min="700" 
-                                    max="1000" 
+                                    max="2500" 
                                     step="1" 
                                         id="expenseAmount" placeholder="Weight"
                                         value="{{ old('amount', $purchase->heaviness ?? request('heaviness')) }}" required>

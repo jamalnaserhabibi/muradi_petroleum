@@ -30,4 +30,8 @@ class Customers extends Model
     {
         return $this->hasOne(Contract::class,'customer_id');
     }
+    public function sale()
+    {
+        return $this->hasMany(Sales::class);
+    }
 }

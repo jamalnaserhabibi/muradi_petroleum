@@ -17,4 +17,15 @@ class Sales extends Model
     {
         return $this->belongsTo(Tower::class, 'tower_id', 'id');
     }
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+    public function customer()
+    {
+        return $this->belongsTo(Customers::class);
+    }
+    protected $casts = [
+        'date' => 'datetime',
+    ];
 }

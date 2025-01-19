@@ -29,7 +29,7 @@ class PurchaseController extends Controller
     {   
         $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id',  
-            'heaviness' => 'required|numeric|min:700|max:1000',  
+            'heaviness' => 'required|numeric|min:700|max:2500',  
             'amount' => 'required|numeric|min:0', 
             'rate' => 'required|numeric|min:0',  
             'details' => 'nullable|string|max:255',  
@@ -52,7 +52,7 @@ class PurchaseController extends Controller
     {   
         $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id', // Ensure product exists
-            'heaviness' => 'required|numeric|min:700|max:1000',  
+            'heaviness' => 'required|numeric|min:700|max:2500',  
             'amount' => 'required|numeric|min:0', // Weight constraints
             'rate' => 'required|numeric|min:0', // Ensure rate is a positive number
             'details' => 'nullable|string|max:255', // Optional description
