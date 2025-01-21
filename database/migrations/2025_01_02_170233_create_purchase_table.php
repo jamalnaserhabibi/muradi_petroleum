@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);  
             $table->decimal('heaviness', 10, 2);  
             $table->decimal('rate', 10, 2);   
-            $table->date('date');  
+            $table->date('date')->default(now()); // Current date by default 
             $table->text('details')->nullable();  
             $table->timestamps();  
         });

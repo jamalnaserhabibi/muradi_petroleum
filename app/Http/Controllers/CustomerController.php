@@ -28,11 +28,11 @@ class CustomerController extends Controller
     }
     public function store(Request $request)
     {   
-        // dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'company' => 'nullable|string|max:255',
             'date' => 'nullable|date',
+            'contact' => 'required|numeric|max:25',
             'customer_type' =>'required|exists:customer_types,id',
             'created_by' => 'nullable|string|max:255',
             'document' => 'nullable|string|max:255',
@@ -49,6 +49,7 @@ class CustomerController extends Controller
             'name' => 'required|string|max:255',
             'company' => 'nullable|string|max:255',
             'date' => 'nullable|date',
+            'contact' => 'required|numeric|max:25',
             'customer_type' =>'required|exists:customer_types,id',
             'created_by' => 'nullable|string|max:255',
             'document' => 'nullable|string|max:255',

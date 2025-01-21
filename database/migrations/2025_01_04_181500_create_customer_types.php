@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('type', ['admin', 'manager'])->default('manager');
+        Schema::create('customer_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('customer_type');
+            $table->text('details')->nullable(); 
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('type'); // Remove 'type' column if rolled back
-        });
+        Schema::dropIfExists('customer_types');
     }
 };

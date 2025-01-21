@@ -6,7 +6,34 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">Dashboard</h1>
+                        @php
+    $jalaliDate = \Morilog\Jalali\Jalalian::now();
+    
+    $afghanMonths = [
+        'فروردین' => 'Hamal',
+        'اردیبهشت' => 'Sowr',
+        'خرداد' => 'Jowza',
+        'تیر' => 'Saratan',
+        'مرداد' => 'Asad',
+        'شهریور' => 'Sunbuola',
+        'مهر' => 'Mizan',
+        'آبان' => 'Aqrab',
+        'آذر' => 'Qaws',
+        'دی' => 'Jadi',
+        'بهمن' => 'Dalwa',
+        'اسفند' => 'Hoot',
+    ];
+
+    // Get year, month, and day
+    $jalaliYear = $jalaliDate->getYear();
+    $jalaliMonth = $jalaliDate->format('F'); // Get the Jalali month name
+    $afghanMonth = $afghanMonths[$jalaliMonth]; // Get the Afghan month name
+    $jalaliDay = $jalaliDate->getDay();
+@endphp
+
+<h1 class="dashboardtitle">
+    Dashboard | {{ $jalaliDay }} {{ $afghanMonth }} {{ $jalaliYear }}
+</h1>
                     </div>
 
                 </div>

@@ -51,7 +51,7 @@
                                             <th>Type</th>
                                             <th>Rate</th>
                                             <th>Product</th>
-                                            <th>Document</th>
+                                            <th>Doc</th>
                                             <th>Date</th>
                                             <th>Status</th>
                                             {{-- <th>AddedBy</th> --}}
@@ -69,7 +69,7 @@
                                                 <td>{{ $customer->contract->rate }}</td>
                                                 <td>{{ $customer['contract']['product']->product_name }}</td>
                                                 <td>{{ $customer->document }}</td>
-                                                <td> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($customer->date)}}</td>
+                                                <td style="white-space: nowrap;"> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($customer->date)}}</td>
                                                 <td>
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input isActiveSwitch" 

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AfghanCalendarHelper;
 use App\Models\Product;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
-
+use Morilog\Jalali\CalendarUtils;
 class PurchaseController extends Controller
 {   
     public function purchaseedit($id)
@@ -96,8 +97,9 @@ class PurchaseController extends Controller
     }
     public function purchase()
     {
-        $startOfMonth = now()->startOfMonth();
-        $endOfMonth = now()->endOfMonth();
+        $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+        $startOfMonth = $monthRange['start'];
+        $endOfMonth = $monthRange['end'];   
 
         // Fetch purchases within the current month, including related product data
         $purchases = Purchase::with('product')
@@ -115,7 +117,7 @@ class PurchaseController extends Controller
     }
 
     public function filter(Request $request)
-{
+    {
     // Fetch unique products for checkboxes
     $products = Purchase::with('product')
         ->get()
@@ -125,16 +127,31 @@ class PurchaseController extends Controller
     // Initialize query for filtering purchases
     $query = Purchase::query();
 
+    try {
+        $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+        $startOfMonth = $monthRange['start'];
+        $endOfMonth = $monthRange['end'];   
+
+    $afghaniStartDate=$request->start_date;
+    $afghaniEndDate=$request->end_date;
+
+    $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+    $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+    } catch (\Throwable $th) {
+       
+    }
+
+
+
     // Apply date filter if provided
     if (!$request->filled('start_date') && !$request->filled('end_date')) {
         // Default to the current month's date range
-        $startOfMonth = now()->startOfMonth();
-        $endOfMonth = now()->endOfMonth();
+       
         $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
     } else {
         // If date range is provided, filter accordingly
         if ($request->filled('start_date') && $request->filled('end_date')) {
-            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+            $query->whereBetween('date', [ $start_date, $end_date]);
         }
     }
 
@@ -149,6 +166,6 @@ class PurchaseController extends Controller
     $purchases = $query->with('product')->get();
 
     // Pass data to the view
-    return view('purchase.purchase', compact('purchases', 'products'));
-}
+    return view('purchase.purchase', compact('purchases', 'products','afghaniStartDate','afghaniEndDate'));
+    }
 }

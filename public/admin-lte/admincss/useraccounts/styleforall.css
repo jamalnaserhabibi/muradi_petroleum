@@ -12,6 +12,15 @@
   color: white;
 }
 
+.dashboardtitle {
+  font-size: 2rem;
+  background: linear-gradient(to right, #ff005d, #000000);
+  color: transparent;
+  -webkit-background-clip: text;
+  font-weight: 800;
+  margin: 0;
+}
+
 .searchBar {
   display: flex;
   flex-direction: row;
@@ -194,5 +203,10 @@
   .useraccounts th:nth-child(5),
   .useraccounts td:nth-child(5) {
     display: none;
+  }
+}
+@media (max-width: 768px) {
+  .expensefilterform {
+    margin: 10px 0;
   }
 }/*# sourceMappingURL=styleforall.css.map */

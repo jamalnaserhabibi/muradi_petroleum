@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="admincss/useraccounts/styleforall.css">
     <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <link rel="stylesheet"href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
+    <link
+        rel="stylesheet"href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-   
+
     <link rel="stylesheet" href="ionicons/2.0.1/css/ionicons.min.css">
 
     <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -23,7 +24,7 @@
 
     <link rel="stylesheet" href="dist/css/adminlte.min2167.css?v=3.2.0">
 
-    <link rel="stylesheet" href="{{mix('node_modules/persian-datepicker/dist/css/persian-datepicker.min.css')}}">
+    <link rel="stylesheet" href="{{ mix('node_modules/persian-datepicker/dist/css/persian-datepicker.min.css') }}">
 
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 
@@ -368,42 +369,92 @@
 
     <script src="dist/js/demo.js"></script>
     <script src="dist/js/pages/dashboard.js"></script>
-    <script type="module" src="{{ mix('resources/js/app.js')}}"></script>
+    <script type="module" src="{{ mix('resources/js/app.js') }}"></script>
 
     <!-- Persian Datepicker JS -->
-    <script src="{{mix('node_modules/persian-datepicker/dist/js/persian-datepicker.min.js')}}"></script>
-    <script src="{{mix('node_modules/persian-date/dist/persian-date.min.js')}}"></script>
+    <script src="{{ mix('node_modules/persian-datepicker/dist/js/persian-datepicker.min.js') }}"></script>
+    <script src="{{ mix('node_modules/persian-date/dist/persian-date.min.js') }}"></script>
 
     <script>
-      
+        $(function() {
+            $(document).ready(function() {
+                $('#date').persianDatepicker({
+                    format: 'YYYY/MM/DD hh:mm a', // 12-hour format with AM/PM
+                    initialValueType: 'persian', // Use Jalali date format
+                    initialValue: true,
+                    autoClose: true, // Close after selection
+                    timePicker: {
+                        enabled: true, // Enable time selection
+                    },
+                    calendar: {
+                        persian: {
+                            locale: 'en' // Use English for the calendar numbers
+                        }
+                    },
+                    observer: true, // Automatically update the input field
+                    altField: '#altField', // Optional: For additional hidden fields
+                });
+                $('#start_date').persianDatepicker({
+                    format: 'YYYY/MM/DD',
+                    initialValueType: 'persian',
+                    initialValue: false,
+                    autoClose: true,
+                    calendar: {
+                        persian: {
+                            locale: 'en', // English numbers
+                        },
+                    },
+                    observer: true,
+                    onSelect: function(start) {
+                        $('#end_date').persianDatepicker({
+                            format: 'YYYY/MM/DD',
+                            initialValueType: 'persian',
+                            initialValue: false,
+                            minDate: start, // Restrict end date to be greater or equal to start date
+                            autoClose: true,
+                            calendar: {
+                                persian: {
+                                    locale: 'en',
+                                },
+                            },
+                            observer: true,
+                            onSelect: function(end) {
+                                if (start && end) {
+                                    $('#filter-form').submit();
+                                }
+                            },
+                        });
+                    },
+                });
 
-$(function () {
-    // Initialize Persian Datepicker
-    $(document).ready(function () {
-        // Get current Jalali date and time in English numbers
-        const now = new persianDate().toLocale('en').format('YYYY/MM/DD HH:mm A');
-        console.log(now);
-        $('#date').persianDatepicker({
-            format: 'YYYY/MM/DD HH:mm a', // Includes time
-            initialValueType: 'persian', // Ensure Jalali format
-            initialValue: true, // Set initial value with the current time
-            autoClose: true, // Auto-close after selection
-            timePicker: {
-                initialValue: true, // Enable time picker with initial value
-                enabled: true, // Allow time selection
-                meridiem: {
-                    enabled: true // Use 24-hour format (disable AM/PM)
-                }
-            },
-            calendar: {
-                persian: {
-                    locale: 'en' // Use English numbers
-                }
-            },
-            observer: true,
-            altField: '#altField', // Optional: Use for additional data
-            });
-            $('#date').persianDatepicker('setDate', now);
+                $('#end_date').persianDatepicker({
+                    initialValue: false,
+                    format: 'YYYY/MM/DD',
+                    initialValueType: 'persian',
+                    autoClose: true,
+                    calendar: {
+                        persian: {
+                            locale: 'en',
+                        },
+                    },
+                    observer: true,
+                    onSelect: function(end) {
+                        const start = $('#start_date').val();
+                        if (start && end) {
+                            $('#filter-form').submit();
+                        }
+                    },
+                });
+                $('#filter-form').on('change', function () {
+                    $(this).submit();
+                });
+
+
+                // Alert after change
+                // $('#end_date').on('change', function() {
+                //     alert('End date has been changed!');
+                // });
+
             });
         });
 
@@ -422,53 +473,54 @@ $(function () {
             $('#tower').prop('disabled', true);
             // Event listener for contract selection change
             $('#contract').on('change', function() {
-            // Get the selected option and its data-rate attribute
-            const selectedOption = this.options[this.selectedIndex];
-            const rate = selectedOption.getAttribute('data-rate');
-        
-             // Update the value of the rate input
-            const rateInput = $('#rate'); // Use jQuery to select the input
-            rateInput.val(rate || ''); // Set the value to the rate or an empty string if no rate is found
+                // Get the selected option and its data-rate attribute
+                const selectedOption = this.options[this.selectedIndex];
+                const rate = selectedOption.getAttribute('data-rate');
 
-            // If rate is greater than 1, disable the input field
-            if (rate && parseFloat(rate) > 1) {
-                rateInput.prop('readonly', true);
-            } else {
-                rateInput.prop('readonly', false);
-            }
+                // Update the value of the rate input
+                const rateInput = $('#rate'); // Use jQuery to select the input
+                rateInput.val(rate ||
+                    ''); // Set the value to the rate or an empty string if no rate is found
 
-
-            var selectedProduct = $(this).find('option:selected').data('product');
-            if (selectedProduct) {
-                $('#amount').prop('disabled', false);
-                $('#rate').prop('disabled', false);
-                $('#date').prop('disabled', false);
-                $('#tower').prop('disabled', false);
+                // If rate is greater than 1, disable the input field
+                if (rate && parseFloat(rate) > 1) {
+                    rateInput.prop('readonly', true);
                 } else {
-                $('#amount').prop('disabled', true);
-                $('#rate').prop('disabled', true);
-                $('#date').prop('disabled', true);
-                $('#tower').prop('disabled', true);
-             }
-            
-            // Filter tower options based on the selected product
-            $('#tower option').each(function () {
-                var towerProduct = $(this).data('product');
-                
-                // Show only the towers that match the selected product
-                if (towerProduct === selectedProduct || selectedProduct === undefined) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
+                    rateInput.prop('readonly', false);
                 }
+
+
+                var selectedProduct = $(this).find('option:selected').data('product');
+                if (selectedProduct) {
+                    $('#amount').prop('disabled', false);
+                    $('#rate').prop('disabled', false);
+                    $('#date').prop('disabled', false);
+                    $('#tower').prop('disabled', false);
+                } else {
+                    $('#amount').prop('disabled', true);
+                    $('#rate').prop('disabled', true);
+                    $('#date').prop('disabled', true);
+                    $('#tower').prop('disabled', true);
+                }
+
+                // Filter tower options based on the selected product
+                $('#tower option').each(function() {
+                    var towerProduct = $(this).data('product');
+
+                    // Show only the towers that match the selected product
+                    if (towerProduct === selectedProduct || selectedProduct === undefined) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
             });
-    });
 
-    // Trigger the change event on page load to populate the rate input if a contract is pre-selected
-    $('#contract').trigger('change');
-});
-
+            // Trigger the change event on page load to populate the rate input if a contract is pre-selected
+            $('#contract').trigger('change');
+        });
     </script>
     @yield('CustomScript')
 </body>
+
 </html>

@@ -66,4 +66,26 @@ public static function toAfghanDateTime($datetime, $format = '%d %B %Y %I:%M %P'
 
         return $jalaliDateTime; // Return Afghan date and time with 12-hour format and AM/PM in English
     }
+    
+    public static function getCurrentShamsiMonthRange()
+    {
+        // Get current Jalali year and month
+        $jalaliNow = Jalalian::now();
+        $jalaliYear = $jalaliNow->getYear();
+        $jalaliMonth = $jalaliNow->getMonth();
+
+        // Start of the Jalali month
+        $startOfMonth = Jalalian::fromFormat('Y/m/d', "$jalaliYear/$jalaliMonth/01")->toCarbon();
+
+        // Number of days in the Jalali month
+        $daysInMonth = Jalalian::fromFormat('Y/m/d', "$jalaliYear/$jalaliMonth/01")->getMonthDays();
+
+        // End of the Jalali month
+        $endOfMonth = Jalalian::fromFormat('Y/m/d', "$jalaliYear/$jalaliMonth/$daysInMonth")->toCarbon()->endOfDay();
+
+        return [
+            'start' => $startOfMonth,
+            'end' => $endOfMonth,
+        ];
+    }
 }

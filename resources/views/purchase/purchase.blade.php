@@ -21,16 +21,15 @@
 
 
                     <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">
-                        <input type="hidden" name="start_date" id="start-date">
-                        <input type="hidden" name="end_date" id="end-date">
+                        {{-- <input type="hidden" name="start_date" id="start-date"> --}}
+                        {{-- <input type="hidden" name="end_date" id="end-date"> --}}
                         <div class="form-group d-flex">
                             <div>
                                 {{-- <label>Date range:</label> --}}
-                                <div class="input-group">
-                                    <button type="button" class="btn btn-default float-right" id="daterange-btn">
-                                        <i class="far fa-calendar-alt"></i> Date Range
-                                        <i class="fas fa-caret-down"></i>
-                                    </button>
+                                <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
+                                    <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="Start Date" style="max-width: 150px;" required />
+                                    <span style="margin: 0 10px; font-weight: bold;">to</span>
+                                    <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
                                 </div>
                             </div>
                             {{-- {{$products}}--}}
@@ -201,27 +200,28 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Date Range Picker
-            $('#daterange-btn').daterangepicker({
-                    ranges: {
-                        'Today': [moment(), moment()],
-                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                        'This Month': [moment().startOf('month'), moment().endOf('month')],
-                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-                            'month').endOf('month')]
-                    },
-                    startDate: moment().subtract(29, 'days'),
-                    endDate: moment()
-                },
-                function(start, end) {
-                    // Set values and submit form
-                    const form = document.getElementById('filter-form');
-                    document.getElementById('start-date').value = start.format('YYYY-MM-DD');
-                    document.getElementById('end-date').value = end.format('YYYY-MM-DD');
-                    form.submit();
-                }
-            );
+            // $('#daterange-btn').daterangepicker({
+            //         ranges: {
+            //             'Today': [moment(), moment()],
+            //             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            //             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            //             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            //             'This Month': [moment().startOf('month'), moment().endOf('month')],
+            //             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+            //                 'month').endOf('month')]
+            //         },
+            //         startDate: moment().subtract(29, 'days'),
+            //         endDate: moment()
+            //     },
+            //     function(start, end) {
+            //         // Set values and submit form
+            //         const form = document.getElementById('filter-form');
+            //         document.getElementById('start-date').value = start.format('YYYY-MM-DD');
+            //         document.getElementById('end-date').value = end.format('YYYY-MM-DD');
+            //         form.submit();
+            //     }
+            // );
+
 
             // Category Filter
             document.getElementById('product-filter').addEventListener('change', function() {

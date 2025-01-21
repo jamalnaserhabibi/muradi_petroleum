@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('item');
             $table->decimal('amount', 10, 2);
             $table->string('category');
+            $table->string('document')->nullable(); // Adjust placement if needed
+            $table->date('date')->default(now()); // Current date by default
             $table->text('description')->nullable(); // New nullable column for additional notes
             $table->timestamps();
             });

@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('towers', function (Blueprint $table) {
             $table->id();
+            $table->integer('serial');
             $table->string('name');
             $table->unsignedBigInteger('product_id');
+            $table->text('details')->nullable(); // Details, optional
             $table->timestamps();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });

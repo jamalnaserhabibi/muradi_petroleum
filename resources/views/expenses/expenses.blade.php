@@ -10,7 +10,7 @@
         <section class="content-header">
             <div class="container-fluid">
 
-                <div class="totalamount searchBar row mb-1">
+                <div class="totalamount searchBar row mb-1 ">
                     <h2>
                         Expenses of
                         {{ isset($expenses) && isset($expenses[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($expenses[0]->date) : 'No Data' }}
@@ -18,21 +18,19 @@
                     </h2>
 
 
-                    <form id="filter-form" action="{{ route('expensefilterdate') }}" method="GET">
-                        <input type="hidden" name="start_date" id="start-date">
-                        <input type="hidden" name="end_date" id="end-date">
+                    <form class="expensefilterform" id="filter-form" action="{{ route('expensefilterdate') }}" method="GET">
+                        {{-- <input type="hidden" name="start_date" id="start-date"> --}}
+                        {{-- <input type="hidden" name="end_date" id="end-date"> --}}
                         <!-- Date Range Picker and Category Dropdown -->
                         <div class="form-group d-flex">
                             <!-- Date Range Picker -->
-                            <div>
-                                {{-- <label>Date range:</label> --}}
-                                <div class="input-group">
-                                    <button type="button" class="btn btn-default float-right" id="daterange-btn">
-                                        <i class="far fa-calendar-alt"></i> Date Range
-                                        <i class="fas fa-caret-down"></i>
-                                    </button>
-                                </div>
+                            <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
+                                {{-- {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($expenses[0]->date) }} --}}
+                                <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="Start Date" style="max-width: 150px;" required />
+                                <span style="margin: 0 10px; font-weight: bold;">to</span>
+                                <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
                             </div>
+                            
 
                             <!-- Category Filter -->
                             <div class="ml-4">
@@ -59,8 +57,7 @@
                             </div>
                         </div>
                     </form>
-
-                    <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">+ New</a>
+    <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">+ New</a>
 
                     @if (session('success'))
                         <ol>
@@ -106,15 +103,17 @@
                                                 <td>{{ $expense->item }}</td>
                                                 <td>{{ number_format($expense->amount, 2) }}</td>
                                                 <td>{{ $expense->category }}</td>
-                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($expense->date); }}</td>
+                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($expense->date) }}
+                                                </td>
                                                 <td>
                                                     @if ($expense->document)
-                                                        <a href="{{ asset('storage/' . $expense->document) }}"  target="_blank">
-                                                             {{ $expense->description ?? 'Document' }}   
+                                                        <a href="{{ asset('storage/' . $expense->document) }}"
+                                                            target="_blank">
+                                                            {{ $expense->description ?? 'Document' }}
                                                             {{-- <img class="useraccountsimage" src={{ asset('storage/' . $expense->document) }} alt="Document"> --}}
                                                         </a>
                                                     @else
-                                                    {{ $expense->description }} (No Document)
+                                                        {{ $expense->description }} (No Document)
                                                     @endif
                                                 </td>
                                                 {{-- <td></td> --}}
@@ -179,117 +178,85 @@
     {{-- <script src="dist/js/adminlte.min2167.js?v=3.2.0"></script> --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Date Range Picker
-            $('#daterange-btn').daterangepicker({
-                    ranges: {
-                        'Today': [moment(), moment()],
-                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                        'This Month': [moment().startOf('month'), moment().endOf('month')],
-                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-                            'month').endOf('month')]
-                    },
-                    startDate: moment().subtract(29, 'days'),
-                    endDate: moment()
-                },
-                function(start, end) {
-                    // Set values and submit form
-                    const form = document.getElementById('filter-form');
-                    document.getElementById('start-date').value = start.format('YYYY-MM-DD');
-                    document.getElementById('end-date').value = end.format('YYYY-MM-DD');
-                    form.submit();
-                }
-            );
-
-            // Category Filter
-                document.getElementById('category-filter').addEventListener('change', function() {
-              
-                document.getElementById('filter-form').submit();
-            });
-
-
             $(function() {
-         
-            const table = $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                // "dom": 'fBrtip',
-                "autoWidth": false,
-                "buttons": [{
-                        extend: 'excel',
-                        footer: true,
-                        exportOptions: {
-                            columns: ':not(:last-child)' // Exclude the last column (Action column)
+                const table = $("#example1").DataTable({
+                    "responsive": true,
+                    "lengthChange": false,
+                    // "dom": 'fBrtip',
+                    "autoWidth": false,
+                    "buttons": [{
+                            extend: 'excel',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)' // Exclude the last column (Action column)
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)'
+                            }
+                        },
+                        {
+                            extend: 'print',
+                            footer: true,
+                            exportOptions: {
+                                columns: ':not(:last-child)'
+                            }
                         }
-                    },
-                    {
-                        extend: 'pdf',
-                        footer: true,
-                        exportOptions: {
-                            columns: ':not(:last-child)'  
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        footer: true,
-                        exportOptions: {
-                            columns: ':not(:last-child)'  
-                        }
-                    }
-                ]
-            });
-
-            // Append buttons to the container
-            table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-
-            // Calculate total of the "Amount" column
-            function calculateTotal() {
-                let total = 0;
-                table.rows({
-                    search: 'applied'
-                }).every(function() {
-                    const rowData = this.data();
-                    const amount = parseFloat(rowData[1].replace(/,/g,
-                    ''));  
-                    if (!isNaN(amount)) {
-                        total += amount;
-                    }
+                    ]
                 });
-                return total;  
-            }
+
+                // Append buttons to the container
+                table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+                // Calculate total of the "Amount" column
+                function calculateTotal() {
+                    let total = 0;
+                    table.rows({
+                        search: 'applied'
+                    }).every(function() {
+                        const rowData = this.data();
+                        const amount = parseFloat(rowData[1].replace(/,/g,
+                            ''));
+                        if (!isNaN(amount)) {
+                            total += amount;
+                        }
+                    });
+                    return total;
+                }
 
 
-            // Add a label for the total amount
-            const totalLabel = $('<h2>')
-                .addClass('ml-3') // Add styling
-                .attr('id', 'total-amount-label')
-                .text('Total: 0.00'); // Initial value
+                // Add a label for the total amount
+                // const totalLabel = $('<h2>')
+                //     .addClass('ml-3') // Add styling
+                //     .attr('id', 'total-amount-label')
+                //     .text('Total: 0.00'); // Initial value
 
-            $('.totalamount').children().eq(0).after(totalLabel);
+                // $('.totalamount').children().eq(0).after(totalLabel);
 
-            // Update both the footer and the <h2> label
-            function updateFooterTotal() {
-                const total = calculateTotal();
-                const formattedTotal = parseFloat(total).toLocaleString('en-US', {
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1
-                });
-                $('#total-footer').text(formattedTotal);  
-                totalLabel.text(`Total: ${formattedTotal}`); 
-            }
+                // Update both the footer and the <h2> label
+                function updateFooterTotal() {
+                    const total = calculateTotal();
+                    const formattedTotal = parseFloat(total).toLocaleString('en-US', {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1
+                    });
+                    $('#total-footer').text(formattedTotal);
+                    // totalLabel.text(`Total: ${formattedTotal}`);
+                }
 
-            // Update total after DataTable initialization
-            updateFooterTotal();
-
-            // Update total on table draw (e.g., pagination, search)
-            table.on('draw', function() {
+                // Update total after DataTable initialization
                 updateFooterTotal();
+
+                // Update total on table draw (e.g., pagination, search)
+                table.on('draw', function() {
+                    updateFooterTotal();
+                });
             });
-        });
         });
     </script>
 
     {{-- <script src="dist/js/demo.js"></script> --}}
- 
 @endsection

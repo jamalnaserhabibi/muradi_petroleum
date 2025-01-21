@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AfghanCalendarHelper;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Morilog\Jalali\CalendarUtils;
 use App\Models\Expense;
 
 class ExpenseController extends Controller
@@ -11,9 +13,18 @@ class ExpenseController extends Controller
     public function filterdate(Request $request)
     {
         $query = Expense::query();
+try{
+        $afghaniStartDate=$request->start_date;
+        $afghaniEndDate=$request->end_date;
 
-        if ($request->start_date && $request->end_date) {
-            $query->whereBetween('date', [$request->start_date, $request->end_date]);
+        $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+        $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+        // dd($start_date,$end_date);
+    } catch (\Throwable $th) {
+       
+    }
+        if ($afghaniStartDate &&  $afghaniEndDate) {
+            $query->whereBetween('date', [$start_date, $end_date]);
         }
 
         if ($request->category) {
@@ -22,15 +33,15 @@ class ExpenseController extends Controller
 
         $expenses = $query->get();
 
-        return view('expenses.expenses', compact('expenses'));
+        return view('expenses.expenses', compact('expenses','afghaniStartDate','afghaniEndDate'));
     }
 
     public function expenses()
     {
-        $startOfMonth = now()->startOfMonth();
-        $endOfMonth = now()->endOfMonth();
+        $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+        $startOfMonth = $monthRange['start'];
+        $endOfMonth = $monthRange['end'];   
         
-    
         $expenses = Expense::whereBetween('date', [$startOfMonth, $endOfMonth])->get();
         return view('expenses.expenses', compact('expenses'));
     }
@@ -76,27 +87,26 @@ class ExpenseController extends Controller
         'category' => 'required|string',
         'document' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // Add file validation
         'description' => 'nullable|string',
-    
-    ]);
+        ]);
 
-    if ($request->hasFile('document')) {
-        // Delete old file if it exists
-        if ($expense->document && Storage::exists('public/' . $expense->document)) {
-            Storage::delete('public/' . $expense->document);
+        if ($request->hasFile('document')) {
+            // Delete old file if it exists
+            if ($expense->document && Storage::exists('public/' . $expense->document)) {
+                Storage::delete('public/' . $expense->document);
+            }
+
+            // Store the new file
+            $filePath = $request->file('document')->store('documents', 'public');
+            $expense->document = $filePath;
         }
 
-        // Store the new file
-        $filePath = $request->file('document')->store('documents', 'public');
-        $expense->document = $filePath;
-    }
-
-    // Update other fields
-    $expense->item = $request->item;
-    $expense->amount = $request->amount;
-    $expense->category = $request->category;
-    $expense->description = $request->description;
-    $expense->save();
-        return redirect()->route('expenses')->with('success', 'Expense updated successfully!');
+        // Update other fields
+        $expense->item = $request->item;
+        $expense->amount = $request->amount;
+        $expense->category = $request->category;
+        $expense->description = $request->description;
+        $expense->save();
+            return redirect()->route('expenses')->with('success', 'Expense updated successfully!');
     }
     public function destroy(Expense $expense)
     {

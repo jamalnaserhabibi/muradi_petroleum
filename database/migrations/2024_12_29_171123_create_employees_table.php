@@ -16,7 +16,8 @@ return new class extends Migration
                 $table->string('fullname'); // Full name
                 $table->string('photo')->nullable(); // Photo (file path)
                 $table->decimal('salary', 10, 2); // Salary
-                $table->date('date'); // Date
+                $table->date('date')->default(now()); // Current date by default
+
                 $table->text('description')->nullable(); // Description
                 $table->timestamps(); // Created_at and Updated_at
             });

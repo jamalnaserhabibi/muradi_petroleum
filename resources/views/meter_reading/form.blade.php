@@ -87,11 +87,11 @@
                                             name="date" 
                                             id="date" 
                                             class="form-control" 
-                                            {{-- value="{{ old('date', isset($serialNumber->date) ? \Morilog\Jalali\Jalalian::fromCarbon(\Carbon\Carbon::parse($serialNumber->date))->format('Y/m/d') : \Morilog\Jalali\Jalalian::now()->format('Y/m/d')) }}"  --}}
+                                            {{-- value="{{ old('date', $serialNumber->date ?? '') }}"  --}}
                                             required 
                                         />
-                                        <div  class="input-group-append h-10">
-                                            <div  class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        <div class="input-group-append h-10">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
                                     </div>
                                     
@@ -135,11 +135,11 @@
                                                 <td>{{ $record->petrol_sold }}</td>
     
                                                 @if (!empty($record->date) && \Carbon\Carbon::parse($record->date)->isToday())
-                                                    <td class="red_color">Today:
+                                                    <td style="color:red;white-space: nowrap;">Today:
                                                         {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($record->date); }}
                                                     </td>
                                                 @elseif(!empty($record->date))
-                                                    <td> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($record->date); }}</td>
+                                                    <td style="white-space: nowrap;"> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($record->date); }}</td>
                                                 @endif
     
                                                 <td>

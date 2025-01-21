@@ -103,7 +103,7 @@
                                                 <td>{{ number_format($sale->rate, 0) }}</td>
                                                 <td>{{ $sale->amount }}</td>
                                                 <td>{{ $sale->amount *$sale->rate }}</td>
-                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($sale->date); }}</td>
+                                                <td style="white-space: nowrap;">{{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($sale->date); }}</td>
                                                 <td>{{ $sale->details }}</td>
                                                 <td>
                                                     <a href="{{ route('editsale', $sale->id) }}"

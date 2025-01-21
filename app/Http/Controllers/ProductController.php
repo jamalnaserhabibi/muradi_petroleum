@@ -7,9 +7,9 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function product(){
-        $product = Product::all();
-        return view('purchase.purchase', compact('product'));
+    // public function product(){
+    //     $product = Product::all();
+    //     return view('purchase.purchase', compact('product'));
 
-    }
+    // }
 }
