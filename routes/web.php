@@ -99,6 +99,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/towers/{id}/delete', [towerController::class, 'destroy'])->name('tower.destroy');
     Route::get('/towers/{id}/edit', [towerController::class, 'edit'])->name('tower.edit');
     Route::patch('/towers/{id}/update', [towerController::class, 'update'])->name('towerupdate');
+    Route::get('/towers/{id}/seek', [towerController::class, 'seeksale'])->name('tower.seeksale');
     
     //sales
     

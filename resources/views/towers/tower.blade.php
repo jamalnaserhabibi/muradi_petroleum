@@ -44,9 +44,9 @@
                                     <table id="example1" class="table table-bordered table-striped useraccounts">
                                         <thead>
                                             <tr>
-                                                <th>Serial</th>
                                                 <th>Name</th>
                                                 <th>Product</th>
+                                                <th>Sales</th>
                                                 <th>Details</th>
                                                 <th></th>
                                                
@@ -56,11 +56,15 @@
                                             @foreach($towers as $tower)
                                             <tr>
                                                 
-                                                <td>{{ $tower->serial }}</td>
-                                                <td>{{ $tower->name }}</td>
+                                                <td><span class=" mr-2">{{ $tower->serial }}</span>{{ $tower->name }}</td>
                                                 <td>{{ $tower->product->product_name }}</td>
+                                                <td>{{ $tower->sales_sum_amount ?? 0 }}</td>
                                                 <td>{{ $tower->details }}</td>
                                                 <td>
+                                                    <a href="{{ route('tower.seeksale', $tower->id) }}"
+                                                        class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
+                                                    </a>
+
                                                     <a href="{{ route('tower.edit', $tower->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                     </a>
