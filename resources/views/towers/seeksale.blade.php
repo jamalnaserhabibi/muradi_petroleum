@@ -13,7 +13,7 @@
                     <h2>
 
                         @if(isset($tower[0]))
-                            {{ $tower[0]->tower->serial}}-{{ $tower[0]->tower->name}} Tower {{ explode(' ', \App\Helpers\AfghanCalendarHelper::toAfghanDate($tower[0]->tower->date))[1] }}
+                            {{ $tower[0]->tower->serial}}-{{ $tower[0]->tower->name}}-{{ $tower[0]->contract->product->product_name }} Tower {{ explode(' ', \App\Helpers\AfghanCalendarHelper::toAfghanDate($tower[0]->tower->date))[1] }}
                         @endif
                         
                         Sale(s)
