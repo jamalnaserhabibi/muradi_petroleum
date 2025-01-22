@@ -9,11 +9,11 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-                <div class="totalamount searchBar row mb-1 ">
+                <div class="totalamount  searchBar row mb-1 ">
                     <h2>
 
                         @if(isset($tower[0]))
-                            {{ $tower[0]->tower->serial}}-{{ $tower[0]->tower->name}}-{{ $tower[0]->contract->product->product_name }} Tower {{ explode(' ', \App\Helpers\AfghanCalendarHelper::toAfghanDate($tower[0]->tower->date))[1] }}
+                            {{ $tower[0]->tower->serial}}-{{ $tower[0]->tower->name}}-{{ $tower[0]->contract->product->product_name }} {{ explode(' ', \App\Helpers\AfghanCalendarHelper::toAfghanDate($tower[0]->tower->date))[1] }}
                         @endif
                         
                         Sale(s)
