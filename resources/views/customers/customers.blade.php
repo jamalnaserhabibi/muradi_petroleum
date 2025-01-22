@@ -9,8 +9,7 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-
-                <div class="searchBar row mb-2">
+                <div class="row searchBar">
                         <h2 class="nav-icon"> Customers</h2>
                         @if (session('success'))
                             {{-- <ol> --}}
@@ -24,10 +23,32 @@
                                 </script>
                             {{-- </ol>  --}}
                         @endif
-                        
-                        <a href="{{ route('customeradd') }}" class="btn brannedbtn fluid-right">+ New</a>
+                        <form id="filter-form" action="{{ route('typefilter') }}" method="GET">
+                            <div class="dropdown ml-1">
+                                <select id="product-filter" name="type_id[]" class="select2 form-control"
+                                multiple="multiple" data-placeholder="Type" style="width:100%">
+                                @if ($types->count() > 0)
+                                    @foreach ($types as $type)
+                                        @if ($type->customerType) <!-- Ensure the related customerType exists -->
+                                            <option value="{{ $type->customerType->id }}" 
+                                                {{ in_array($type->customerType->id, request('type_id', [])) ? 'selected' : '' }}>
+                                                {{ $type->customerType->customer_type }}
+                                            </option>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <option value="" disabled>No Data Available</option>
+                                @endif
+                            </select>
 
-                        
+                            </div>
+                        </form>        
+                   
+                        <span>
+                            <a href="{{ route('customers') }}" class="btn btn-info  fluid-right">Active</a>
+                            <a href="{{ route('customers0') }}" class="btn btn-danger fluid-right">None Active</a>
+                            <a href="{{ route('customeradd') }}" class="btn brannedbtn fluid-right ml-3">+ New</a>
+                        </span>
                 </div>
                 
             </div>
@@ -76,7 +97,7 @@
                                                                id="switch{{ $customer->contract->id }}" 
                                                                {{ $customer->contract->isActive ? 'checked' : '' }} 
                                                                data-customer-id="{{ $customer->contract->id }}">
-                                                        <label class="custom-control-label" for="switch{{ $customer->contract->id }}">
+                                                        <label  class="custom-control-label" for="switch{{ $customer->contract->id }}">
                                                             {{-- {{ $customer->contract->isActive ? 'Active' : 'Inactive' }} --}}
                                                         </label>
                                                     </div>
@@ -104,15 +125,15 @@
                                         @endforeach
 
                                     </tbody>
-                                    <tfoot>
+                                    {{-- <tfoot>
                                         <tr>
                                             <th colspan="1">Total</th>
-                                            <th  id="totafooter">{{ \App\Models\Customers::count() }}</th> <!-- Footer for the total amount -->
+                                            <th  id="totafooter"></th> <!-- Footer for the total amount -->
                                             <th colspan="9"></th>
 
                                             
                                         </tr>
-                                    </tfoot>
+                                    </tfoot> --}}
                                 </table>
                             </div>
 
@@ -133,6 +154,7 @@
 @endsection
 
 @section('CustomScript')
+    <script src="plugins/select2/js/select2.full.min.js"></script>
     <script src="plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
@@ -153,17 +175,16 @@
             $('.isActiveSwitch').on('change', function () {
                 var isActive = $(this).prop('checked') ? 1 : 0; // Get the new status (1 or 0)
                 var customerId = $(this).data('customer-id'); // Get the customer ID from the data attribute
-    
                 // Send AJAX request to update the status
                 $.ajax({ 
-    url: '/updatecontractstatus', // Route to update status
-    method: 'POST',
-    data: {
-        _token: '{{ csrf_token() }}', // CSRF token for security
-        customer_id: customerId,
-        is_active: isActive
+                url: '/updatecontractstatus', // Route to update status
+                method: 'POST',
+                data: {
+                _token: '{{ csrf_token() }}', // CSRF token for security
+                customer_id: customerId,
+                is_active: isActive
     },
-    success: function (response) {
+        success: function (response) {
         if (response.success) {
             // Show success message on UI
             $('#success-alert').text(response.message).show();
@@ -181,12 +202,24 @@
     error: function () {
         alert('Error while updating status');
     }
-});
+        });
 
             });
         });
+
+    
+        $('.select2').select2({
+                theme: 'bootstrap4',
+                placeholder: 'Type',
+                allowClear: true
+            });
+
+            // Auto-submit on change
+            $('#product-filter').on('change', function() {
+                $('#filter-form').submit();
+        });
     </script>
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Date Range Picker
             $('#daterange-btn').daterangepicker({
@@ -216,7 +249,7 @@
                 document.getElementById('filter-form').submit();
             });
         });
-    </script>
+    </script> --}}
 
     {{-- <script src="dist/js/demo.js"></script> --}}
 

@@ -37,18 +37,17 @@
                                 {{-- <label for="product-filter">Select</label> --}}
                                 <select id="product-filter" name="product_id[]" class="select2 form-control"
                                 multiple="multiple" data-placeholder="Type" style="width:100%">
-                                @if (count($products) > 0)
+                                    @if (count($products) > 0)
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}"
                                             {{ in_array($product->id, request('product_id', [])) ? 'selected' : '' }}>
                                             {{ $product->product_name }}
                                         </option>
                                     @endforeach
-                                @else
-                                    <option value="" disabled>No Data in Purchase</option>
-                                @endif
-                            </select>
-                            
+                                    @else
+                                        <option value="" disabled>No Data in Purchase</option>
+                                    @endif
+                                </select>
                             </div>
                         </div>
                     </form>

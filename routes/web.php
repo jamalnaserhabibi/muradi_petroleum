@@ -62,6 +62,8 @@ Route::middleware('auth')->group(function () {
     //customer
     //customerTableView
     Route::get('/customers/customers',[CustomerController::class, 'customer'])->name('customers');
+    Route::get('/customers/customers-nonactive',[CustomerController::class, 'customer0'])->name('customers0');
+    Route::get('/customers/customers_type/',[CustomerController::class, 'typefilter'])->name('typefilter');
     //customerAddForm
     Route::get('/customers/form',[CustomerController::class, 'customeraddform'])->name('customeradd');
     //customerStore
