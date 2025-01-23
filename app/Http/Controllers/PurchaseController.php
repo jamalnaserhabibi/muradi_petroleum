@@ -26,6 +26,7 @@ class PurchaseController extends Controller
         $purchase->delete();
         return redirect()->route('purchase')->with('success', 'Purchase deleted successfully.');
     }
+
     public function purchaseupdate(Request $request, $id)
     {   
         $validatedData = $request->validate([
@@ -49,6 +50,7 @@ class PurchaseController extends Controller
 
         return redirect()->route('purchase')->with('success', 'Purchase updated successfully.');
     }
+
     public function purchaseadd(Request $request)
     {   
         $validatedData = $request->validate([
@@ -69,23 +71,9 @@ class PurchaseController extends Controller
         ]);
         return redirect()->route('purchase')->with('success', 'Purchase Added successfully.');
 
-        // $startOfMonth = now()->startOfMonth();
-        // $endOfMonth = now()->endOfMonth();
-
-        // Fetch purchases within the current month, including related product data
-        // $purchases = Purchase::with('product')
-        //     ->whereBetween('date', [$startOfMonth, $endOfMonth])
-        //     ->get();
-
-        // // Fetch unique products for the dropdown
-        // $products = Purchase::with('product')
-        //     ->get()
-        //     ->pluck('product')
-        //     ->unique('id');
-
-        // Pass the fetched data to the view
-        // return view('purchase.purchase', compact('purchases', 'products'));
+         
     }
+
     public function purchaseform()
     {
            
@@ -95,6 +83,7 @@ class PurchaseController extends Controller
 
         return view('purchase.form',compact('products'));
     }
+
     public function purchase()
     {
         $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
@@ -118,54 +107,52 @@ class PurchaseController extends Controller
 
     public function filter(Request $request)
     {
-    // Fetch unique products for checkboxes
-    $products = Purchase::with('product')
+    
+        $products = Purchase::with('product')
         ->get()
         ->pluck('product')
         ->unique('id');
 
-    // Initialize query for filtering purchases
-    $query = Purchase::query();
+        $query = Purchase::query();
 
-    try {
+        try {
         $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
         $startOfMonth = $monthRange['start'];
         $endOfMonth = $monthRange['end'];   
 
-    $afghaniStartDate=$request->start_date;
-    $afghaniEndDate=$request->end_date;
+        $afghaniStartDate=$request->start_date;
+        $afghaniEndDate=$request->end_date;
 
-    $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
-    $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
-    } catch (\Throwable $th) {
+        $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+        $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+        } catch (\Throwable $th) {
        
-    }
-
-
-
-    // Apply date filter if provided
-    if (!$request->filled('start_date') && !$request->filled('end_date')) {
-        // Default to the current month's date range
-       
-        $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
-    } else {
-        // If date range is provided, filter accordingly
-        if ($request->filled('start_date') && $request->filled('end_date')) {
-            $query->whereBetween('date', [ $start_date, $end_date]);
         }
-    }
 
-    // Apply product filter if provided
-    if ($request->filled('product_id')) {
-        // Ensure product_id is treated as an array for multiple selections
-        $productIds = $request->input('product_id', []);
-        $query->whereIn('product_id', $productIds);
-    }
 
-    // Fetch purchases (all if no filters applied)
-    $purchases = $query->with('product')->get();
 
-    // Pass data to the view
-    return view('purchase.purchase', compact('purchases', 'products','afghaniStartDate','afghaniEndDate'));
+        if (!$request->filled('start_date') && !$request->filled('end_date')) {
+            // Default to the current month's date range
+        
+            $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+        } else {
+            // If date range is provided, filter accordingly
+            if ($request->filled('start_date') && $request->filled('end_date')) {
+                $query->whereBetween('date', [ $start_date, $end_date]);
+            }
+        }
+
+        // Apply product filter if provided
+        if ($request->filled('product_id')) {
+            // Ensure product_id is treated as an array for multiple selections
+            $productIds = $request->input('product_id', []);
+            $query->whereIn('product_id', $productIds);
+        }
+
+        // Fetch purchases (all if no filters applied)
+        $purchases = $query->with('product')->get();
+
+        // Pass data to the view
+        return view('purchase.purchase', compact('purchases', 'products','afghaniStartDate','afghaniEndDate'));
     }
 }
