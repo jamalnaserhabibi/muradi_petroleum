@@ -12,6 +12,7 @@ class AdminController extends Controller
     {
         return view('admin.login');
     }
+    
     public function dashboard()
     {
         return view('admin.dashboard');
@@ -22,6 +23,7 @@ class AdminController extends Controller
         $users = User::all();
         return view('admin.useraccounts',compact('users'));
     }
+
     public function table()
     {
         $type = type::all();
