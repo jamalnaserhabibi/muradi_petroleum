@@ -121,6 +121,7 @@
                                             <th>ID</th>
                                             <th>Tower</th>
                                             <th>Serial</th>
+                                            <th>Differences</th>
                                             <th>Sold</th>
                                             <th>Date</th>
                                             <th></th>
@@ -133,6 +134,7 @@
                                                 <td>{{ $record->tower_number }} - {{ $record->name }} -  {{ $record->product_name }}</td>
                                                 <td>{{ $record->serial_number }}</td>
                                                 <td>{{ $record->petrol_sold }}</td>
+                                                <td>{{ $record->total_amount ?? 0 }}</td>
     
                                                 @if (!empty($record->date) && \Carbon\Carbon::parse($record->date)->isToday())
                                                     <td style="color:red;white-space: nowrap;">Today:

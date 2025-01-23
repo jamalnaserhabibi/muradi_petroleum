@@ -449,12 +449,6 @@
                     $(this).submit();
                 });
 
-
-                // Alert after change
-                // $('#end_date').on('change', function() {
-                //     alert('End date has been changed!');
-                // });
-
             });
         });
 
@@ -469,56 +463,107 @@
                 }
             });
             // Initialize select2 on the dropdown
-            $('#contract').select2();
-            $('#tower').prop('disabled', true);
-            // Event listener for contract selection change
-            $('#contract').on('change', function() {
-                // Get the selected option and its data-rate attribute
-                const selectedOption = this.options[this.selectedIndex];
-                const rate = selectedOption.getAttribute('data-rate');
+            // $('#contract').select2();
+            // $('#tower').prop('disabled', true);
+            // // Event listener for contract selection change
+            // $('#contract').on('change', function() {
+            //     // Get the selected option and its data-rate attribute
+            //     const selectedOption = this.options[this.selectedIndex];
+            //     const rate = selectedOption.getAttribute('data-rate');
 
-                // Update the value of the rate input
-                const rateInput = $('#rate'); // Use jQuery to select the input
-                rateInput.val(rate ||
-                    ''); // Set the value to the rate or an empty string if no rate is found
+            //     // Update the value of the rate input
+            //     const rateInput = $('#rate'); // Use jQuery to select the input
+            //     rateInput.val(rate ||
+            //         ''); // Set the value to the rate or an empty string if no rate is found
 
-                // If rate is greater than 1, disable the input field
-                if (rate && parseFloat(rate) > 1) {
-                    rateInput.prop('readonly', true);
-                } else {
-                    rateInput.prop('readonly', false);
-                }
+            //     // If rate is greater than 1, disable the input field
+            //     if (rate && parseFloat(rate) > 1) {
+            //         rateInput.prop('readonly', true);
+            //     } else {
+            //         rateInput.prop('readonly', false);
+            //     }
 
 
-                var selectedProduct = $(this).find('option:selected').data('product');
-                if (selectedProduct) {
-                    $('#amount').prop('disabled', false);
-                    $('#rate').prop('disabled', false);
-                    $('#date').prop('disabled', false);
-                    $('#tower').prop('disabled', false);
-                } else {
-                    $('#amount').prop('disabled', true);
-                    $('#rate').prop('disabled', true);
-                    $('#date').prop('disabled', true);
-                    $('#tower').prop('disabled', true);
-                }
+            //     var selectedProduct = $(this).find('option:selected').data('product');
+            //     if (selectedProduct) {
+            //         $('#amount').prop('disabled', false);
+            //         $('#rate').prop('disabled', false);
+            //         $('#date').prop('disabled', false);
+            //         $('#tower').prop('disabled', false);
+            //     } else {
+            //         $('#amount').prop('disabled', true);
+            //         $('#rate').prop('disabled', true);
+            //         $('#date').prop('disabled', true);
+            //         $('#tower').prop('disabled', true);
+            //     }
 
-                // Filter tower options based on the selected product
-                $('#tower option').each(function() {
-                    var towerProduct = $(this).data('product');
+            //     // Filter tower options based on the selected product
+            //     $('#tower option').each(function() {
+            //         var towerProduct = $(this).data('product');
 
-                    // Show only the towers that match the selected product
-                    if (towerProduct === selectedProduct || selectedProduct === undefined) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            });
+            //         // Show only the towers that match the selected product
+            //         if (towerProduct === selectedProduct || selectedProduct === undefined) {
+            //             $(this).show();
+            //         } else {
+            //             $(this).hide();
+            //         }
+            //     });
+            // });
+            $('#tower').select2();
+$('#contract').prop('disabled', true); // Initially disable the customer select
+$('#amount, #rate').prop('disabled', true); // Disable other fields initially
 
-            // Trigger the change event on page load to populate the rate input if a contract is pre-selected
-            $('#contract').trigger('change');
+// Event listener for tower selection change
+$('#tower').on('change', function () {
+    // Get the selected tower and its product
+    const selectedTowerOption = $(this).find('option:selected');
+    const selectedProduct = selectedTowerOption.data('product');
+
+    if (selectedProduct) {
+        // Enable the customer select when a valid tower is selected
+        $('#contract').prop('disabled', false);
+        
+        // Filter customer options based on the selected product
+        $('#contract option').each(function () {
+            const contractProduct = $(this).data('product');
+            if (contractProduct === selectedProduct) {
+                $(this).show(); // Show matching customers
+            } else {
+                $(this).hide(); // Hide non-matching customers
+            }
         });
+
+        // Reset the customer select when the tower changes
+        $('#contract').val(null).trigger('change');
+    } else {
+        // Disable and reset the customer select if no tower is selected
+        $('#contract').prop('disabled', true).val(null).trigger('change');
+    }
+
+    // Disable other fields
+    $('#amount, #rate, #date').prop('disabled', true);
+});
+
+// Event listener for customer selection change
+$('#contract').on('change', function () {
+    // Get the selected customer option and its data attributes
+    const selectedCustomerOption = $(this).find('option:selected');
+    const rate = selectedCustomerOption.data('rate');
+
+    if (rate !== undefined) {
+        // Enable other fields
+        $('#amount, #date').prop('disabled', false);
+
+        // Enable or disable the rate field based on the rate value
+        if (parseFloat(rate) === 0) {
+            $('#rate').prop('disabled', false).val(''); // Allow editing if rate is 0
+        } else {
+            $('#rate').prop('disabled', false).val(rate); // Set the rate value and make it read-only
+            $('#rate').prop('readonly', true); // Set the rate value and make it read-only
+        }
+    }
+});
+            });
     </script>
     @yield('CustomScript')
 </body>

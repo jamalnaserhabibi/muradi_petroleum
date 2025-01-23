@@ -35,54 +35,50 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                           
-
+                                    @error('contract_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                <select class="form-control mb-3 mt-3" name="tower_id" id="tower" required>
+                                    <option value="" disabled {{ isset($sale) ? '' : 'selected' }}>Select Tower</option>
+                                    @foreach ($towers as $tower)
+                                        <option value="{{ $tower->id }}" data-product="{{ $tower->product->product_name }}">
+                                            {{ $tower->serial }} - {{ $tower->name }} - {{ $tower->product->product_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                
                                     @error('contract_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-
-                                    <select class="form-control" name="contract_id" id="contract" required>
+                                    <select class="form-control mt-3" name="contract_id" id="contract" required>
                                         <option value="" disabled {{ isset($sale) ? '' : 'selected' }}>Select Customer</option>
                                         @foreach ($customers as $customer)
                                             <option value="{{ $customer->contract->id }}"
                                                 data-product="{{ $customer->contract->product->product_name }}"
-                                                data-rate="{{ $customer->contract->rate }}"
-                                                {{ old('id', $sale->contract_id ?? '') == $customer->contract->id ? 'selected' : '' }}>
-                                              {{ $customer->name }} - 
-                                                {{ $customer->company }} - {{ $customer->contract->product->product_name }} - 
-                                                {{ $customer->contract->rate }}
+                                                data-rate="{{ $customer->contract->rate }}">
+                                                {{ $customer->name }} - {{ $customer->company }} - {{ $customer->contract->product->product_name }} - {{ $customer->contract->rate }}
                                             </option>
                                         @endforeach
                                     </select>
                                     
-                                    @error('contract_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
                                     
-                                    <select class="form-control mb-3 mt-3" name="tower_id" id="tower" required>
-                                        <option value="" disabled {{ isset($sale) ? '' : 'selected' }}>Select Tower</option>
-                                        @foreach ($towers as $tower)
-                                            <option value="{{ $tower->id }}" data-product="{{ $tower->product->product_name }}"
-                                                {{-- {{ old('id', $tower->id ?? '') == $tower->id ? 'selected' : '' }} --}}
-                                                >
-                                                {{ $tower->serial }} - {{ $tower->name }} - {{ $tower->product->product_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    
+
                                     @error('amount')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                    <input class="form-control form-control mb-3" id="amount" name="amount" type="number"
+                                    <input class="form-control form-control mb-3 mt-3" id="amount" name="amount" type="number"
                                         step="0.01" id="saleAmount" placeholder="Amount"
                                         value="{{ old('amount', $sale->amount ?? request('amount')) }}" required>
                                     @error('rate')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                                    <input class="form-control form-control mb-3" name="rate" type="number"
-                                        min="1" id="rate" placeholder="Rate"
-                                        value="{{ old('rate', $sale->rate ?? request('rate')) }}" required>
-                                        <div class="input-group date mb-3" id="reservationdate" data-target-input="nearest">
+                                        <input class="form-control form-control mb-3" name="rate" type="number"
+                                            min="1" id="rate" placeholder="Rate"
+                                            value="{{ old('rate', $sale->rate ?? request('rate')) }}" required>
+                                            <div class="input-group date mb-3" id="reservationdate" data-target-input="nearest">
+
                                             <input type="text" name="date" id="date"
                                                 class="form-control datetimepicker-input" data-target="#reservationdate"
                                                 value="{{ old('date', isset($sale->date) ? \Carbon\Carbon::parse($sale->date)->format('Y-m-d H:i A') : now()->format('Y-m-d H:i A')) }}"
