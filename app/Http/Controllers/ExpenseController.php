@@ -13,16 +13,16 @@ class ExpenseController extends Controller
     public function filterdate(Request $request)
     {
         $query = Expense::query();
-try{
-        $afghaniStartDate=$request->start_date;
-        $afghaniEndDate=$request->end_date;
+        try{
+            $afghaniStartDate=$request->start_date;
+            $afghaniEndDate=$request->end_date;
 
-        $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
-        $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
-        // dd($start_date,$end_date);
-    } catch (\Throwable $th) {
-       
-    }
+            $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+            $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+            // dd($start_date,$end_date);
+        } catch (\Throwable $th) {
+        
+        }
         if ($afghaniStartDate &&  $afghaniEndDate) {
             $query->whereBetween('date', [$start_date, $end_date]);
         }
@@ -45,10 +45,12 @@ try{
         $expenses = Expense::whereBetween('date', [$startOfMonth, $endOfMonth])->get();
         return view('expenses.expenses', compact('expenses'));
     }
+
     public function create()
     {
         return view('expenses.form');
     }
+
     public function store(Request $request)
     {
         // dd($request->all());
@@ -72,6 +74,7 @@ try{
     {
         return view('expenses.form', compact('expense'));
     }
+
     public function expenseadd()
     {
         return view('expenses.form');
@@ -108,6 +111,7 @@ try{
         $expense->save();
             return redirect()->route('expenses')->with('success', 'Expense updated successfully!');
     }
+
     public function destroy(Expense $expense)
     {
         if ($expense->document && Storage::exists('public/' . $expense->document)) {

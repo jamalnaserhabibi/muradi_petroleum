@@ -14,16 +14,19 @@ class EmployeeController extends Controller
         $totalSalaries = $employees->sum('salary');
         return view('employees.employees', compact('employees','totalSalaries'));
     }
+
     public function addemployee()
     {
         return view('employees.form');
     }
+
     public function edit($id)
     {
         $employee = Employee::findOrFail($id);
 
         return view('employees.form', compact('employee'));
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -44,6 +47,7 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees')->with('success', 'Employee added successfully!');
     }
+
     public function destroy(Employee $employee)
     {
         if ($employee->photo && file_exists(storage_path('app/public/' . $employee->photo))) {
@@ -54,6 +58,7 @@ class EmployeeController extends Controller
 
         return redirect()->route('employees')->with('success', 'Employee Deleted successfully.');
     }
+    
     public function update(Request $request, $id)
     {
         $employee = Employee::findOrFail($id);

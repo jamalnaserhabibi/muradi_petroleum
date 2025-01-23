@@ -20,6 +20,7 @@ class towerController extends Controller
                     ->get();
         return view('towers.seeksale', compact('tower'));
     }
+
     public function towerform()
     {
            
@@ -29,6 +30,7 @@ class towerController extends Controller
 
         return view('towers.form',compact('products'));
     }
+
     public function towers()
     {
         // Get the current month and year
@@ -47,6 +49,7 @@ class towerController extends Controller
         return view('towers.tower', compact('towers'));
 
     }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -59,6 +62,7 @@ class towerController extends Controller
         return redirect()->route('towers')->with('success', 'Tower Added successfully');
 
     }
+
     public function edit($id)
     {
         $products = Product::select('id', 'product_name')
@@ -68,6 +72,7 @@ class towerController extends Controller
         $towers = Tower::findOrFail($id);
         return view('towers.form',compact('towers','products'));
     }
+    
     public function destroy($id)
     {
         $tower = Tower::find($id);
@@ -76,6 +81,7 @@ class towerController extends Controller
         }
         return redirect()->route('towers')->with('success', 'Tower deleted successfully');
     }
+    
     public function update(Request $request, $id)
     {
         $request->validate([
