@@ -59,7 +59,8 @@ class ContractController extends Controller
         return redirect()->route('customers')->with('Success', 'Customer updated successfully');
     }
     
-    public function contractedit(Request $request){
+    public function contractedit(Request $request)
+    {
         $latestCustomer = Customers::findOrFail($request->id);
 
         // Fetch the contract associated with the customer (if exists)
@@ -72,6 +73,7 @@ class ContractController extends Controller
         return view('customers/CustomerContractForm', compact('latestCustomer', 'contract', 'products'));
  
     }
+
     public function updateStatus(Request $request)
     {
         // Validate the incoming data
