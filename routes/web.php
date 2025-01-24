@@ -103,7 +103,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/towers/{id}/update', [towerController::class, 'update'])->name('towerupdate');
     Route::get('/towers/{id}/seek', [towerController::class, 'seeksale'])->name('tower.seeksale');
     
-    //sales
+    
     
     //serial_numbers
     Route::post('/meter_reading/addsaleinfoform/store_serial', [serial_numbersController::class, 'store'])->name('serial_numbers_store');
@@ -117,6 +117,7 @@ Route::middleware('auth')->group(function () {
     //sales
     Route::get('/sales/form', [salesController::class, 'salesform'])->name('addnewsaleform');
     Route::get('/sales/sales', [salesController::class, 'sales'])->name('sales');
+    Route::get('/sales/sales/singlecustomer/{id}', [salesController::class, 'singlecustomersalescustomer'])->name('singlecustomersalescustomer');
     Route::post('/sales/add', [salesController::class, 'store'])->name('addsale');
     
     Route::get('/sales/add', [salesController::class, 'edit'])->name('editsale');

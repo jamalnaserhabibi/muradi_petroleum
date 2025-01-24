@@ -16,7 +16,8 @@
                     <h2>
                         Sales of
                         {{ isset($sales) && isset($sales[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($sales[0]->date) : 'No Data' }}
-
+                        
+                        {{ isset(request()->id) && isset($sales[0])? 'From '.'-'. $sales[0]->contract->customer->company:'' }}
                     </h2>
 
                     <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">

@@ -68,11 +68,12 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Company</th>
-                                            <th>Contact</th>
+                                            {{-- <th>Contact</th> --}}
                                             <th>Type</th>
                                             <th>Rate</th>
                                             <th>Product</th>
-                                            <th>Doc</th>
+                                            {{-- <th>Doc</th> --}}
+                                            <th>Sales</th>
                                             <th>Date</th>
                                             <th>Status</th>
                                             {{-- <th>AddedBy</th> --}}
@@ -85,11 +86,12 @@
                                             <tr>
                                                 <td>{{ $customer->name }}</td>
                                                 <td>{{ $customer->company }}</td>
-                                                <td>{{ $customer->contact }}</td>
+                                                {{-- <td>{{ $customer->contact }}</td> --}}
                                                 <td>{{ $customer->customerType->customer_type }}</td>
                                                 <td>{{ $customer->contract->rate }}</td>
                                                 <td>{{ $customer['contract']['product']->product_name }}</td>
-                                                <td>{{ $customer->document }}</td>
+                                                {{-- <td>{{ $customer->document }}</td> --}}
+                                                <td>{{ $customer->current_month_sales_total  }}</td>
                                                 <td style="white-space: nowrap;"> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($customer->date)}}</td>
                                                 <td>
                                                     <div class="custom-control custom-switch">
@@ -110,6 +112,10 @@
                                                 {{-- <td>{{ $customer->created_by }}</td> --}}
                                                 <td>{{ $customer->description  }} | {{$customer->contract->details}} </td>
                                                 <td>
+                                                    <a href="{{ route('singlecustomersalescustomer', $customer->id) }}"
+                                                        class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
+                                                    </a>
+                                                    
                                                     <a href="{{ route('customer.edit', $customer) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit"></a>
                                                     <form action="{{ route('customers.destroy', $customer->id) }}" method="POST"

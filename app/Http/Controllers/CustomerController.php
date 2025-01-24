@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AfghanCalendarHelper;
 use App\Models\Customers;
 use App\Models\CustomerType;
 use Illuminate\Http\Request;
-
 class CustomerController extends Controller
 {
     public function typefilter(Request $request){
@@ -42,29 +42,67 @@ class CustomerController extends Controller
     }
     public function customer()
     {
+        $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+        $startOfMonth = $monthRange['start'];
+        $endOfMonth = $monthRange['end'];   
         $customer = Customers::whereHas('contract', function ($query) {
             $query->where('isActive', 1);
-        })->with(['contract.product'])->get();
+        })
+        ->with([
+            'contract.product',
+            'contract.sales' => function ($query) use ($startOfMonth, $endOfMonth) {
+                $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+            }
+        ])
+        ->get()
+        ->map(function ($customer) {
+            // Check if the customer has contracts
+            $customer->current_month_sales_total = $customer->contract 
+                ? $customer->contract->sales->sum('amount') 
+                : 0;
+            return $customer;
+        });
+        
         $types = Customers::with('customerType:id,customer_type') // Fetch related customer types
-        ->select('customer_type') // Only fetch distinct customer_type IDs from customers table
-        ->distinct()
-        ->get();
+            ->select('customer_type') // Only fetch distinct customer_type IDs from customers table
+            ->distinct()
+            ->get();
+        
+
         return view('customers.customers', compact('customer','types'));
     }
+   
     public function customer0()
     {
+        $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+        $startOfMonth = $monthRange['start'];
+        $endOfMonth = $monthRange['end'];   
         $customer = Customers::whereHas('contract', function ($query) {
             $query->where('isActive', 0);
-        })->with(['contract.product'])->get();
-        $types = Customers::with('customerType:id,customer_type') // Fetch related customer types
-        ->select('customer_type') // Only fetch distinct customer_type IDs from customers table
-        ->distinct()
-        ->get();
+        })
+        ->with([
+            'contract.product',
+            'contract.sales' => function ($query) use ($startOfMonth, $endOfMonth) {
+                $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+            }
+        ])
+        ->get()
+        ->map(function ($customer) {
+            // Check if the customer has contracts
+            $customer->current_month_sales_total = $customer->contract 
+                ? $customer->contract->sales->sum('amount') 
+                : 0;
+            return $customer;
+        });
         
+        $types = Customers::with('customerType:id,customer_type') // Fetch related customer types
+            ->select('customer_type') // Only fetch distinct customer_type IDs from customers table
+            ->distinct()
+            ->get();
+        
+
         return view('customers.customers', compact('customer','types'));
     }
-
-
 
     public function edit(Customers $customer)
     {

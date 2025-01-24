@@ -10,6 +10,23 @@ use App\Models\Tower;
 use Illuminate\Http\Request;
 class salesController extends Controller
 {
+    public function singlecustomersalescustomer($id)
+        {
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $startOfMonth = $monthRange['start'];
+            $endOfMonth = $monthRange['end'];    
+
+            $sales = Sales::with(['tower', 'contract.customer', 'contract.product']) // Include related data
+                        ->whereHas('contract', function ($query) use ($id) {
+                            $query->where('contract_id', $id); // Filter by customer ID
+                        })
+                        ->whereBetween('date', [$startOfMonth, $endOfMonth]) // Filter by Gregorian start and end dates
+                        ->get();
+
+            return view('sales.sales', compact('sales'));
+        }
+
+
     public function sales()
     {
         $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
@@ -59,9 +76,6 @@ class salesController extends Controller
         ]);
         return redirect()->route('sales')->with('success', 'Sale Added Successfully!');
     }
-   
-    
-    
     public function delete($request){
 
         // dd($request);
