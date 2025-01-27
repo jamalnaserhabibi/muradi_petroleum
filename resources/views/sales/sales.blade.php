@@ -11,7 +11,6 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-
                 <div class="totalamount searchBar row mb-1">
                     <h2>
                         Sales of
@@ -19,7 +18,6 @@
                         
                         {{ isset(request()->id) && isset($sales[0])? 'From '.'-'. $sales[0]->contract->customer->company:'' }}
                     </h2>
-
                     <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">
                         <input type="hidden" name="start_date" id="start-date">
                         <input type="hidden" name="end_date" id="end-date">
