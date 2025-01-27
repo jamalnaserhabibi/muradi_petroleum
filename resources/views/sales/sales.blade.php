@@ -10,7 +10,7 @@
 @section('content')
     <div class="content-wrapper">
         <section class="content-header">
-            <div class="container-luid">
+            <div class="container-fluid">
 
                 <div class="totalamount searchBar row mb-1">
                     <h2>
