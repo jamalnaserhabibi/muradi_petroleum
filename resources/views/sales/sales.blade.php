@@ -12,7 +12,7 @@
         <section class="content-header">
             <div class="container-fluid">
 
-                <div class="otalamount searchBar row mb-1">
+                <div class="totalamount searchBar row mb-1">
                     <h2>
                         Sales of
                         {{ isset($sales) && isset($sales[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($sales[0]->date) : 'No Data' }}
