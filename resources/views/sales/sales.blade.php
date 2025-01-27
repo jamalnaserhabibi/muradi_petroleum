@@ -23,7 +23,7 @@
                         <input type="hidden" name="end_date" id="end-date">
                         <div class="form-group d-flex">
                             <div>
-                                {{-- <label>Date range:</label> --}}
+                                {{--Date range --}}
                                 <div class="input-group">
                                     <button type="button" class="btn btn-default float-right" id="daterange-btn">
                                         <i class="far fa-calendar-alt"></i> Date Range
