@@ -21,6 +21,22 @@
   margin: 0;
 }
 
+.userbox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: white;
+}
+.userbox li {
+  margin: 10px;
+  padding: 10px;
+  background-color: #ff0080;
+  border-radius: 10px;
+}
+.userbox li a {
+  color: white;
+}
+
 .searchBar {
   display: flex;
   flex-direction: row;

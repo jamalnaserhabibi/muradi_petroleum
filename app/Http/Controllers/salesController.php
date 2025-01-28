@@ -26,7 +26,6 @@ class salesController extends Controller
             return view('sales.sales', compact('sales'));
         }
 
-
     public function sales()
     {
         $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
@@ -82,5 +81,28 @@ class salesController extends Controller
         $sale = Sales::findOrFail($request);
         $sale->delete();
         return redirect()->route('sales')->with('success', 'Sale deleted successfully.');
+    }
+
+    public function singlecustomerinfo(Request $request, $id)
+    {
+        $customer = Customers::where('id', $id)
+        ->with([
+            'contract.product',
+            'contract.sales', // No date filter
+        ])
+        ->get()
+        ->map(function ($customer) {
+            // Check if the customer has contracts
+            $customer->current_month_sales_total = $customer->contract 
+                ? $customer->contract->sales->sum('amount') 
+                : 0;
+            return $customer;
+        });
+
+        $types = Customers::with('customerType:id,customer_type') // Fetch related customer types
+            ->select('customer_type') // Only fetch distinct customer_type IDs from customers table
+            ->distinct()
+            ->get();
+        return view('customers.customersinfo', compact('customer','types'));
     }
 }

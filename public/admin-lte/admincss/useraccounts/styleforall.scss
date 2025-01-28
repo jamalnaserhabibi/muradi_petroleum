@@ -21,7 +21,22 @@
 .totalamount{
     // font-size: 20px;
 }
-
+.userbox{
+    // background-color: red;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: white;
+    li{
+        margin: 10px;
+        padding: 10px;
+        background-color:  #ff0080;
+        border-radius: 10px;
+       a{
+        color: white;
+       }
+    }
+}
 .searchBar{
     display: flex;
     flex-direction: row;

@@ -11,7 +11,8 @@
             <div class="container-fluid">
                 <div class="row searchBar">
                         <h2 class="nav-icon"> Customers</h2>
-                        @if (session('success'))
+                        <div class="row">
+                            @if (session('success'))
                             {{-- <ol> --}}
                                 <div class="alert alert-success" id="success-alert">
                                     {{ session('success') }}
@@ -45,10 +46,11 @@
                         </form>        
                    
                         <span>
-                            <a href="{{ route('customers') }}" class="btn btn-info  fluid-right">Active</a>
-                            <a href="{{ route('customers0') }}" class="btn btn-danger fluid-right">None Active</a>
+                            <a href="{{ route('customers') }}" class="btn btn-info ml-3  fluid-right">Active</a>
+                            <a href="{{ route('customers0') }}" class="btn btn-danger fluid-right">Inactive</a>
                             <a href="{{ route('customeradd') }}" class="btn brannedbtn fluid-right ml-3">+ New</a>
                         </span>
+                        </div>
                 </div>
                 
             </div>
@@ -66,6 +68,7 @@
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
+                                            {{-- <th>ID</th> --}}
                                             <th>Name</th>
                                             <th>Company</th>
                                             {{-- <th>Contact</th> --}}
@@ -84,6 +87,7 @@
                                     <tbody>
                                         @foreach ($customer as $customer)
                                             <tr>
+                                                {{-- <td>{{ $customer->id }}</td> --}}
                                                 <td>{{ $customer->name }}</td>
                                                 <td>{{ $customer->company }}</td>
                                                 {{-- <td>{{ $customer->contact }}</td> --}}
@@ -112,12 +116,17 @@
                                                 {{-- <td>{{ $customer->created_by }}</td> --}}
                                                 <td>{{ $customer->description  }} | {{$customer->contract->details}} </td>
                                                 <td>
+                                                    <a href="{{ route('singlecustomerinfo', $customer) }}"
+                                                        class="btn pt-0 pb-0 btn-info fas fa-info-circle" title="Info">i
+                                                    </a>
                                                     <a href="{{ route('singlecustomersalescustomer', $customer->id) }}"
                                                         class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
                                                     </a>
                                                     
                                                     <a href="{{ route('customer.edit', $customer) }}"
-                                                        class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit"></a>
+                                                        class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
+                                                    </a>
+
                                                     <form action="{{ route('customers.destroy', $customer->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf

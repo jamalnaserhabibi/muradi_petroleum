@@ -128,9 +128,14 @@
                             </p>
                         </li>
 
-                        <li class="user-footer">
-                            <a href="{{ route('logout') }}" class="btn  w-100">LogOut!</a>
-                        </li>
+                        <div class="userbox">
+                            <li class="user-footer">
+                                <a href="{{ route('logout') }}" class="fas fa-sign-out-alt"> Sign Out</a>
+                            </li>
+                            <li class="user-footer">
+                                <a href="{{ route('admin.useraccounts') }}" class="fas fa-user"> Users</a>
+                            </li>
+                        </div>
                     </ul>
                 </li>
 
@@ -174,17 +179,9 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.useraccounts') }}" class="nav-link">
-                                <i class="nav-icon fas fa-user"></i>
+                                <i class="nav-icon fas fa-dollar-sign"></i>
                                 <p>
-                                    User Accounts
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('expenses') }}" class="nav-link">
-                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
-                                <p>
-                                    Expenses
+                                    Payments
                                 </p>
                             </a>
                         </li>
@@ -239,6 +236,14 @@
                                 </li>
                             </ul>
                         </li>                    --}}
+                        <li class="nav-item">
+                            <a href="{{ route('expenses') }}" class="nav-link">
+                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                                <p>
+                                    Expenses
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('purchase') }}" class="nav-link">
                                 <i class="nav-icon fas fas fa-shopping-cart"></i>
@@ -445,7 +450,7 @@
                         }
                     },
                 });
-                $('#filter-form').on('change', function () {
+                $('#filter-form').on('change', function() {
                     $(this).submit();
                 });
 
@@ -510,60 +515,61 @@
             //     });
             // });
             $('#tower').select2();
-$('#contract').prop('disabled', true); // Initially disable the customer select
-$('#amount, #rate').prop('disabled', true); // Disable other fields initially
+            $('#contract').prop('disabled', true); // Initially disable the customer select
+            $('#amount, #rate').prop('disabled', true); // Disable other fields initially
 
-// Event listener for tower selection change
-$('#tower').on('change', function () {
-    // Get the selected tower and its product
-    const selectedTowerOption = $(this).find('option:selected');
-    const selectedProduct = selectedTowerOption.data('product');
+            // Event listener for tower selection change
+            $('#tower').on('change', function() {
+                // Get the selected tower and its product
+                const selectedTowerOption = $(this).find('option:selected');
+                const selectedProduct = selectedTowerOption.data('product');
 
-    if (selectedProduct) {
-        // Enable the customer select when a valid tower is selected
-        $('#contract').prop('disabled', false);
-        
-        // Filter customer options based on the selected product
-        $('#contract option').each(function () {
-            const contractProduct = $(this).data('product');
-            if (contractProduct === selectedProduct) {
-                $(this).show(); // Show matching customers
-            } else {
-                $(this).hide(); // Hide non-matching customers
-            }
-        });
+                if (selectedProduct) {
+                    // Enable the customer select when a valid tower is selected
+                    $('#contract').prop('disabled', false);
 
-        // Reset the customer select when the tower changes
-        $('#contract').val(null).trigger('change');
-    } else {
-        // Disable and reset the customer select if no tower is selected
-        $('#contract').prop('disabled', true).val(null).trigger('change');
-    }
+                    // Filter customer options based on the selected product
+                    $('#contract option').each(function() {
+                        const contractProduct = $(this).data('product');
+                        if (contractProduct === selectedProduct) {
+                            $(this).show(); // Show matching customers
+                        } else {
+                            $(this).hide(); // Hide non-matching customers
+                        }
+                    });
 
-    // Disable other fields
-    $('#amount, #rate, #date').prop('disabled', true);
-});
+                    // Reset the customer select when the tower changes
+                    $('#contract').val(null).trigger('change');
+                } else {
+                    // Disable and reset the customer select if no tower is selected
+                    $('#contract').prop('disabled', true).val(null).trigger('change');
+                }
 
-// Event listener for customer selection change
-$('#contract').on('change', function () {
-    // Get the selected customer option and its data attributes
-    const selectedCustomerOption = $(this).find('option:selected');
-    const rate = selectedCustomerOption.data('rate');
-
-    if (rate !== undefined) {
-        // Enable other fields
-        $('#amount, #date').prop('disabled', false);
-
-        // Enable or disable the rate field based on the rate value
-        if (parseFloat(rate) === 0) {
-            $('#rate').prop('disabled', false).val(''); // Allow editing if rate is 0
-        } else {
-            $('#rate').prop('disabled', false).val(rate); // Set the rate value and make it read-only
-            $('#rate').prop('readonly', true); // Set the rate value and make it read-only
-        }
-    }
-});
+                // Disable other fields
+                $('#amount, #rate, #date').prop('disabled', true);
             });
+
+            // Event listener for customer selection change
+            $('#contract').on('change', function() {
+                // Get the selected customer option and its data attributes
+                const selectedCustomerOption = $(this).find('option:selected');
+                const rate = selectedCustomerOption.data('rate');
+
+                if (rate !== undefined) {
+                    // Enable other fields
+                    $('#amount, #date').prop('disabled', false);
+
+                    // Enable or disable the rate field based on the rate value
+                    if (parseFloat(rate) === 0) {
+                        $('#rate').prop('disabled', false).val(''); // Allow editing if rate is 0
+                    } else {
+                        $('#rate').prop('disabled', false).val(
+                        rate); // Set the rate value and make it read-only
+                        $('#rate').prop('readonly', true); // Set the rate value and make it read-only
+                    }
+                }
+            });
+        });
     </script>
     @yield('CustomScript')
 </body>
