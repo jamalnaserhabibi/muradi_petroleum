@@ -43,7 +43,6 @@ class salesController extends Controller
             $start = null;
             $end = null;
         
-            // Date filtering logic
             if ($request->filled('start_date') && $request->filled('end_date')) {
                 $start = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
                 $end = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
@@ -53,20 +52,17 @@ class salesController extends Controller
                 $end = $monthRange['end'];
             }
         
-            // Query to filter sales by date and optionally by product_id
             $sales = Sales::with(['tower', 'contract.customer', 'contract.product'])
                 ->whereBetween('date', [$start, $end]); // Filter by date range
         
             if (!empty($products)) {
-                // If product IDs are provided, filter by them
                 $sales->whereHas('contract.product', function ($query) use ($products) {
                     $query->whereIn('id', $products);
                 });
             }
         
-            $sales = $sales->get(); // Execute the query
+            $sales = $sales->get(); 
         
-            // Retrieve all unique products from contracts for filtering options
             $products = Contract::with('product')
                 ->get()
                 ->pluck('product')
