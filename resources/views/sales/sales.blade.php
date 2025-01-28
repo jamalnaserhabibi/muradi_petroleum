@@ -31,7 +31,6 @@
                                     </button>
                                 </div>
                             </div>
-                            {{-- {{$towers}} --}}
                             <div class="dropdown ml-4">
                                 {{-- <label for="product-filter">Select</label> --}}
                                 <select id="product-filter" name="tower_id[]" class="select2 form-control"

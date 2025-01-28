@@ -6,21 +6,45 @@ use App\Helpers\AfghanCalendarHelper;
 use App\Models\Tower;
 use App\Models\Product;
 use App\Models\Sales;
+use Morilog\Jalali\CalendarUtils;
 use Illuminate\Http\Request;
 
 class towerController extends Controller
 {
-    public function seeksale($id){
-        $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-        $startOfMonth = $monthRange['start'];
-        $endOfMonth = $monthRange['end'];    
-        $tower = Sales::with(['tower', 'contract.customer', 'contract.product']) // Include related data
-                    ->where('tower_id', $id) // Add condition to match tower_id
-                    ->whereBetween('date', [$startOfMonth, $endOfMonth]) // Filter by Gregorian start and end dates
-                    ->get();
-        return view('towers.seeksale', compact('tower'));
+    public function seeksale(Request $request, $id)
+    {
+        $astart_date = $request->start_date;
+        $aend_date = $request->end_date;
+        // Default values for the date range
+        $start_date = null;
+        $end_date = null;
+        $tower_id = $id; // Use the $id from the route as the fallback tower ID
+    
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            // Convert start and end dates to Gregorian format
+            $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
+            $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
+    
+            // Override tower_id from the form request if it exists
+            $tower_id = $request->tower_id ?? $id; // Fallback to $id if not provided
+        } else {
+            // Get the current month range
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $start_date = $monthRange['start'];
+            $end_date = $monthRange['end'];
+        }
+    
+        // Fetch sales data based on tower_id and date range
+        $tower = Sales::with(['tower', 'contract.customer', 'contract.product'])
+            ->where('tower_id', $tower_id) // Ensure tower_id is used
+            ->whereBetween('date', [$start_date, $end_date])
+            ->get();
+    
+        // Pass $id to the view explicitly
+        
+        return view('towers.seeksale', compact('tower', 'id', 'astart_date', 'aend_date'));
     }
-
+    
     public function towerform()
     {
            

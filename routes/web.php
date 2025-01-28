@@ -101,6 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/towers/{id}/delete', [towerController::class, 'destroy'])->name('tower.destroy');
     Route::get('/towers/{id}/edit', [towerController::class, 'edit'])->name('tower.edit');
     Route::patch('/towers/{id}/update', [towerController::class, 'update'])->name('towerupdate');
+    
     Route::get('/towers/{id}/seek', [towerController::class, 'seeksale'])->name('tower.seeksale');
     
     
@@ -117,15 +118,12 @@ Route::middleware('auth')->group(function () {
     //sales
     Route::get('/sales/form', [salesController::class, 'salesform'])->name('addnewsaleform');
     Route::get('/sales/sales', [salesController::class, 'sales'])->name('sales');
-
     Route::get('/sales/sales/singlecustomer/{id}', [salesController::class, 'singlecustomersalescustomer'])->name('singlecustomersalescustomer');
-    
     Route::post('/sales/add', [salesController::class, 'store'])->name('addsale');
     Route::get('/sales/add', [salesController::class, 'edit'])->name('editsale');
     Route::patch('/sales/add', [salesController::class, 'update'])->name('updatesale');
     Route::delete('/sales/{id}', [salesController::class, 'delete'])->name('saledelete');
-
-
+    
     //customer info
     Route::get('/customer/customerinfo/{id}', [salesController::class, 'singlecustomerinfo'])->name('singlecustomerinfo');
 

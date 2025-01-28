@@ -9,8 +9,13 @@ use App\Models\CustomerType;
 use Morilog\Jalali\Jalalian;
 use App\Models\Tower;
 use Illuminate\Http\Request;
+
 class salesController extends Controller
 {
+    public function towersalesfilter(Request $request){
+        
+    }
+
     public function singlecustomersalescustomer($id)
         {
             $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();

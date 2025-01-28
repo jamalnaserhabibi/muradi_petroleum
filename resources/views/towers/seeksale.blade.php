@@ -12,52 +12,25 @@
                 <div class="totalamount  searchBar row mb-1 ">
                     <h2>
 
-                        @if(isset($tower[0]))
-                            {{ $tower[0]->tower->serial}}-{{ $tower[0]->tower->name}}-{{ $tower[0]->contract->product->product_name }} {{ explode(' ', \App\Helpers\AfghanCalendarHelper::toAfghanDate($tower[0]->tower->date))[1] }}
+                        @if (isset($tower[0]))
+                            {{ $tower[0]->tower->serial }}-{{ $tower[0]->tower->name }}-{{ $tower[0]->contract->product->product_name }}
+                            {{ explode(' ', \App\Helpers\AfghanCalendarHelper::toAfghanDate($tower[0]->tower->date))[1] }}
                         @endif
-                        
+
                         Sale(s)
                     </h2>
 
 
-                    <form class="expensefilterform" id="filter-form" action="{{ route('expensefilterdate') }}"
+                    <form class="expensefilterform" id="filter-form" action="{{ route('tower.seeksale' ,$tower[0]->id ?? $id) }}"
                         method="GET">
                         <div class="form-group d-flex">
-                            <div style="max-width: 400px;" id="reservationdate"
-                                class="d-flex align-items-center justify-content-between">
-                                <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text"
-                                    name="start_date" id="start_date" class="form-control" placeholder="Start Date"
-                                    style="max-width: 150px;" required />
-                                <span style="margin: 0 10px; font-weight: bold;">to</span>
-                                <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text"
-                                    name="end_date" id="end_date" class="form-control" placeholder="End Date"
-                                    style="max-width: 150px;" required />
-                            </div>
-
-
-                            <!-- Category Filter -->
-                            <div class="ml-4">
-                                {{-- <label>Category:</label> --}}
-                                <select id="category-filter" name="category" class="form-control">
-                                    <option value="">All Category</option>
-                                    <option value="personal" {{ request('category') == 'personal' ? 'selected' : '' }}>
-                                        Personal</option>
-                                    <option value="Tank Maintenance"
-                                        {{ request('category') == 'Tank Maintenance' ? 'selected' : '' }}>Tank Maintenance
-                                    </option>
-                                    <option value="Staff Salary"
-                                        {{ request('category') == 'Staff Salary' ? 'selected' : '' }}>Staff Salary</option>
-                                    <option value="tank" {{ request('category') == 'tank' ? 'selected' : '' }}>Tank
-                                    </option>
-                                    <option value="Fuel" {{ request('category') == 'Fuel' ? 'selected' : '' }}>Fuel
-                                    </option>
-                                    <option value="Tax" {{ request('category') == 'Tax' ? 'selected' : '' }}>Tax
-                                    </option>
-                                    <option value="office" {{ request('category') == 'office' ? 'selected' : '' }}>Office
-                                    </option>
-                                    <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other
-                                    </option>
-                                </select>
+                            <div>
+                                <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
+                                    <input value="{{ isset($start_date) ? $start_date : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="Start Date" style="max-width: 150px;" required />
+                                    <input type="hidden" value="{{ $tower[0]->tower_id ?? $id }}" name="tower_id">
+                                    <span style="margin: 0 10px; font-weight: bold;">to</span>
+                                    <input value="{{ isset($end_date) ? $end_date : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -106,19 +79,22 @@
                                     <tbody>
                                         @foreach ($tower as $tower)
                                             <tr>
-                                                <td> {{ $tower->contract->customer->name }} - {{ $tower->contract->customer->company }} </td>
-                                                <td>{{ $tower->tower->serial}}-{{ $tower->tower->name}}</td>
+                                                <td> {{ $tower->contract->customer->name }} -
+                                                    {{ $tower->contract->customer->company }} </td>
+                                                <td>{{ $tower->tower->serial }}-{{ $tower->tower->name }}</td>
                                                 <td>{{ $tower->contract->product->product_name }}</td>
                                                 <td>{{ number_format($tower->rate, 0) }}</td>
                                                 <td>{{ $tower->amount }}</td>
-                                                <td>{{ $tower->amount *$tower->rate }}</td>
-                                                <td style="white-space: nowrap;">{{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($tower->date); }}</td>
+                                                <td>{{ $tower->amount * $tower->rate }}</td>
+                                                <td style="white-space: nowrap;">
+                                                    {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($tower->date) }}
+                                                </td>
                                                 <td>{{ $tower->details }}</td>
                                                 <td>
                                                     {{-- <a href="{{ route('edittower', $tower->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                     </a> --}}
-{{-- 
+                                                    {{-- 
                                                     <form action="{{ route('towerdelete', $tower->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
@@ -215,7 +191,7 @@
                 // Append buttons to the container
                 table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-             
+
 
 
                 // Add a label for the total amount
@@ -227,7 +203,7 @@
                 // $('.totalamount').children().eq(0).after(totalLabel);
 
                 // Update both the footer and the <h2> label
-                    function calculateColumnTotal(columnIndex) {
+                function calculateColumnTotal(columnIndex) {
                     let total = 0;
                     table.rows({
                         search: 'applied'
