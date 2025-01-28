@@ -15,35 +15,34 @@ class towerController extends Controller
     {
         $astart_date = $request->start_date;
         $aend_date = $request->end_date;
-        // Default values for the date range
-        $start_date = null;
-        $end_date = null;
-        $tower_id = $id; // Use the $id from the route as the fallback tower ID
+        $tower_id = $id; // Default to $id from the route
     
         if ($request->filled('start_date') && $request->filled('end_date')) {
-            // Convert start and end dates to Gregorian format
+            // Convert dates to Gregorian
             $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
             $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
     
-            // Override tower_id from the form request if it exists
-            $tower_id = $request->tower_id ?? $id; // Fallback to $id if not provided
+            // Use the tower_id from the request if available
+            if ($request->filled('tower_id')) {
+                $tower_id = $request->tower_id;
+            }
         } else {
-            // Get the current month range
+            // Default to the current month range
             $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
             $start_date = $monthRange['start'];
             $end_date = $monthRange['end'];
         }
     
-        // Fetch sales data based on tower_id and date range
+        // Query sales data
         $tower = Sales::with(['tower', 'contract.customer', 'contract.product'])
-            ->where('tower_id', $tower_id) // Ensure tower_id is used
+            ->where('tower_id', $tower_id)
             ->whereBetween('date', [$start_date, $end_date])
             ->get();
     
-        // Pass $id to the view explicitly
-        
+        // Pass the original $id explicitly to the view
         return view('towers.seeksale', compact('tower', 'id', 'astart_date', 'aend_date'));
     }
+    
     
     public function towerform()
     {

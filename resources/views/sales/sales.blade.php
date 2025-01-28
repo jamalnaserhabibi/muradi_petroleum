@@ -15,42 +15,45 @@
                     <h2>
                         Sales of
                         {{ isset($sales) && isset($sales[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($sales[0]->date) : 'No Data' }}
-                        
-                        {{ isset(request()->id) && isset($sales[0])? 'From '.'-'. $sales[0]->contract->customer->company:'' }}
+
+                        {{ isset(request()->id) && isset($sales[0]) ? 'From ' . '-' . $sales[0]->contract->customer->company : '' }}
                     </h2>
-                    <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">
+                    <form id="filter-form" action="{{ route('sales') }}" method="GET">
                         <input type="hidden" name="start_date" id="start-date">
                         <input type="hidden" name="end_date" id="end-date">
                         <div class="form-group d-flex">
                             <div>
-                                {{--Date range --}}
-                                <div class="input-group">
-                                    <button type="button" class="btn btn-default float-right" id="daterange-btn">
-                                        <i class="far fa-calendar-alt"></i> Date Range
-                                        <i class="fas fa-caret-down"></i>
-                                    </button>
+                                <div style="max-width: 400px;" id="reservationdate"
+                                    class="d-flex align-items-center justify-content-between">
+                                    <input value="{{ isset($astart) ? $astart : '' }}" type="text" name="start_date"
+                                        id="start_date" class="form-control" placeholder="Start Date"
+                                        style="max-width: 150px;" required />
+                                    <span style="margin: 0 10px; font-weight: bold;">to</span>
+                                    <input value="{{ isset($aend) ? $aend : '' }}" type="text" name="end_date"
+                                        id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;"
+                                        required />
                                 </div>
                             </div>
                             <div class="dropdown ml-4">
                                 {{-- <label for="product-filter">Select</label> --}}
-                                <select id="product-filter" name="tower_id[]" class="select2 form-control"
+                                <select id="product-filter" name="product_id[]" class="select2 form-control"
                                 multiple="multiple" data-placeholder="Type" style="width:100%">
-                                @foreach ($sales as $sale)
-                                @if ($sale->tower) <!-- Check if the tower relationship exists -->
-                                    <option value="{{ $sale->tower->id }}"
-                                        {{ in_array($sale->tower->id, request('product_id', [])) ? 'selected' : '' }}>
-                                        {{ $sale->tower->name }}
-                                    </option>
-                                @endif
-                            @endforeach
-                              
-                            </select>
-                            
+                                    @if (count($products) > 0)
+                                    @foreach ($products as $product)
+                                        <option value="{{ $product->id }}"
+                                            {{ in_array($product->id, request('product_id', [])) ? 'selected' : '' }}>
+                                            {{ $product->product_name }}
+                                        </option>
+                                    @endforeach
+                                    @else
+                                        <option value="" disabled>No Data in Purchase</option>
+                                    @endif
+                                </select>
                             </div>
                         </div>
                     </form>
 
-                    <a href="{{route('addnewsaleform')}}" class="btn brannedbtn">+ New</a>
+                    <a href="{{ route('addnewsaleform') }}" class="btn brannedbtn">+ New</a>
 
                     @if (session('success'))
                         <ol>
@@ -95,18 +98,21 @@
                                     <tbody>
                                         @foreach ($sales as $sale)
                                             <tr>
-                                                <td> {{ $sale->contract->customer->name }} - {{ $sale->contract->customer->company }} </td>
-                                                <td>{{ $sale->tower->serial}}-{{ $sale->tower->name}}</td>
+                                                <td> {{ $sale->contract->customer->name }} -
+                                                    {{ $sale->contract->customer->company }} </td>
+                                                <td>{{ $sale->tower->serial }}-{{ $sale->tower->name }}</td>
                                                 <td>{{ $sale->contract->product->product_name }}</td>
                                                 <td>{{ number_format($sale->rate, 0) }}</td>
                                                 <td>{{ $sale->amount }}</td>
-                                                <td>{{ $sale->amount *$sale->rate }}</td>
-                                                <td style="white-space: nowrap;">{{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($sale->date); }}</td>
+                                                <td>{{ $sale->amount * $sale->rate }}</td>
+                                                <td style="white-space: nowrap;">
+                                                    {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($sale->date) }}
+                                                </td>
                                                 <td>{{ $sale->details }}</td>
                                                 <td>
-                                                    <a href="{{ route('editsale', $sale->id) }}"
+                                                    {{-- <a href="{{ route('editsale', $sale->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
-                                                    </a>
+                                                    </a> --}}
 
                                                     <form action="{{ route('saledelete', $sale->id) }}" method="POST"
                                                         style="display:inline;">
@@ -249,7 +255,7 @@
                             }
                         }
                     ]
-                    
+
                 });
 
                 // Append buttons to the container

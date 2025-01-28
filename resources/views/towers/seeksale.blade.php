@@ -20,16 +20,15 @@
                         Sale(s)
                     </h2>
 
-
-                    <form class="expensefilterform" id="filter-form" action="{{ route('tower.seeksale' ,$tower[0]->id ?? $id) }}"
+                    <form class="expensefilterform" id="filter-form"action="{{ route('tower.seeksale', $id) }}"
                         method="GET">
                         <div class="form-group d-flex">
                             <div>
                                 <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
-                                    <input value="{{ isset($start_date) ? $start_date : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="Start Date" style="max-width: 150px;" required />
-                                    <input type="hidden" value="{{ $tower[0]->tower_id ?? $id }}" name="tower_id">
+                                    <input value="{{ isset($astart_date) ? $astart_date : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="Start Date" style="max-width: 150px;" required />
+                                    <input type="hidden" value="{{ $id }}" name="tower_id">
                                     <span style="margin: 0 10px; font-weight: bold;">to</span>
-                                    <input value="{{ isset($end_date) ? $end_date : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
+                                    <input value="{{ isset($aend_date) ? $aend_date : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
                                 </div>
                             </div>
                         </div>

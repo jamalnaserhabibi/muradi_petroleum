@@ -8,6 +8,11 @@ class Product extends Model
 {
     protected $fillable = ['product_name', 'details'];
 
+
+    public function sale()
+    {
+        return $this->hasMany(Sales::class);
+    }
     public function purchase()
     {
         return $this->hasMany(Purchase::class);
