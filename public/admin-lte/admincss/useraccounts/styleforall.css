@@ -17,9 +17,10 @@
   padding: 20px;
 }
 .contractformprint .head {
-  margin-bottom: 20px;
+  padding-bottom: 20px;
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid gainsboro;
 }
 .contractformprint .head .text {
   text-align: center;

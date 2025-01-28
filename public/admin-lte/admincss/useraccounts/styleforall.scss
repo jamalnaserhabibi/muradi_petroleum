@@ -16,9 +16,10 @@
     padding: 20px;
     
     .head{
-        margin-bottom: 20px;
+        padding-bottom: 20px;
         display: flex;
         justify-content: space-between;
+        border-bottom: 1px solid gainsboro;
         .text{
             text-align: center;
         }
