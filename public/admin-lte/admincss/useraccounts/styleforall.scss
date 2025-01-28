@@ -11,27 +11,55 @@
         color: white;
     }
 }
+@media print {
+    h4 {
+        -webkit-print-color-adjust: exact; /* For WebKit-based browsers like Chrome */
+        print-color-adjust: exact; /* For other browsers */
+    }
+}
 .contractformprint{
+    .watermark {
+        position: absolute;
+        top: 46%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+        opacity: 0.1;
+    }    
     border: 1px solid black;
     padding: 20px;
+    padding-top: 50px;
     
     .head{
         padding-bottom: 20px;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         border-bottom: 1px solid gainsboro;
         .text{
             text-align: center;
         }
         img{
-            width: 90px;
+            height: 90px;
         }
+     
+    }
+    .signature{
+        border-top: 1px solid gainsboro;
+
     }
     .contentofform{
+        
         div{
-            border: 1px solid red;
-            padding: 50px;
+            padding: 20px;
             margin: 10px;
+            h4{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 5px ;
+                padding: 5px 10px;
+                background-color: rgb(228, 228, 228);
+            }
         }
     }
 }

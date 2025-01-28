@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customers;
 use App\Models\Sales;
 use App\Helpers\AfghanCalendarHelper;
+use App\Models\CustomerType;
 use Morilog\Jalali\Jalalian;
 use App\Models\Tower;
 use Illuminate\Http\Request;
@@ -88,21 +89,9 @@ class salesController extends Controller
         $customer = Customers::where('id', $id)
         ->with([
             'contract.product',
-            'contract.sales', // No date filter
-        ])
-        ->get()
-        ->map(function ($customer) {
-            // Check if the customer has contracts
-            $customer->current_month_sales_total = $customer->contract 
-                ? $customer->contract->sales->sum('amount') 
-                : 0;
-            return $customer;
-        });
+        ])->get();
 
-        $types = Customers::with('customerType:id,customer_type') // Fetch related customer types
-            ->select('customer_type') // Only fetch distinct customer_type IDs from customers table
-            ->distinct()
-            ->get();
+        $types = CustomerType::all();
         return view('customers.customersinfo', compact('customer','types'));
     }
 }
