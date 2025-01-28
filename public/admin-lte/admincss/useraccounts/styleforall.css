@@ -12,6 +12,27 @@
   color: white;
 }
 
+.contractformprint {
+  border: 1px solid black;
+  padding: 20px;
+}
+.contractformprint .head {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.contractformprint .head .text {
+  text-align: center;
+}
+.contractformprint .head img {
+  width: 90px;
+}
+.contractformprint .contentofform div {
+  border: 1px solid red;
+  padding: 50px;
+  margin: 10px;
+}
+
 .dashboardtitle {
   font-size: 2rem;
   background: linear-gradient(to right, #ff005d, #000000);

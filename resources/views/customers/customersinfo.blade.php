@@ -10,7 +10,12 @@
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row searchBar">
-                        <h2 class="nav-icon">Contract Information</h2>
+                    <h2 class="nav-icon">Contract Form</h2>
+                    <a onclick=window.print() class="btn brannedbtn">
+                        <i class="fas fa-print"></i> Print
+                    </a>
+
+                    
                 </div>
             </div>
         </section>
@@ -21,19 +26,42 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="card">  
-                            <div class="card-body" style="border: 1px solid red">
-                                {{$customer}}
-                                {{$types}}
+                        <div class="card contractformprint">
+                            <div class="head">
+                                <div class="logo">
+                                    <img src="img/logo.png" alt="">
+                                </div>
+                                <div class="text">
+                                    <h4>Muradi Petroleum</h4>
+                                    <h5>Customer Contract Form</h5>
+                                    <h6>Print By: {{ Auth::user()->name }}</h6>
+                                    <h6>Date: {{\Morilog\Jalali\Jalalian::now()}}</h6>
+                                </div>
+                                <div class="logo">
+                                    <img src="img/logo.png" alt="">
+                                </div>
+                            </div>
+                            <div class="card-body contentofform">
+                                <div class="someinfo">
+
+                                </div>
+
+                                <div class="customerinfobox">
+                                    {{ $customer }}
+                                </div>
+
+                                <div class="contractinfobox">
+                                    {{ $types }}
+                                </div>
+                                
+                                <div class="someinfo">
+
+                                </div>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </section>
 
 

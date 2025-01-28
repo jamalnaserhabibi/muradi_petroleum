@@ -11,6 +11,29 @@
         color: white;
     }
 }
+.contractformprint{
+    border: 1px solid black;
+    padding: 20px;
+    
+    .head{
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        .text{
+            text-align: center;
+        }
+        img{
+            width: 90px;
+        }
+    }
+    .contentofform{
+        div{
+            border: 1px solid red;
+            padding: 50px;
+            margin: 10px;
+        }
+    }
+}
 .dashboardtitle{
     font-size: 2rem; 
     background: linear-gradient(to right, #ff005d, #000000);
