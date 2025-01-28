@@ -14,8 +14,6 @@
                     <a onclick=window.print() class="btn brannedbtn">
                         <i class="fas fa-print"></i> Print
                     </a>
-
-                    
                 </div>
             </div>
         </section>
