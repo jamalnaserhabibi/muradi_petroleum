@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\paymentController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\salesController;
 use App\Http\Controllers\towerController;
@@ -124,6 +125,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/sales/add', [salesController::class, 'update'])->name('updatesale');
     Route::delete('/sales/{id}', [salesController::class, 'delete'])->name('saledelete');
     
+
+
+    //payment
+    Route::get('/payment/payment', [paymentController::class, 'payment'])->name('payment');
+
+
     //customer info
     Route::get('/customer/customerinfo/{id}', [salesController::class, 'singlecustomerinfo'])->name('singlecustomerinfo');
 
