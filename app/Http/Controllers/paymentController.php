@@ -24,30 +24,39 @@ class paymentController extends Controller
         })->with(['contract.product'])->get();
         
         $balances = Contract::join('customers', 'contracts.customer_id', '=', 'customers.id')
-            ->leftJoin('sales', 'contracts.id', '=', 'sales.contract_id')
-            ->leftJoin('payment', 'contracts.id', '=', 'payment.contract_id')
-            ->select(
-                'contracts.id',
-                'customers.name as customer_name',
-                'customers.company as customer_company',
-                'contracts.date as contract_date',
-                DB::raw('COALESCE(SUM(sales.amount), 0) as total_sales'),
-                DB::raw('COALESCE(SUM(payment.amount), 0) as total_payments'),
-                DB::raw('(COALESCE(SUM(payment.amount), 0) - COALESCE(SUM(sales.amount), 0)) as balance'),
-                //DB::raw('MAX(payment.date) as last_payment_date'),
-                //DB::raw('MAX(sales.date) as last_sales_date')
-            )
-            ->where('contracts.isActive', 1) 
-            ->groupBy('contracts.id', 'customers.name', 'customers.company', 'contracts.date')
-            ->get();      
+    ->leftJoin('sales', 'contracts.id', '=', 'sales.contract_id')
+    ->leftJoin('payment', 'contracts.id', '=', 'payment.contract_id')
+    ->select(
+        'contracts.id',
+        'customers.name as customer_name',
+        'customers.company as customer_company',
+        'contracts.date as contract_date',
+        DB::raw('COALESCE(SUM(sales.amount * sales.rate), 0) as total_sales'), // Multiply amount by rate
+        DB::raw('COALESCE(SUM(payment.amount), 0) as total_payments'),
+        DB::raw('(COALESCE(SUM(payment.amount), 0) - COALESCE(SUM(sales.amount * sales.rate), 0)) as balance'),
+        //DB::raw('MAX(payment.date) as last_payment_date'),
+        //DB::raw('MAX(sales.date) as last_sales_date')
+    )
+    ->where('contracts.isActive', 1) 
+    ->groupBy('contracts.id', 'customers.name', 'customers.company', 'contracts.date')
+    ->get();
+
+     
 
             return view('payment/payment',compact('balances','customers'));
     }
 
-    public function singlecustomerinfo($id){
-        $payments = Payment::where('contract_id', $id)->get();
-        dd($payments);
+    public function singlecustomerpayments($id){
+
+        $payments = Payment::with(['contract' => function ($query) {
+            $query->select('id', 'customer_id')->with(['customer' => function ($query) {
+                $query->select('id', 'name', 'company');
+            }]);
+        }])->where('contract_id', $id)->get();
+        
+        // dd($payments->all());
         return view('payment/customerpayment', compact('payments'));
+        
     }
     public function filtercustomer(Request $request)
     {
@@ -68,9 +77,9 @@ class paymentController extends Controller
                 'customers.name as customer_name',
                 'customers.company as customer_company',
                 // 'contracts.date as contract_date',
-                DB::raw('COALESCE(SUM(sales.amount), 0) as total_sales'),
+                DB::raw('COALESCE(SUM(sales.amount * sales.rate), 0) as total_sales'), // Multiply amount by rate
                 DB::raw('COALESCE(SUM(payment.amount), 0) as total_payments'),
-                DB::raw('(COALESCE(SUM(payment.amount), 0) - COALESCE(SUM(sales.amount), 0)) as balance')
+                DB::raw('(COALESCE(SUM(payment.amount), 0) - COALESCE(SUM(sales.amount * sales.rate), 0)) as balance'),
             )
             ->where('contracts.isActive', 1)
             ->when(!empty($customerIds), function ($query) use ($customerIds) {

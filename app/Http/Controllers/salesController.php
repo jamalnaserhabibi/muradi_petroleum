@@ -19,6 +19,11 @@ class salesController extends Controller
 
     public function singlecustomersalescustomer($id)
     {
+        $products = Contract::with('product')
+        ->get()
+        ->pluck('product')
+        ->unique('id');
+
         $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
         $startOfMonth = $monthRange['start'];
         $endOfMonth = $monthRange['end'];    
@@ -30,7 +35,7 @@ class salesController extends Controller
                     ->whereBetween('date', [$startOfMonth, $endOfMonth]) // Filter by Gregorian start and end dates
                     ->get();
 
-        return view('sales.sales', compact('sales'));
+        return view('sales.sales', compact('sales','products'));
     }
 
     public function sales(Request $request)

@@ -119,9 +119,9 @@
                                                     <a href="{{ route('singlecustomerinfo', $customer) }}"
                                                         class="btn pt-0 pb-0 btn-info" title="Info">
                                                             <i class="fa fa-info-circle"></i>
-                                                        </a>
+                                                    </a>
 
-                                                    <a href="{{ route('singlecustomersalescustomer', $customer->id) }}"
+                                                    <a href="{{ route('singlecustomersalescustomer', $customer->contract->id) }}"
                                                         class="btn pt-0 pb-0 btn-success  fa fa-eye " title="Search">
                                                     </a>
                                                     

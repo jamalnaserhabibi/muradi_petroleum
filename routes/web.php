@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/customers/customers',[CustomerController::class, 'customer'])->name('customers');
     Route::get('/customers/customers-nonactive',[CustomerController::class, 'customer0'])->name('customers0');
     Route::get('/customers/customers_type/',[CustomerController::class, 'typefilter'])->name('typefilter');
+    Route::get('/customer/customerinfo/{id}', [salesController::class, 'singlecustomerinfo'])->name('singlecustomerinfo');
+
     //customerAddForm
     Route::get('/customers/form',[CustomerController::class, 'customeraddform'])->name('customeradd');
     //customerStore
@@ -134,12 +136,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/payment/addpayment', [paymentController::class, 'store'])->name('addpayment');
     Route::get('/payment/editpayment', [paymentController::class, 'editpayment'])->name('editpayment');
     Route::delete('/payment/delete', [paymentController::class, 'delete'])->name('deletepayment');
+    Route::get('/payment/filter/', [paymentController::class, 'filtercustomer'])->name('filtercustomer');
 
-    Route::get('/payment/filtercustomer/', [paymentController::class, 'filtercustomer'])->name('filtercustomer');
+    Route::get('/payment/payment/{id}', [paymentController::class, 'singlecustomerpayments'])->name('singlecustomerpayments');
 
 
     //customer info
-    Route::get('/customer/customerinfo/{id}', [paymentController::class, 'singlecustomerinfo'])->name('singlecustomerinfo');
 
     
 });

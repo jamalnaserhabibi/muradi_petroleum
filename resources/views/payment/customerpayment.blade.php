@@ -13,7 +13,8 @@
             <div class="container-fluid">
                 <div class="totalamount searchBar row mb-1">
                     <h2>
-                        Payments Balance
+                        Payments of  
+                        {{ $payments[0]->contract->customer->name }} - {{ $payments[0]->contract->customer->company }}
                     </h2>
                     <div class="col-6 d-flex align-items-center justify-content-end">
                         <form id="filter-form" action="{{ route('filtercustomer')  }}" method="GET">
@@ -23,7 +24,7 @@
                           
                                 <div class="dropdown ml-4">
                                     {{-- <label for="product-filter">Select</label> --}}
-                                    <select id="product-filter" name="product_id[]" class="select2 form-control"
+                                    {{-- <select id="product-filter" name="product_id[]" class="select2 form-control"
                                     multiple="multiple" data-placeholder="Select Customers" style="width:100%">
                                     @if (count($customers) > 0)
                                         @foreach ($customers as $customer)
@@ -35,7 +36,7 @@
                                     @else
                                         <option value="" disabled>No Data Available</option>
                                     @endif
-                                </select>
+                                </select> --}}
                                 
                                 </div>
                             </div>
@@ -70,30 +71,26 @@
                                     <thead>
                                         <tr>
                                             <th>Customer</th>
-                                            <th>Total Sales</th>
-                                            <th>Total Payments</th>
-                                            <th>Balance</th>
+                                            <th>Amount</th>
+                                            <th>Date</th>
+                                            <th>Details</th>
                                             <th></th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($balances as $balance)
+                                        @foreach ($payments as $payment)
                                             <tr>
-                                                <td > {{ $balance->customer_name }} - {{ $balance->customer_company }} </td>
-                                                <td>{{ number_format($balance->total_sales, 0) }}</td>
-                                                <td>{{ number_format($balance->total_payments, 0) }}</td>
-                                                @if ($balance->balance<0)
-                                                <td class="redcolor">{{ number_format($balance->balance, 0) }}</td>
-                                                @else
-                                                <td>{{ number_format($balance->balance, 0) }}</td>
-                                                @endif
+                                                <td > {{ $payment->contract->customer->name }} - {{ $payment->contract->customer->company }}  </td>
+                                                <td>{{ number_format($payment->amount, 0) }}</td>
+                                                <td style="white-space: nowrap;">{{$payment->date}}<td>
+                                                <td>{{$payment->details}}</td>
                                                 <td>
-                                                    <a href="{{ route('singlecustomerinfo', $balance->id) }}"
-                                                        class="btn pt-0 pb-0 btn-primary fa fa-eye" title="Edit">
+                                                    <a href="{{ route('singlecustomerpayments', $payment->id) }}"
+                                                        class="btn pt-0 pb-0 btn-primary fa fa-eye" title="Payments">
                                                     </a>
 
-                                                    {{-- <form action="{{ route('saledelete', $balance->id) }}" method="POST"
+                                                  {{-- <form action="{{ route('saledelete', $balance->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
@@ -102,7 +99,7 @@
                                                             onclick="return confirm('Are you sure you want to delete this Sale?')">
                                                             <li class="fas fa-trash"></li>
                                                         </button>
-                                                    </form> --}}
+                                                    </form>  --}}
                                                 </td>
                                             </tr>
                                         @endforeach

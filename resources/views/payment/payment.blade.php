@@ -89,8 +89,8 @@
                                                 <td>{{ number_format($balance->balance, 0) }}</td>
                                                 @endif
                                                 <td>
-                                                    <a href="{{ route('singlecustomerinfo', $balance->id) }}"
-                                                        class="btn pt-0 pb-0 btn-primary fa fa-eye" title="Edit">
+                                                    <a href="{{ route('singlecustomerpayments', $balance->id) }}"
+                                                        class="btn pt-0 pb-0 btn-primary fa fa-eye" title="Payments">
                                                     </a>
 
                                                     {{-- <form action="{{ route('saledelete', $balance->id) }}" method="POST"
