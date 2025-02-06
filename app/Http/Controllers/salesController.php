@@ -18,60 +18,59 @@ class salesController extends Controller
 {
 
     public function singlecustomersalescustomer($id)
-        {
-            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-            $startOfMonth = $monthRange['start'];
-            $endOfMonth = $monthRange['end'];    
+    {
+        $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+        $startOfMonth = $monthRange['start'];
+        $endOfMonth = $monthRange['end'];    
 
-            $sales = Sales::with(['tower', 'contract.customer', 'contract.product']) // Include related data
-                        ->whereHas('contract', function ($query) use ($id) {
-                            $query->where('contract_id', $id); // Filter by customer ID
-                        })
-                        ->whereBetween('date', [$startOfMonth, $endOfMonth]) // Filter by Gregorian start and end dates
-                        ->get();
+        $sales = Sales::with(['tower', 'contract.customer', 'contract.product']) // Include related data
+                    ->whereHas('contract', function ($query) use ($id) {
+                        $query->where('contract_id', $id); // Filter by customer ID
+                    })
+                    ->whereBetween('date', [$startOfMonth, $endOfMonth]) // Filter by Gregorian start and end dates
+                    ->get();
 
-            return view('sales.sales', compact('sales'));
-        }
+        return view('sales.sales', compact('sales'));
+    }
 
-        public function sales(Request $request)
-        {
-            $astart = $request->start_date;
-            $aend = $request->end_date;
-            $products = $request->input('product_id', []); // Retrieve selected product IDs (if any)
-        
-            // Initialize variables for start and end dates
-            $start = null;
-            $end = null;
-        
-            if ($request->filled('start_date') && $request->filled('end_date')) {
-                $start = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
-                $end = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
-            } else {
-                $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-                $start = $monthRange['start'];
-                $end = $monthRange['end'];
-            }
-        
-            $sales = Sales::with(['tower', 'contract.customer', 'contract.product'])
-                ->whereBetween('date', [$start, $end]); // Filter by date range
-        
-            if (!empty($products)) {
-                $sales->whereHas('contract.product', function ($query) use ($products) {
-                    $query->whereIn('id', $products);
-                });
-            }
-        
-            $sales = $sales->get(); 
-        
-            $products = Contract::with('product')
-                ->get()
-                ->pluck('product')
-                ->unique('id');
-        
-            return view('sales.sales', compact('sales', 'products', 'astart', 'aend'));
-        }
-        
+    public function sales(Request $request)
+    {
+        $astart = $request->start_date;
+        $aend = $request->end_date;
+        $products = $request->input('product_id', []); // Retrieve selected product IDs (if any)
     
+        // Initialize variables for start and end dates
+        $start = null;
+        $end = null;
+    
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $start = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
+            $end = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
+        } else {
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $start = $monthRange['start'];
+            $end = $monthRange['end'];
+        }
+    
+        $sales = Sales::with(['tower', 'contract.customer', 'contract.product'])
+            ->whereBetween('date', [$start, $end]); // Filter by date range
+    
+        if (!empty($products)) {
+            $sales->whereHas('contract.product', function ($query) use ($products) {
+                $query->whereIn('id', $products);
+            });
+        }
+    
+        $sales = $sales->get(); 
+    
+        $products = Contract::with('product')
+            ->get()
+            ->pluck('product')
+            ->unique('id');
+    
+        return view('sales.sales', compact('sales', 'products', 'astart', 'aend'));
+    }
+           
     public function salesform()
     {
         $customers = Customers::whereHas('contract', function ($query) {
@@ -82,6 +81,7 @@ class salesController extends Controller
         
         return view('sales.form', compact('towers', 'customers'));
     }
+
     public function store(Request $request)
     {
         // Validate the request data
@@ -110,7 +110,9 @@ class salesController extends Controller
         ]);
         return redirect()->route('sales')->with('success', 'Sale Added Successfully!');
     }
-    public function delete($request){
+
+    public function delete($request)
+    {
 
         // dd($request);
         $sale = Sales::findOrFail($request);

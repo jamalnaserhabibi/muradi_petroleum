@@ -11,6 +11,10 @@
         color: white;
     }
 }
+.redcolor{
+    background-color: rgba(255, 0, 0, 0.522);
+    color: white;
+}
 @media print {
     h4 {
         -webkit-print-color-adjust: exact; /* For WebKit-based browsers like Chrome */

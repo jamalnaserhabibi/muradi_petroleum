@@ -31,13 +31,10 @@
                                     @method('PATCH')
                                 @endif
                                 <div class="card-body mt-1">
-                                    @error('date')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
+                               
                                     @error('contract_id')
                                     <span class="text-danger">{{ $message }}</span>
-                                @enderror
+                                    @enderror
                                 <select class="form-control mb-3 mt-3" name="tower_id" id="tower" required>
                                     <option value="" disabled {{ isset($sale) ? '' : 'selected' }}>Select Tower</option>
                                     @foreach ($towers as $tower)
@@ -78,7 +75,10 @@
                                             min="1" id="rate" placeholder="Rate"
                                             value="{{ old('rate', $sale->rate ?? request('rate')) }}" required>
                                             <div class="input-group date mb-3" id="reservationdate" data-target-input="nearest">
-
+                                                
+                                                @error('date')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                             <input type="text" name="date" id="date"
                                                 class="form-control datetimepicker-input" data-target="#reservationdate"
                                                 value="{{ old('date', isset($sale->date) ? \Carbon\Carbon::parse($sale->date)->format('Y-m-d H:i A') : now()->format('Y-m-d H:i A')) }}"
