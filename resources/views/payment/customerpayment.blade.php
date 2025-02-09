@@ -21,7 +21,7 @@
                         <h2>No Payments Data</h2>
                     @endif
                     <div class="col-6 d-flex align-items-center justify-content-end">
-                        <form id="filter-form" action="{{ route('filterpaymentdate') }}" method="GET">
+                        <form id="filter-form" action="{{ route('singlecustomerpayments', $contractId) }}" method="GET">
                             <input type="hidden" name="start_date" id="start-date">
                             <input type="hidden" name="end_date" id="end-date">
                             <div class="form-group d-flex">
@@ -29,6 +29,11 @@
                                 <div>
                                     <div style="max-width: 400px;" id="reservationdate"
                                         class="d-flex align-items-center justify-content-between">
+                                        @if(isset($payments) && count($payments) > 0)
+                                            <input type="hidden" name="contractId" value="{{ $payments[0]->contract->id }}">
+                                        @else
+                                            <input type="hidden" name="contractId" value="{{ $contractId }}">
+                                        @endif
                                         <input value="{{ isset($astart) ? $astart : '' }}" type="text" name="start_date"
                                             id="start_date" class="form-control" placeholder="Start Date"
                                             style="max-width: 150px;" required />

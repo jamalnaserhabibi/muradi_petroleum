@@ -139,7 +139,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/filter/', [paymentController::class, 'filtercustomer'])->name('filtercustomer');
 
     Route::get('/payment/payment/{id}', [paymentController::class, 'singlecustomerpayments'])->name('singlecustomerpayments');
-    Route::get('/payment/paymentdatefilter/', [paymentController::class, 'filterpaymentdate'])->name('filterpaymentdate');
+    Route::get('/payment/paymentdatefilter/{id}', [paymentController::class, 'filterpaymentdate'])->name('filterpaymentdate');
 
 
     //customer info

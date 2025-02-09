@@ -66,15 +66,36 @@ class paymentController extends Controller
             return view('payment/payment',compact('balances','customers'));
     }
 
-    public function singlecustomerpayments($id){
+    public function singlecustomerpayments(Request $request, $id){
 
+        
+        $astart = $request->start_date;
+        $aend = $request->end_date;
+        $contractId = $request->contractId ?? $id;
+        // $contractId = $request->contractId;
+
+        $start = null;
+        $end = null;
+
+        if ($request->filled('start_date') && $request->filled('end_date')) {
+            $start = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
+            $end = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
+        } else {
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $start = $monthRange['start'];
+            $end = $monthRange['end'];
+        }
+        
         $payments = Payment::with(['contract' => function ($query) {
             $query->select('id', 'customer_id')->with(['customer' => function ($query) {
                 $query->select('id', 'name', 'company');
             }]);
-        }])->where('contract_id', $id)->get();
-        
-        return view('payment/customerpayment', compact('payments'));
+        }])
+        ->where('contract_id', $contractId)
+        ->whereBetween('date', [$start, $end])  // Adding the date range filter
+        ->get();
+
+        return view('payment/customerpayment', compact('payments','astart','aend','contractId'));
         
     }
     public function filtercustomer(Request $request)
@@ -135,23 +156,7 @@ class paymentController extends Controller
     }
     
     public function filterpaymentdate(Request $request){
-        
-        $astart = $request->start_date;
-        $aend = $request->end_date;
-
-        $start = null;
-        $end = null;
-
-        if ($request->filled('start_date') && $request->filled('end_date')) {
-            $start = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
-            $end = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
-        } else {
-            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-            $start = $monthRange['start'];
-            $end = $monthRange['end'];
-        }
-        
-
+       
     }
 
     public function store(Request $request)
