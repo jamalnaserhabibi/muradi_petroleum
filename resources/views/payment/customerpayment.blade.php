@@ -12,38 +12,36 @@
         <section class="content-header">
             <div class="container-fluid">
                 <div class="totalamount searchBar row mb-1">
-                    <h2>
-                        Payments of  
-                        {{ $payments[0]->contract->customer->name }} - {{ $payments[0]->contract->customer->company }}
-                    </h2>
+                    @if(isset($payments) && count($payments) > 0)
+                        <h2>
+                            Payments of
+                            {{ $payments[0]->contract->customer->name }} - {{ $payments[0]->contract->customer->company }}
+                        </h2>
+                    @else
+                        <h2>No Payments Data</h2>
+                    @endif
                     <div class="col-6 d-flex align-items-center justify-content-end">
-                        <form id="filter-form" action="{{ route('filtercustomer')  }}" method="GET">
+                        <form id="filter-form" action="{{ route('filterpaymentdate') }}" method="GET">
                             <input type="hidden" name="start_date" id="start-date">
                             <input type="hidden" name="end_date" id="end-date">
                             <div class="form-group d-flex">
-                          
-                                <div class="dropdown ml-4">
-                                    {{-- <label for="product-filter">Select</label> --}}
-                                    {{-- <select id="product-filter" name="product_id[]" class="select2 form-control"
-                                    multiple="multiple" data-placeholder="Select Customers" style="width:100%">
-                                    @if (count($customers) > 0)
-                                        @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}"
-                                                {{ in_array($customer->id, request('product_id', [])) ? 'selected' : '' }}>
-                                                {{ $customer->name}}- {{$customer->company }}
-                                            </option>
-                                        @endforeach
-                                    @else
-                                        <option value="" disabled>No Data Available</option>
-                                    @endif
-                                </select> --}}
-                                
+
+                                <div>
+                                    <div style="max-width: 400px;" id="reservationdate"
+                                        class="d-flex align-items-center justify-content-between">
+                                        <input value="{{ isset($astart) ? $astart : '' }}" type="text" name="start_date"
+                                            id="start_date" class="form-control" placeholder="Start Date"
+                                            style="max-width: 150px;" required />
+                                        <span style="margin: 0 10px; font-weight: bold;">to</span>
+                                        <input value="{{ isset($aend) ? $aend : '' }}" type="text" name="end_date"
+                                            id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;"
+                                            required />
+                                    </div>
                                 </div>
                             </div>
                         </form>
                         <a href="{{ route('addpaymentform') }}" class="btn brannedbtn ml-2">+ New</a>
                     </div>
-
                     @if (session('success'))
                         <ol>
                             <div class="alert alert-success" id="success-alert">
@@ -74,46 +72,47 @@
                                             <th>Amount</th>
                                             <th>Date</th>
                                             <th>Details</th>
-                                            <th></th>
+                                            <th>Action</th> <!-- Ensure this column exists -->
                                         </tr>
                                     </thead>
-
                                     <tbody>
                                         @foreach ($payments as $payment)
-                                            <tr>
-                                                <td > {{ $payment->contract->customer->name }} - {{ $payment->contract->customer->company }}  </td>
-                                                <td>{{ number_format($payment->amount, 0) }}</td>
-                                                <td style="white-space: nowrap;">{{$payment->date}}<td>
-                                                <td>{{$payment->details}}</td>
-                                                <td>
-                                                    <a href="{{ route('singlecustomerpayments', $payment->id) }}"
-                                                        class="btn pt-0 pb-0 btn-primary fa fa-eye" title="Payments">
+                                        <tr>
+                                            <td>{{ $payment->contract->customer->name }} - {{ $payment->contract->customer->company }}</td>
+                                            <td>{{ number_format($payment->amount, 0) }}</td>
+                                            <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($payment->date); }}</td>
+                                            <td>{{ $payment->details }}</td>
+                                            <td>
+                                               
+                                                    <a href="{{ route('editpayment', $payment->id) }}"
+                                                        class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                     </a>
 
-                                                  {{-- <form action="{{ route('saledelete', $balance->id) }}" method="POST"
+                                                    <form action="{{ route('deletepayment', $payment) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn pt-0 pb-0 btn-danger"
                                                             title="Delete"
-                                                            onclick="return confirm('Are you sure you want to delete this Sale?')">
+                                                            onclick="return confirm('Are you sure you want to delete this payment?')">
                                                             <li class="fas fa-trash"></li>
                                                         </button>
-                                                    </form>  --}}
-                                                </td>
-                                            </tr>
+                                                    </form>
+                                                </td>                                           
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <th>Total</th>
-                                            <th id="total-sales"></th>
-                                            <th id="total-payment"></th>
-                                            <th id="total-balance"></th>
+                                            <th id="total-sales"></th> <!-- Only total sales is needed -->
+                                            <th></th>
+                                            <th></th>
                                             <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>
+                                
 
                             </div>
 
@@ -168,77 +167,70 @@
     {{-- <script src="dist/js/adminlte.min2167.js?v=3.2.0"></script> --}}
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-    $(function () {
-        const table = $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "footerCallback": function (row, data, start, end, display) {
-                updateFooterTotals(this.api());
-            },
-            "buttons": [
-                {
-                    extend: 'excel',
-                    footer: true,
-                    exportOptions: {
-                        columns: ':not(:last-child)' // Exclude last column
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    footer: true,
-                    exportOptions: {
-                        columns: ':not(:last-child)'
-                    }
-                },
-                {
-                    extend: 'print',
-                    footer: true,
-                    exportOptions: {
-                        columns: ':not(:last-child)'
-                    }
+        document.addEventListener('DOMContentLoaded', function() {
+            $(document).ready(function() {
+    const table = $("#example1").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "footerCallback": function(row, data, start, end, display) {
+            updateFooterTotals(this.api());
+        },
+        "buttons": [
+            {
+                extend: 'excel',
+                footer: true,
+                exportOptions: {
+                    columns: ':not(:last-child)' // Exclude last column
                 }
-            ]
-        });
+            },
+            {
+                extend: 'pdf',
+                footer: true,
+                exportOptions: {
+                    columns: ':not(:last-child)'
+                }
+            },
+            {
+                extend: 'print',
+                footer: true,
+                exportOptions: {
+                    columns: ':not(:last-child)'
+                }
+            }
+        ]
+    });
 
-        // Append buttons
-        table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-        // Function to calculate column total
-        function calculateColumnTotal(api, columnIndex) {
-            return api.column(columnIndex, { search: 'applied' }).data().reduce((total, value) => {
-                const numericValue = parseFloat(value.replace(/,/g, '')); // Remove commas
+    function updateFooterTotals(api) {
+        let totalAmount = api
+            .column(1, { search: "applied" }) // Ensure we use the correct column index (1 = Amount)
+            .data()
+            .reduce((total, value) => {
+                let numericValue = parseFloat(value.toString().replace(/[^0-9.-]+/g, "")); // Remove non-numeric characters
                 return !isNaN(numericValue) ? total + numericValue : total;
             }, 0);
-        }
 
-        // Update the footer with calculated totals
-        function updateFooterTotals(api) {
-            const totalSales = calculateColumnTotal(api, 1); // Column index 1: Total Sales
-            const totalPayment = calculateColumnTotal(api, 2); // Column index 2: Total Payment
-            const totalBalance = calculateColumnTotal(api, 3); // Column index 3: Balance
-
-            // Format the totals
-            const formattedTotalSales = totalSales.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            const formattedTotalPayment = totalPayment.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            const formattedTotalBalance = totalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-            // Update the footer
-            $('#total-sales').text(formattedTotalSales);
-            $('#total-payment').text(formattedTotalPayment);
-            $('#total-balance').text(formattedTotalBalance);
-        }
-
-        // Initial footer update
-        updateFooterTotals(table);
-
-        // Update totals when the table is redrawn (pagination, search, filter)
-        table.on('draw', function () {
-            updateFooterTotals(table);
+        // Format total amount
+        let formattedTotal = totalAmount.toLocaleString("en-US", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
         });
+
+        // Apply to footer
+        $("#total-sales").html(formattedTotal);
+    }
+
+    // Trigger footer calculation after table draw
+    table.on("draw", function() {
+        updateFooterTotals(table);
     });
+
+    updateFooterTotals(table); // Initial footer calculation
 });
 
+
+        });
     </script>
 @endsection

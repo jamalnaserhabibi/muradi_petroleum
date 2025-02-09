@@ -130,7 +130,7 @@ Route::middleware('auth')->group(function () {
 
 
     //payment
-    Route::get('/payment/payment', [paymentController::class, 'payment'])->name('payment');
+    Route::get('/payment/payments', [paymentController::class, 'payment'])->name('payment');
     Route::get('/payment/addpaymentform', [paymentController::class, 'addpaymentform'])->name('addpaymentform');
     Route::patch('/payment/updatepayment', [paymentController::class, 'updatepayment'])->name('updatepayment');
     Route::post('/payment/addpayment', [paymentController::class, 'store'])->name('addpayment');
@@ -139,6 +139,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/filter/', [paymentController::class, 'filtercustomer'])->name('filtercustomer');
 
     Route::get('/payment/payment/{id}', [paymentController::class, 'singlecustomerpayments'])->name('singlecustomerpayments');
+    Route::get('/payment/paymentdatefilter/', [paymentController::class, 'filterpaymentdate'])->name('filterpaymentdate');
 
 
     //customer info
