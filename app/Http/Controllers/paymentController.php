@@ -177,8 +177,13 @@ class paymentController extends Controller
         return redirect()->route('payment')->with('success', 'Payment Added Successfully!');
     }
 
-    public function editpayment(){
-        return view('payment/form');
+    public function editpayment($id){
+        $payment = Payment::with(['contract' => function ($query) {
+            $query->select('id', 'customer_id')->with(['customer' => function ($query) {
+                $query->select('id', 'name', 'company');
+            }]);
+        }])->findOrFail($id);
+        return view('payment/form', compact('payment'));
     }
 
     public function updatepayment(){

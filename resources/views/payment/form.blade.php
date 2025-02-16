@@ -9,7 +9,7 @@
                             <div class="card-header brannedbtn">
                                 <h3 class="card-title ">Add Payment</h3>
                             </div>
-
+                            {{-- {{$payment}} --}}
                             <form action="{{ isset($payment) ? route('updatepayment', $payment->id) : route('addpayment') }}"
                                 method="POST">
                                 @csrf
