@@ -3,6 +3,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
@@ -144,7 +145,14 @@ Route::middleware('auth')->group(function () {
 
     //customer info
 
-    
+
+// Backup Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/backup', [BackupController::class, 'backupform'])->name('backup');
+    Route::get('/backup/getbackup', [BackupController::class, 'backup'])->name('getbackup');
+    Route::post('/backup/restore', [BackupController::class, 'restore'])->name('restore'); // Must be POST
+});
+
 });
 
 require __DIR__.'/auth.php';

@@ -278,14 +278,70 @@
                                 </p>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
+                        <li class="nav-item">
+                            <a href="{{ route('backup') }}" class="nav-link">
+                                <i class="nav-icon fas fa-database"></i>
+                                <p>
+                                    Backup And Restore
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-sticky-note"></i>
                                 <p>
                                     Note
                                 </p>
                             </a>
-                        </li> --}}
+                        </li>
+                        <li class="nav-item">
+                            <a   class="nav-link">
+                                <i class=" "></i>
+                                <p>
+                                     
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a   class="nav-link">
+                                <i class=" "></i>
+                                <p>
+                                     
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a  class="nav-link">
+                                <i class=" "></i>
+                                <p>
+                                     
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a  class="nav-link">
+                                <i class=" "></i>
+                                <p>
+                                     
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a  class="nav-link">
+                                <i class=" "></i>
+                                <p>
+                                     
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a  class="nav-link">
+                                <i class=" "></i>
+                                <p>
+                                     
+                                </p>
+                            </a>
+                        </li>
                         {{-- <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fas fa-shopping-cart"></i>
