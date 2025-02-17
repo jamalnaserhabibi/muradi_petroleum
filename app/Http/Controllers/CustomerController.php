@@ -139,7 +139,7 @@ class CustomerController extends Controller
             'document' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:500',
         ]);
-
+        dd($payment);
         $customer->update($request->all());
 
         return redirect()->route('customers')->with('success', 'Customer updated successfully!');

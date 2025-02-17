@@ -183,11 +183,33 @@ class paymentController extends Controller
                 $query->select('id', 'name', 'company');
             }]);
         }])->findOrFail($id);
-        return view('payment/form', compact('payment'));
+
+        $customers = Customers::whereHas('contract', function ($query) {
+            $query->where('isActive', 1);
+        })->with(['contract.product'])->get();
+
+        return view('payment/form', compact('payment','customers'));
     }
 
-    public function updatepayment(){
-        // return view('payment/form');
+    public function updatepayment(Request $request, Payment $payment){
+        // Validate the request data
+        $validated = $request->validate([
+            'contract_id' => 'required|exists:contracts,id',
+            'amount' => 'required|numeric|min:1', 
+            'details' => 'nullable|string', 
+        ]);
+
+
+        // Update the payment record
+        $payment->update([
+            'contract_id' => $validated['contract_id'],
+            'amount' => $validated['amount'],
+            'details' => $validated['details'],
+        ]);
+
+        
+        return redirect()->route('payment')->with('success', 'Payment Updated Successfully!');
+     
     }
     public function delete($id)
     {

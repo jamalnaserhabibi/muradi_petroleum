@@ -132,7 +132,7 @@ Route::middleware('auth')->group(function () {
     //payment
     Route::get('/payment/payments', [paymentController::class, 'payment'])->name('payment');
     Route::get('/payment/addpaymentform', [paymentController::class, 'addpaymentform'])->name('addpaymentform');
-    Route::patch('/payment/updatepayment', [paymentController::class, 'updatepayment'])->name('updatepayment');
+    Route::patch('/payment/{payment}/updatepayment', [paymentController::class, 'updatepayment'])->name('updatepayment');
     Route::post('/payment/addpayment', [paymentController::class, 'store'])->name('addpayment');
     Route::get('/payment/editpayment/{id}', [paymentController::class, 'editpayment'])->name('editpayment');
     Route::delete('/payment/delete', [paymentController::class, 'delete'])->name('deletepayment');
