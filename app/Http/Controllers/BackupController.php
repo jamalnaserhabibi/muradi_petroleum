@@ -16,37 +16,17 @@ class BackupController extends Controller
     }
 
     // Create Backup
-    public function backup()
-    {
-        // Run Laravel backup command
-        Artisan::call('backup:run');
-
-        return redirect()->back()->with('success', 'Backup created successfully.');
-    }
+        public function backup()
+        {
+            // Run Laravel backup command
+          
+        }
 
        // Restore Backup (Fixed)
        public function restore(Request $request)
        {
-           $request->validate([
-               'backup' => 'required|file|mimes:zip',
-           ]);
-   
-           $file = $request->file('backup');
-           $backupPath = storage_path('app/backups/');
-   
-           // Move uploaded backup to the backup directory
-           $file->move($backupPath, $file->getClientOriginalName());
-   
-           // Extract the backup file
-           $zip = new ZipArchive;
-           $zipFilePath = $backupPath . $file->getClientOriginalName();
-   
-           if ($zip->open($zipFilePath) === TRUE) {
-               $zip->extractTo(base_path()); // Extract to project root
-               $zip->close();
-               return redirect()->back()->with('success', 'Backup restored successfully.');
-           }
-   
+              // Get the backup file
+            dd('in restore');
            return redirect()->back()->with('error', 'Failed to restore backup.');
        }
 }

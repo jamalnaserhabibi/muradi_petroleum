@@ -143,15 +143,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/paymentdatefilter/{id}', [paymentController::class, 'filterpaymentdate'])->name('filterpaymentdate');
 
 
-    //customer info
+    // Backup Routes
 
-
-// Backup Routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/backup', [BackupController::class, 'backupform'])->name('backup');
-    Route::get('/backup/getbackup', [BackupController::class, 'backup'])->name('getbackup');
-    Route::post('/backup/restore', [BackupController::class, 'restore'])->name('restore'); // Must be POST
-});
+        Route::get('/backup', [BackupController::class, 'backupform'])->name('backup');
+        Route::get('/backup/getbackup', [BackupController::class, 'backup'])->name('getbackup');
+        Route::post('/backup/restore', [BackupController::class, 'restore'])->name('restore'); // Must be POST
 
 });
 
