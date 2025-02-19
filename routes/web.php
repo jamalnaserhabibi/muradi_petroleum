@@ -28,8 +28,6 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware('auth')->group(function () {
-    
-
     Route::get('/admin/register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('register', [RegisteredUserController::class, 'store'])->name('addnewuser');
     Route::delete('/admin/useraccounts/{user}', [RegisteredUserController::class, 'destroy'])->name('users.destroy');
@@ -145,9 +143,9 @@ Route::middleware('auth')->group(function () {
 
     // Backup Routes
 
-        Route::get('/backup', [BackupController::class, 'backupform'])->name('backup');
-        Route::get('/backup/getbackup', [BackupController::class, 'backup'])->name('getbackup');
-        Route::post('/backup/restore', [BackupController::class, 'restore'])->name('restore'); // Must be POST
+    Route::get('/backup', [BackupController::class, 'backupform'])->name('backup');
+    Route::get('/backup/getbackup', [BackupController::class, 'backup'])->name('getbackup');
+    Route::post('/backup/restore', [BackupController::class, 'restore'])->name('restore'); // Must be POST
 
 });
 
