@@ -9,8 +9,8 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^11.31",
+        "php": "^7.4.2",
+        "laravel/framework": "^8.0",
         "laravel/tinker": "^2.9",
         "morilog/jalali": "^3.4",
         "spatie/laravel-backup": "^9.2"
@@ -69,6 +69,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "7.4.2"
         }
     },
     "minimum-stability": "stable",

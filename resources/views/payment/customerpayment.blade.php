@@ -18,7 +18,7 @@
                             {{ $payments[0]->contract->customer->name }} - {{ $payments[0]->contract->customer->company }}
                         </h2>
                     @else
-                        <h2>No Payments Data</h2>
+                        <h2>No Payments on this Date</h2>
                     @endif
                     <div class="col-6 d-flex align-items-center justify-content-end">
                         <form id="filter-form" action="{{ route('singlecustomerpayments', $contractId) }}" method="GET">
