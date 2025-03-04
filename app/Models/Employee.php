@@ -15,4 +15,9 @@ class Employee extends Model
     protected $casts = [
         'date' => 'date',
     ];
+
+    public function towers()
+    {
+        return $this->belongsToMany(Tower::class, 'distributer')->withTimestamps();
+    }
 }

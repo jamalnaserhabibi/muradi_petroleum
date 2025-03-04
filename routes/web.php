@@ -15,6 +15,7 @@ use App\Http\Controllers\salesController;
 use App\Http\Controllers\towerController;
 use App\Http\Controllers\serial_numbersController;
 use App\Models\Serial_Numbers;
+use App\Http\Controllers\DistributerController;
 
 Route::get('/', function () {
     return view('admin/login');
@@ -147,6 +148,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/backup/getbackup', [BackupController::class, 'backup'])->name('getbackup');
     Route::post('/backup/restore', [BackupController::class, 'restore'])->name('restore'); // Must be POST
 
+
+
+    //distributer
+
+    Route::get('/distributers', [DistributerController::class, 'index'])->name('distributers');
+    Route::post('/distributers', [DistributerController::class, 'store'])->name('store_distributer');
+    Route::put('/distributers/{id}', [DistributerController::class, 'update'])->name('update_distributer');
+    Route::delete('/distributers/{employee_id}/{tower_id}', [DistributerController::class, 'destroy'])->name('delete_distributer');
+    Route::get('/distributers/{employee_id}/{tower_id}', [DistributerController::class, 'edit'])->name('edit_distributer');
+    Route::post('/distributors/assign', [DistributerController::class, 'assign'])->name('distributors.assign');
 });
 
 require __DIR__.'/auth.php';

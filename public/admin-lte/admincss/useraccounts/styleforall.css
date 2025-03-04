@@ -12,6 +12,15 @@
   color: white;
 }
 
+.tower-info-delete:hover {
+  background-color: #d1d5d8 !important; /* Slightly darker background on hover */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.tower-info-delete:hover .fas.fa-trash {
+  color: #a71d2a !important; /* Darker red for the trash icon on hover */
+}
+
 .redcolor {
   background-color: rgba(255, 0, 0, 0.522);
   color: white;

@@ -80,7 +80,7 @@
                         
                                 <!-- Rate Input -->
                                 <input class="form-control form-control mb-3" name="rate" type="number" step="0.01" min="1"
-                                       id="rate" placeholder="Rate"
+                                       id="ratee" placeholder="Rate"
                                        value="{{ old('rate', $contract->rate ?? '') }}">
                         
                                 @error('details')

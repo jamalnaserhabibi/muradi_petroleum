@@ -30,5 +30,8 @@ class Tower extends Model
         return $this->hasMany(Sales::class, 'tower_id', 'id');
     }
     
-    
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class, 'distributer')->withTimestamps();
+    }
 }
