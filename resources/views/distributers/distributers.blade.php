@@ -51,16 +51,14 @@
                                         @foreach ($employees as $employee)
                                             <tr>
                                                 <td>{{ $employee->fullname }}</td>
-                                                                                         
                                                 <td>
                                                     @foreach($employee->towers as $tower)
                                                         <div class="d-flex align-items-center mb-2">
                                                             <!-- Combined Tower Information and Delete Button -->
-                                                            <div class="tower-info-delete d-flex align-items-center p-2 rounded" style="background-color: #e9ecef; cursor: pointer;">
+                                                            <div class="tower-info-delete d-flex align-items-center p-2 rounded" >
                                                                 <!-- Tower Information -->
                                                                 <span class="btn btn-info mr-2">{{ $tower->serial }} - {{ $tower->name }}</span>
                                                 
-                                                                <!-- Delete Form -->
                                                                 <form action="{{ route('delete_distributer', ['employee_id' => $employee->id, 'tower_id' => $tower->id]) }}" method="POST" style="display:inline;">
                                                                     @csrf
                                                                     @method('DELETE')
