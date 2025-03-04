@@ -52,17 +52,23 @@
                                             <tr>
                                                 <td>{{ $employee->fullname }}</td>
                                                 <td>
-                                                    @foreach($employee->towers as $tower)
+                                                    @foreach ($employee->towers as $tower)
                                                         <div class="d-flex align-items-center mb-2">
                                                             <!-- Combined Tower Information and Delete Button -->
-                                                            <div class="tower-info-delete d-flex align-items-center p-2 rounded" >
+                                                            <div
+                                                                class="tower-info-delete d-flex align-items-center p-2 rounded">
                                                                 <!-- Tower Information -->
-                                                                <span class="btn btn-info mr-2">{{ $tower->serial }} - {{ $tower->name }}</span>
-                                                
-                                                                <form action="{{ route('delete_distributer', ['employee_id' => $employee->id, 'tower_id' => $tower->id]) }}" method="POST" style="display:inline;">
+                                                                <span class="btn btn-info mr-2">{{ $tower->serial }} -
+                                                                    {{ $tower->name }}</span>
+
+                                                                <form
+                                                                    action="{{ route('delete_distributer', ['employee_id' => $employee->id, 'tower_id' => $tower->id]) }}"
+                                                                    method="POST" style="display:inline;">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" title="Delete" class="btn btn-link p-0 border-0 bg-transparent" onclick="return confirm('Are you sure you want to remove this tower assignment?')">
+                                                                    <button type="submit" title="Delete"
+                                                                        class="btn btn-link p-0 border-0 bg-transparent"
+                                                                        onclick="return confirm('Are you sure you want to remove this tower assignment?')">
                                                                         <i class="fas fa-trash text-danger"></i>
                                                                     </button>
                                                                 </form>
@@ -70,7 +76,7 @@
                                                         </div>
                                                     @endforeach
                                                 </td>
-                                                
+
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -83,45 +89,47 @@
         </section>
     </div>
 
-<!-- Modal for Assigning Tower -->
-<div class="modal fade" id="assignTowerModal" tabindex="-1" role="dialog" aria-labelledby="assignTowerModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="assignTowerModalLabel">Assign Tower to Employee</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div><div class="modal-body">
-                <form action="{{ route('distributors.assign') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="employee_id">Select Employee</label>
-                        <select class="form-control" id="employee_id" name="employee_id" required>
-                            <option value="">Select Employee</option>
-                            @foreach($allemployees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->fullname }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="tower_id">Select Tower(s)</label>
-                        <select class="form-control" id="tower_id" name="tower_id[]" multiple required>
-                            @foreach($availableTowers as $tower)
-                                <option value="{{ $tower->id }}">{{ $tower->serial }} - {{ $tower->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Assign Tower</button>
-                    </div>
-                </form>
+    <!-- Modal for Assigning Tower -->
+    <div class="modal fade" id="assignTowerModal" tabindex="-1" role="dialog" aria-labelledby="assignTowerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignTowerModalLabel">Assign Tower to Employee</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('distributors.assign') }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="employee_id">Select Employee</label>
+                            <select class="form-control" id="employee_id" name="employee_id" required>
+                                <option value="">Select Employee</option>
+                                @foreach ($allemployees as $employee)
+                                    <option value="{{ $employee->id }}">{{ $employee->fullname }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tower_id">Select Tower(s)</label>
+                            <select class="form-control" id="tower_id" name="tower_id[]" multiple required>
+                                @foreach ($availableTowers as $tower)
+                                    <option value="{{ $tower->id }}">{{ $tower->serial }} - {{ $tower->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Assign Tower</button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
-            
         </div>
     </div>
-</div>
 @endsection
 
 @section('CustomScript')
@@ -164,14 +172,15 @@
                         extend: 'print',
                         footer: true,
                         exportOptions: {
-                            columns: ':not(:last-child)' // Exclude the last column (Action column)
+                            columns: '*' // Include all columns
                         }
                     }
                 ]
             });
-
+    
             // Append buttons to the container
             table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
     </script>
+    
 @endsection
