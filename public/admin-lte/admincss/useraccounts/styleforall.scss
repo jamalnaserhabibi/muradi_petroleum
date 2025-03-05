@@ -20,7 +20,12 @@
     .tower-info-delete:hover .fas.fa-trash {
         color: #a71d2a !important; /* Darker red for the trash icon on hover */
     }
-
+    .pageTitle {
+        p{
+            // font-family: Arial, Helvetica, sans-serif;
+            padding: 0 10px;
+        }
+    }
 .redcolor{
     background-color: rgba(255, 0, 0, 0.522);
     color: white;

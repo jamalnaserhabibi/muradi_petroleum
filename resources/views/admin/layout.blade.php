@@ -185,14 +185,14 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('sales') }}" class="nav-link">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Sales
                                 </p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a href="{{ route('meter_reading') }}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -203,9 +203,17 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('distributers') }}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <i class="nav-icon fas fa-tint"></i>
                                 <p>
                                     Distributers
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('distribution') }}" class="nav-link">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <p>
+                                    Distribution
                                 </p>
                             </a>
                         </li>

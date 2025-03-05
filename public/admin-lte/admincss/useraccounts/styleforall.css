@@ -21,6 +21,10 @@
   color: #a71d2a !important; /* Darker red for the trash icon on hover */
 }
 
+.pageTitle p {
+  padding: 0 10px;
+}
+
 .redcolor {
   background-color: rgba(255, 0, 0, 0.522);
   color: white;

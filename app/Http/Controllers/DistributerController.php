@@ -31,7 +31,6 @@ class DistributerController extends Controller
             'tower_id' => 'required|array', // Ensure tower_id is an array
             'tower_id.*' => 'exists:towers,id', // Ensure each tower_id exists in the towers table
         ]);
-        // Find the employee
         $employee = Employee::find($request->employee_id);
         // Sync the selected towers with the employee
         $employee->towers()->sync($request->tower_id);
@@ -54,27 +53,9 @@ class DistributerController extends Controller
         return redirect()->back()->with('success', 'Distributor assigned successfully');
     }
 
-    // Update Distributor Assignment
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-            'tower_id' => 'required|exists:towers,id',
-            'assigned_date' => 'required|date',
-        ]);
-
-        $employee = Employee::find($request->employee_id);
-        $employee->towers()->syncWithoutDetaching([$request->tower_id => [
-            'assigned_date' => $request->assigned_date,
-        ]]);
-
-        return redirect()->back()->with('success', 'Assignment updated successfully');
-    }
-
-    // Delete Distributor Assignment
+       // Delete Distributor Assignment
     public function destroy($employee_id, $tower_id)
     {
-        // Find the employee by ID
         $employee = Employee::find($employee_id);
     
         // Check if the employee exists

@@ -16,6 +16,7 @@ use App\Http\Controllers\towerController;
 use App\Http\Controllers\serial_numbersController;
 use App\Models\Serial_Numbers;
 use App\Http\Controllers\DistributerController;
+use App\Http\Controllers\DistributionController;
 
 Route::get('/', function () {
     return view('admin/login');
@@ -151,13 +152,20 @@ Route::middleware('auth')->group(function () {
 
 
     //distributer
-
     Route::get('/distributers', [DistributerController::class, 'index'])->name('distributers');
     Route::post('/distributers', [DistributerController::class, 'store'])->name('store_distributer');
-    Route::put('/distributers/{id}', [DistributerController::class, 'update'])->name('update_distributer');
     Route::delete('/distributers/{employee_id}/{tower_id}', [DistributerController::class, 'destroy'])->name('delete_distributer');
-    Route::get('/distributers/{employee_id}/{tower_id}', [DistributerController::class, 'edit'])->name('edit_distributer');
     Route::post('/distributors/assign', [DistributerController::class, 'assign'])->name('distributors.assign');
+
+    //distribution
+    Route::get('/distribution', [DistributionController::class, 'index'])->name('distribution');
+    Route::delete('/distribution/{distribution}', [DistributionController::class, 'destroy'])->name('distribution_delete');
+    Route::get('/get-towers', [DistributionController::class, 'getTowers'])->name('get-towers');
+    Route::post('/distribution/store', [DistributionController::class, 'store'])->name('distribution_store');
+    Route::get('/get-contracts', [DistributionController::class, 'getContracts'])->name('get-contracts');
+
+    // Route::get('/distribution/edit/{id}', [DistributionController::class, 'edit'])->name('distribution_edit');
+    // Route::post('/distribution/update/{id}', [DistributionController::class, 'update'])->name('distribution_update');
 });
 
 require __DIR__.'/auth.php';

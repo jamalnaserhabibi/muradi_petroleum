@@ -52,29 +52,25 @@
                                             <tr>
                                                 <td>{{ $employee->fullname }}</td>
                                                 <td>
-                                                    @foreach ($employee->towers as $tower)
-                                                        <div class="d-flex align-items-center mb-2">
-                                                            <!-- Combined Tower Information and Delete Button -->
-                                                            <div
-                                                                class="tower-info-delete d-flex align-items-center p-2 rounded">
-                                                                <!-- Tower Information -->
-                                                                <span class="btn btn-info mr-2">{{ $tower->serial }} -
-                                                                    {{ $tower->name }}</span>
-
-                                                                <form
-                                                                    action="{{ route('delete_distributer', ['employee_id' => $employee->id, 'tower_id' => $tower->id]) }}"
-                                                                    method="POST" style="display:inline;">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" title="Delete"
-                                                                        class="btn btn-link p-0 border-0 bg-transparent"
-                                                                        onclick="return confirm('Are you sure you want to remove this tower assignment?')">
-                                                                        <i class="fas fa-trash text-danger"></i>
-                                                                    </button>
-                                                                </form>
+                                                    <div class="d-flex flex-wrap">
+                                                        @foreach ($employee->towers as $tower)
+                                                            <div class="d-flex align-items-center mb-2 me-2">
+                                                                <!-- Combined Tower Information and Delete Button -->
+                                                                <div class="tower-info-delete d-flex align-items-center p-2 rounded">
+                                                                    <!-- Tower Information -->
+                                                                    <span class="btn btn-info mr-2">{{ $tower->serial }} - {{ $tower->name }}</span>
+                                                    
+                                                                    <form action="{{ route('delete_distributer', ['employee_id' => $employee->id, 'tower_id' => $tower->id]) }}" method="POST" style="display:inline;">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <button type="submit" title="Delete" class="btn btn-link p-0 border-0 bg-transparent" onclick="return confirm('Are you sure you want to remove this tower assignment?')">
+                                                                            <i class="fas fa-trash text-danger"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    @endforeach
+                                                        @endforeach
+                                                    </div>
                                                 </td>
 
                                             </tr>

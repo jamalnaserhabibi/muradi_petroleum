@@ -4,22 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class Distribution extends Model
 {
+    protected $table = 'distribution';
+
     protected $fillable = [
-        'fullname',
-        'photo',
-        'salary',
+        'contract_id',
+        'distributer_id',
+        'tower_id',
+        'rate',
+        'amount',
         'description',
     ];
-    protected $casts = [
-        'date' => 'date',
-    ];
-
-    public function towers()
-    {
-        return $this->belongsToMany(Tower::class, 'distributer')->withTimestamps();
-    }
 
     // Relationship with Employee model
     public function distributer()
