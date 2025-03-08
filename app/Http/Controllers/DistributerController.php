@@ -24,18 +24,33 @@ class DistributerController extends Controller
         }
 
     
+    // public function assign(Request $request)
+    // {
+    //     $request->validate([
+    //         'employee_id' => 'required|exists:employees,id',
+    //         'tower_id' => 'required|array', // Ensure tower_id is an array
+    //         'tower_id.*' => 'exists:towers,id', // Ensure each tower_id exists in the towers table
+    //     ]);
+         
+
+    //     $employee = Employee::find($request->employee_id);
+    //     // Sync the selected towers with the employee
+    //     $employee->towers()->sync($request->tower_id);
+    //     return redirect()->route('distributers')->with('success', 'Towers Assigned Successfully!');
+    // }
     public function assign(Request $request)
-    {
-        $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-            'tower_id' => 'required|array', // Ensure tower_id is an array
-            'tower_id.*' => 'exists:towers,id', // Ensure each tower_id exists in the towers table
-        ]);
-        $employee = Employee::find($request->employee_id);
-        // Sync the selected towers with the employee
-        $employee->towers()->sync($request->tower_id);
-        return redirect()->route('distributers')->with('success', 'Towers Assigned Successfully!');
-    }
+        {
+            $request->validate([
+                'employee_id' => 'required|exists:employees,id',
+                'tower_id' => 'required|array', // Ensure tower_id is an array
+                'tower_id.*' => 'exists:towers,id', // Ensure each tower_id exists in the towers table
+            ]);
+
+            $employee = Employee::find($request->employee_id);
+            // Attach the selected towers to the employee without removing existing ones
+            $employee->towers()->attach($request->tower_id);
+            return redirect()->route('distributers')->with('success', 'Towers Assigned Successfully!');
+        }
     // Assign Distributor to Tower
     public function store(Request $request)
     {

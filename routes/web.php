@@ -159,13 +159,18 @@ Route::middleware('auth')->group(function () {
 
     //distribution
     Route::get('/distribution', [DistributionController::class, 'index'])->name('distribution');
+    Route::get('/distribution/adddestributionform', [DistributionController::class, 'adddestributionform'])->name('adddestributionform');
+
     Route::delete('/distribution/{distribution}', [DistributionController::class, 'destroy'])->name('distribution_delete');
     Route::get('/get-towers', [DistributionController::class, 'getTowers'])->name('get-towers');
     Route::post('/distribution/store', [DistributionController::class, 'store'])->name('distribution_store');
     Route::get('/get-contracts', [DistributionController::class, 'getContracts'])->name('get-contracts');
 
-    // Route::get('/distribution/edit/{id}', [DistributionController::class, 'edit'])->name('distribution_edit');
-    // Route::post('/distribution/update/{id}', [DistributionController::class, 'update'])->name('distribution_update');
+    Route::get('/get-todays-distributions', [DistributionController::class, 'getTodaysDistributions']);
+    Route::get('/get-contracts-and-towers', [DistributionController::class, 'getContractsAndTowers']);
+    Route::get('/get-add-distribution-form', [DistributionController::class, 'getAddDistributionForm']);
+    Route::post('/add-distribution', [DistributionController::class, 'addDistribution']);
+    
 });
 
 require __DIR__.'/auth.php';

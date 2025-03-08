@@ -26,4 +26,5 @@ class Contract extends Model
     {
         return $this->hasMany(Sales::class, 'contract_id', 'id');
     }
+    
 }

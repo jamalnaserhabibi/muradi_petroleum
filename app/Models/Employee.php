@@ -38,4 +38,5 @@ class Employee extends Model
     {
         return $this->belongsTo(Tower::class);
     }
+    
 }

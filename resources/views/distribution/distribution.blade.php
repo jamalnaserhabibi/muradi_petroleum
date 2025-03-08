@@ -11,12 +11,13 @@
             <div class="container-fluid">
                 <div class="totalSalary searchBar row mb-1">
                     <h2>Distribution</h2>
-             
                     <div class="col-6 d-flex align-items-center justify-content-end">
                         <!-- Button to trigger the modal -->
                         <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#assignTowerModal">
                             Add Distribution
                         </button>
+                        <a href="{{ route('adddestributionform') }}" class="btn brannedbtn ml-3  fluid-right">Add </a>
+
 
                         @if (session('success'))
                             <ol>
@@ -51,6 +52,7 @@
                                                 <th>Rate</th>
                                                 <th>Amount</th>
                                                 <th>Total</th>
+                                                <th>Date</th>
                                                 <th>Description</th>
                                                 <th>Action</th>
                                             </tr>
@@ -65,6 +67,7 @@
                                                     <td>{{ $distribution->rate }}</td>
                                                     <td>{{ number_format($distribution->amount,0) }}</td>
                                                     <td>{{number_format($distribution->amount*$distribution->rate,1)}}</td>
+                                                    <td>{{ $distribution->date }}</td>
                                                     <td>{{ $distribution->description }}</td>
                                                     <td>
                                                         
