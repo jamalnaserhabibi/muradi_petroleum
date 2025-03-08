@@ -1,15 +1,22 @@
 @extends('admin.layout')
 @section('content')
-    <div class="content-wrapper">
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card mt-3">
-                            <div class="card-header brannedbtn">
-                                <h3 class="card-title">Distribution</h3>
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Distributer Card -->
+                    <div class="card mt-3">
+                        <div class="card-header brannedbtn">
+                            <h3 class="card-title">Towers</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>  
+                                </button>
                             </div>
-                            <div class="form-group p-3 mb-0">
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group p-1 mb-0">
                                 <select class="form-control" id="distributer_id" name="distributer_id" required>
                                     <option value="">Select Distributer</option>
                                     @foreach($distributers as $distributer)
@@ -17,32 +24,50 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div id="towers-list" class="pl-3">
+                            <div id="towers-list" class="pl-1">
                                 <!-- Towers will be listed here dynamically -->
                             </div>
                         </div>
-                        
-                        <div class="card mt-3">
-                            <div class="card-header brannedbtn">
-                                <h3 class="card-title">Add Distribution</h3>
+                    </div>
+
+                    <!-- Add Distribution Card -->
+                    <div class="card mt-1">
+                        <div class="card-header brannedbtn">
+                            <h3 class="card-title">Add Distribution</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>  
+                                </button>
                             </div>
-                            <div id="distribution-add" class="p-3">
+                        </div>
+                        <div class="card-body">
+                            <div id="distribution-add" class="pl-2">
                                 <!-- The Add Distribution form will be loaded here dynamically -->
                             </div>
                         </div>
-                        <div class="card mt-3">
-                            <div class="card-header brannedbtn">
-                                <h3 class="card-title">Today's Distribution</h3>
+                    </div>
+
+                    <!-- Today's Distribution Card -->
+                    <div class="card mt-1">
+                        <div class="card-header brannedbtn">
+                            <h3 class="card-title">Today's Distribution</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>  
+                                </button>
                             </div>
-                            <div id="distribution-list" class="">
+                        </div>
+                        <div class="card-body">
+                            <div id="distribution-list" >
                                 <!-- Today's distribution records will be listed here dynamically -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     <script src="plugins/jquery/jquery.min.js"></script>
