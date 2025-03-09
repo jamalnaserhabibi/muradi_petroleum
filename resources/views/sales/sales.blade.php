@@ -136,9 +136,9 @@
                                             <th></th> 
                                             <th id="total-footer-amount"></th> <!-- Total Amount column -->
                                             <th id="total-footer-liter"></th> <!-- Total Liter column -->
-                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
-                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
-                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
+                                            <th></th> 
+                                            <th></th> 
+                                            <th></th> 
                                         </tr>
                                     </tfoot>
                                 </table>
