@@ -38,12 +38,12 @@
                                             <i class="fas fas fa-tint"></i> {{ $reading->petrol_sold }} L
                                         </span>
                                         <!-- Total Amount Information (Today's Date) -->
-                                        <span class="btn btn-success mr-2 mb-2">
+                                        {{-- <span class="btn btn-success mr-2 mb-2">
                                             <i class="fas fa-check-circle"></i> Today's Added: {{ $tower->total_amount }} L
                                         </span>
                                         <span class="btn btn-danger mr-2 mb-2">
                                             <i class="fas fa-exclamation-circle"></i> Remaining: {{ $reading->petrol_sold- $tower->total_amount }} L
-                                        </span>
+                                        </span> --}}
                                     </div>
                                 </div>
                             @endforeach

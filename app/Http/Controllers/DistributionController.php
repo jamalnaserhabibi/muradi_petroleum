@@ -6,6 +6,8 @@ use App\Models\Distribution;
 use App\Models\Employee;
 use App\Models\Contract;
 use App\Models\Tower;
+use App\Helpers\AfghanCalendarHelper;
+use Morilog\Jalali\CalendarUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -35,10 +37,27 @@ class DistributionController extends Controller
         return view('distribution.form', compact('distributions', 'distributers', 'contracts'));
     }
 
-    public function index()
+
+    public function index(Request $request)
     {
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $afghaniStartDate=$request->start_date;
+            $afghaniEndDate=$request->end_date;
+
+            $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+            $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+ 
+        }else{
+
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $start_date = $monthRange['start'];
+            $end_date = $monthRange['end'];   
+           
+        }
         // Fetch distribution data with relationships
-        $distributions = Distribution::with(['contract.customer', 'distributer', 'tower'])->get();
+        $distributions = Distribution::whereBetween('date', [$start_date, $end_date])
+        ->with(['contract.customer', 'distributer', 'tower'])
+        ->get();
         // Fetch distributers and contracts for dropdowns
         $distributers = Employee::all(); // Assuming distributers are employees
         $contracts = Contract::with(['customer','Product'])->get();

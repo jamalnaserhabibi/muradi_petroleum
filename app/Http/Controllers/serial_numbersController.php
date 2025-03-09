@@ -7,6 +7,7 @@ use App\Models\Tower;
 use Carbon\Carbon;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
+use App\Helpers\AfghanCalendarHelper;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -75,16 +76,71 @@ class serial_numbersController extends Controller
             'finalResults' => $flatResults
         ]);
     }
+    public function readings()
+    {
+        // Fetch the serial numbers with their related tower and product data
+        $serialNumbers = Serial_Numbers::with(['tower.product'])
+            ->whereHas('tower', function ($query) {
+                $query->whereIn('id', function ($subQuery) {
+                    $subQuery->select('tower_id')
+                        ->from('serial_numbers as sn2')
+                        ->whereRaw('sn2.tower_id = serial_numbers.tower_id')
+                        ->whereRaw('sn2.date >= serial_numbers.date')
+                        ->groupBy('sn2.tower_id')
+                        ->havingRaw('COUNT(*) <= 2');
+                });
+            })
+            ->orderBy('tower_id')
+            ->orderBy('date') // Sort by date in ascending order
+            ->get();
     
+        // Group the readings by tower_id
+        $groupedReadings = $serialNumbers->groupBy('tower_id');
+    
+        // Calculate the sold petrol for each tower
+        $result = [];
+        foreach ($groupedReadings as $towerId => $readings) {
+            $previousReading = null;
+    
+            foreach ($readings as $reading) {
+                // Use the 'serial' column for meter readings
+                $currentReading = $reading->serial;
+    
+                // Calculate the sold petrol
+                $soldPetrol = $previousReading !== null
+                    ? $currentReading - $previousReading
+                    : 0;
+    
+                // Add the result for this reading
+                $result[] = [
+                    'id' => $reading->id,
+                    'tower_id' => $reading->tower_id,
+                    'tower_serial' => $reading->tower->serial,
+                    'name' => $reading->tower->name,
+                    'product_name' => $reading->tower->product->product_name,
+                    'date' => $reading->date,
+                    'current_reading' => $currentReading,
+                    'previous_reading' => $previousReading ?? 'N/A',
+                    'sold_petrol' => $soldPetrol,
+                ];
+    
+                // Update the previous reading for the next iteration
+                $previousReading = $currentReading;
+            }
+        }
+        $towers = Tower::with('product')->get();
+        // Pass the result to the view
+        return view('meter_reading.readings', compact('result','towers'));
+    }
     public function destroy($id)
     {
         $serialNumber = Serial_Numbers::find($id);
 
         if ($serialNumber) {
             $serialNumber->delete();
-            return redirect()->route('meter_reading')->with('success', 'Serial Number deleted successfully.');
+            return redirect()->route('readings')->with('success', 'Serial Number deleted successfully.');
         } else {
-            return redirect()->route('meter_reading')->with('error', 'Serial Number not found.');
+            return redirect()->route('readings')->with('error', 'Serial Number not found.');
         }
     }
 
@@ -113,7 +169,32 @@ class serial_numbersController extends Controller
         ]);
 
     
-        return redirect()->route('meter_reading')->with('success', 'Tower Meter Added successfully.');
+        return redirect()->route('readings')->with('success', 'Tower Meter Added successfully.');
+    }
+    public function singletowereadings(Request $request,$tower_id)
+    {
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $afghaniStartDate=$request->start_date;
+            $afghaniEndDate=$request->end_date;
+
+            $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+            $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+ 
+        }else{
+
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $start_date = $monthRange['start'];
+            $end_date = $monthRange['end'];   
+           
+        }
+          
+
+        $serialNumbers = Serial_Numbers::with('tower','tower.product')->where('tower_id', $tower_id)
+            ->whereBetween('date', [$start_date, $end_date])
+            ->orderBy('date', 'asc')
+            ->get();
+
+        return view('meter_reading.singletowerreadings',compact('serialNumbers'));
     }
 
     public function edit($id)
@@ -167,7 +248,7 @@ class serial_numbersController extends Controller
                 $serialNumber = Serial_Numbers::find($id);
 
               
-                return view('meter_reading.form', [
+                return view('meter_reading.reading', [
                     'towers' => $towers,
                     'finalResults' => $flatResults,
                     'serialNumber' => $serialNumber
@@ -200,6 +281,6 @@ class serial_numbersController extends Controller
             'date' => $formattedDate, // Use the formatted date
         ]);
 
-        return redirect()->route('meter_reading')->with('success', 'Serial Number updated successfully.');
+        return redirect()->route('readings')->with('success', 'Serial Number updated successfully.');
     }
 }

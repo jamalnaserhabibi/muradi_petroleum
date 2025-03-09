@@ -12,6 +12,45 @@
                 <div class="totalSalary searchBar row mb-1">
                     <h2>Distribution</h2>
                     <div class="col-6 d-flex align-items-center justify-content-end">
+                        <form class="expensefilterform" id="filter-form" action="{{ route('distribution') }}" method="GET">
+                            {{-- <input type="hidden" name="start_date" id="start-date"> --}}
+                            {{-- <input type="hidden" name="end_date" id="end-date"> --}}
+                            <!-- Date Range Picker and Category Dropdown -->
+                            <div class="form-group d-flex">
+                                <!-- Date Range Picker -->
+                                <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
+                                    {{-- {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($expenses[0]->date) }} --}}
+                                    <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="Start Date" style="max-width: 150px;" required />
+                                    <span style="margin: 0 10px; font-weight: bold;">to</span>
+                                    <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
+                                </div>
+                                
+    
+                                <!-- Category Filter -->
+                                <div class="ml-4">
+                                    {{-- <label>Category:</label> --}}
+                                    {{-- <select id="category-filter" name="category" class="form-control">
+                                        <option value="">All Category</option>
+                                        <option value="personal" {{ request('category') == 'personal' ? 'selected' : '' }}>
+                                            Personal</option>
+                                        <option value="Tank Maintenance"
+                                            {{ request('category') == 'Tank Maintenance' ? 'selected' : '' }}>Tank Maintenance
+                                        </option>
+                                        <option value="Staff Salary"
+                                            {{ request('category') == 'Staff Salary' ? 'selected' : '' }}>Staff Salary</option>
+                                        <option value="tank" {{ request('category') == 'tank' ? 'selected' : '' }}>Tank
+                                        </option>
+                                        <option value="Fuel" {{ request('category') == 'Fuel' ? 'selected' : '' }}>Fuel
+                                        </option>
+                                        <option value="Tax" {{ request('category') == 'Tax' ? 'selected' : '' }}>Tax</option>
+                                        <option value="office" {{ request('category') == 'office' ? 'selected' : '' }}>Office
+                                        </option>
+                                        <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other
+                                        </option>
+                                    </select> --}}
+                                </div>
+                            </div>
+                        </form>
                         <!-- Button to trigger the modal -->
                         <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#assignTowerModal">
                             Add Distribution
@@ -67,7 +106,7 @@
                                                     <td>{{ $distribution->rate }}</td>
                                                     <td>{{ number_format($distribution->amount,0) }}</td>
                                                     <td>{{number_format($distribution->amount*$distribution->rate,1)}}</td>
-                                                    <td>{{ $distribution->date }}</td>
+                                                    <td>{{  \App\Helpers\AfghanCalendarHelper::toAfghanDate($distribution->date) }}</td>
                                                     <td>{{ $distribution->description }}</td>
                                                     <td>
                                                         

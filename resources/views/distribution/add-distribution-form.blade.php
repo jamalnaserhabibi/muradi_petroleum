@@ -28,6 +28,9 @@
         <div class="form-group mr-2">
             <input placeholder="Amount" type="number" class="form-control" id="amount" name="amount" required>
         </div>
+        <div class="form-group mr-2">
+            <input placeholder="Discribtion" type="text" class="form-control" id="discribtion" name="discribtion" required>
+        </div>
         <button type="submit" class="btn brannedbtn h-9">Add</button>
     </div>
 </form>

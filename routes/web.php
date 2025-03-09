@@ -116,6 +116,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/meter_reading/addsaleinfoform/{id}/edit', [serial_numbersController::class, 'edit'])->name('editserialnumber');
     Route::patch('/meter_reading/addsaleinfoform/{id}/update', [serial_numbersController::class, 'update'])->name('serial_numbers_update');
     Route::get('/meter_reading/addsaleinfoform/serials', [serial_numbersController::class, 'sales'])->name('towers_info');
+    Route::get('/meter_reading/readings', [serial_numbersController::class, 'readings'])->name('readings');
+    Route::get('/meter_reading/singletowereadings/{tower_id}', [serial_numbersController::class, 'singletowereadings'])->name('singletowereadings');
     Route::delete('/serialnumberdelete/{id}', [serial_numbersController::class, 'destroy'])->name('deleteserialnumber');
 
 
