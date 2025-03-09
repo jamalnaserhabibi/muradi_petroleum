@@ -131,11 +131,11 @@
                                     <tfoot>
                                         <tr>
                                             <th>Total</th>
-                                            <th id="total-footer-ton"></th> <!-- Ton column -->
+                                            <th id="total-footer-ton"></th>
                                             <th></th> 
                                             <th></th> 
-                                            <th id="total-footer-amount"></th> <!-- Total Amount column -->
-                                            <th id="total-footer-liter"></th> <!-- Total Liter column -->
+                                            <th id="total-footer-amount"></th> 
+                                            <th id="total-footer-liter"></th>
                                             <th></th> 
                                             <th></th> 
                                             <th></th> 
