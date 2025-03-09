@@ -63,7 +63,7 @@
                             <script>
                                 setTimeout(function() {
                                     document.getElementById('success-alert').style.display = 'none';
-                                }, 4000); // 2000ms = 2 seconds
+                                }, 4000); 
                             </script>
                         </ol>
                     @endif
@@ -132,8 +132,8 @@
                                         <tr>
                                             <th>Total</th>
                                             <th id="total-footer-ton"></th> <!-- Ton column -->
-                                            <th></th> <!-- Empty cell to keep alignment -->
-                                            <th></th> <!-- Empty cell to keep alignment -->
+                                            <th></th> 
+                                            <th></th> 
                                             <th id="total-footer-amount"></th> <!-- Total Amount column -->
                                             <th id="total-footer-liter"></th> <!-- Total Liter column -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
