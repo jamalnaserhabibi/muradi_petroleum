@@ -60,26 +60,30 @@
                                                 <td>{{ $tower->product->product_name }}</td>
                                                 <td>{{ $tower->sales_sum_amount ?? 0 }}</td>
                                                 <td>{{ $tower->details }}</td>
-                                                <td>
-                                                    <a href="{{ route('tower.seeksale', $tower->id) }}"
-                                                        class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
-                                                    </a>
+                                               <td>
+                                                <a href="{{ route('tower.seeksale', $tower->id) }}"
+                                                    class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
+                                                </a>
+                                                @if($tower->name != 'money')
 
-                                                    <a href="{{ route('tower.edit', $tower->id) }}"
-                                                        class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
-                                                    </a>
+                                                <a href="{{ route('tower.edit', $tower->id) }}"
+                                                    class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
+                                                </a>
 
-                                                    <form action="{{ route('tower.destroy', $tower->id) }}" method="POST"
-                                                        style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger"
-                                                            title="Delete"
-                                                            onclick="return confirm('Are you sure you want to delete this purchase?')">
-                                                            <li class="fas fa-trash"></li>
-                                                        </button>
-                                                    </form>
-                                                </td>
+                                                <form action="{{ route('tower.destroy', $tower->id) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn pt-0 pb-0 btn-danger"
+                                                        title="Delete"
+                                                        onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                        <li class="fas fa-trash"></li>
+                                                    </button>
+                                                </form>
+                                               @endif
+
+                                            </td>
+                                               </td>
                                             </tr>
                                             @endforeach
                                         </tbody>

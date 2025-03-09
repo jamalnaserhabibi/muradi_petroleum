@@ -6,10 +6,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- Distributer Card -->
-                    <h1>Date</h1>
-                    <h1>Petrol</h1>
-                    <h1>Des</h1>
-                    <h1>Gas</h1>
                     <div class="card mt-3">
                         <div class="card-header brannedbtn">
                             <h3 class="card-title">Towers</h3>

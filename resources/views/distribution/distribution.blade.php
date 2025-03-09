@@ -11,7 +11,7 @@
             <div class="container-fluid">
                 <div class="totalSalary searchBar row mb-1">
                     <h2>Distribution</h2>
-                    <div class="col-6 d-flex align-items-center justify-content-end">
+                    <div class="col-8 d-flex align-items-center justify-content-end">
                         <form class="expensefilterform" id="filter-form" action="{{ route('distribution') }}" method="GET">
                             {{-- <input type="hidden" name="start_date" id="start-date"> --}}
                             {{-- <input type="hidden" name="end_date" id="end-date"> --}}
@@ -25,39 +25,31 @@
                                     <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
                                 </div>
                                 
+         
     
                                 <!-- Category Filter -->
                                 <div class="ml-4">
-                                    {{-- <label>Category:</label> --}}
-                                    {{-- <select id="category-filter" name="category" class="form-control">
-                                        <option value="">All Category</option>
-                                        <option value="personal" {{ request('category') == 'personal' ? 'selected' : '' }}>
-                                            Personal</option>
-                                        <option value="Tank Maintenance"
-                                            {{ request('category') == 'Tank Maintenance' ? 'selected' : '' }}>Tank Maintenance
-                                        </option>
-                                        <option value="Staff Salary"
-                                            {{ request('category') == 'Staff Salary' ? 'selected' : '' }}>Staff Salary</option>
-                                        <option value="tank" {{ request('category') == 'tank' ? 'selected' : '' }}>Tank
-                                        </option>
-                                        <option value="Fuel" {{ request('category') == 'Fuel' ? 'selected' : '' }}>Fuel
-                                        </option>
-                                        <option value="Tax" {{ request('category') == 'Tax' ? 'selected' : '' }}>Tax</option>
-                                        <option value="office" {{ request('category') == 'office' ? 'selected' : '' }}>Office
-                                        </option>
-                                        <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other
-                                        </option>
-                                    </select> --}}
+                                    {{-- <label>distributer:</label> --}}
+                                    <select id="distributer-filter" name="distributer" class="form-control">
+                                        <option value="">All Distributers</option>
+                                        @foreach($distributers as $distributer)
+                                            <option value="{{ $distributer->id }}">{{ $distributer->fullname }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <!-- Category Filter -->
+                                <div class="ml-4">
+                                    {{-- <label>product:</label> --}}
+                                    <select id="product-filter" name="product" class="form-control">
+                                        <option value="">All Products</option>
+                                        @foreach($products as $product)
+                                            <option value="{{ $product->id }}">{{ $product->product_name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </form>
-                        <!-- Button to trigger the modal -->
-                        <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#assignTowerModal">
-                            Add Distribution
-                        </button>
-                        <a href="{{ route('adddestributionform') }}" class="btn brannedbtn ml-3  fluid-right">Add </a>
-
-
+                        <a href="{{ route('adddestributionform') }}" class="btn brannedbtn ml-3  fluid-right">+ Add </a>
                         @if (session('success'))
                             <ol>
                                 <div class="alert alert-success" id="success-alert">
@@ -133,7 +125,7 @@
         </section>
     </div>
 <!-- Add Distribution Modal -->
-<div class="modal fade" id="assignTowerModal" tabindex="-1" role="dialog" aria-labelledby="assignTowerModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="assignTowerModal" tabindex="-1" role="dialog" aria-labelledby="assignTowerModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -194,7 +186,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 @endsection
 
 @section('CustomScript')

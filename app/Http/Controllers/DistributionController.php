@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Contract;
 use App\Models\Tower;
 use App\Helpers\AfghanCalendarHelper;
+use App\Models\Product;
 use Morilog\Jalali\CalendarUtils;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -61,9 +62,10 @@ class DistributionController extends Controller
         // Fetch distributers and contracts for dropdowns
         $distributers = Employee::all(); // Assuming distributers are employees
         $contracts = Contract::with(['customer','Product'])->get();
+        $products = Product::all();
 
         // Pass the data to the view
-        return view('distribution.distribution', compact('distributions', 'distributers', 'contracts'));
+        return view('distribution.distribution', compact('distributions', 'distributers', 'contracts','products'));
     }
 
     public function destroy($id)

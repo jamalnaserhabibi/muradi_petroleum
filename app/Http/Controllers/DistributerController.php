@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Models\Tower;
 use Illuminate\Http\Request;
 
+use function Pest\Laravel\get;
+
 class DistributerController extends Controller
 {
     public function index()
@@ -18,8 +20,11 @@ class DistributerController extends Controller
             // Get the towers that are not assigned to any employee
             $assignedTowerIds = Employee::has('towers')->with('towers')->get()->pluck('towers.*.id')->flatten();
             // Retrieve towers that are not in the list of assigned towers
-            $availableTowers = Tower::whereNotIn('id', $assignedTowerIds)->get();
-            // Pass data to the view
+            $availableTowers = Tower::with('product')
+                ->whereNotIn('id', $assignedTowerIds)
+                ->orWhere('name', '=', 'money')
+                ->get();
+
             return view('distributers.distributers', compact('employees', 'availableTowers','allemployees'));
         }
 

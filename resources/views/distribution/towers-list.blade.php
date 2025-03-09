@@ -11,6 +11,7 @@
                 <td></td>
                 <td>
                     <div class="d-flex flex-wrap">
+                        @if ($tower->name !='money')
                         @if($tower->meter_reading->isNotEmpty())
                             @foreach($tower->meter_reading as $reading)
                                 <div class="d-flex align-items-center m-2" style="border-left: 2px solid rgba(128, 128, 128, 0.453); border-radius:5px">
@@ -38,12 +39,12 @@
                                             <i class="fas fas fa-tint"></i> {{ $reading->petrol_sold }} L
                                         </span>
                                         <!-- Total Amount Information (Today's Date) -->
-                                        {{-- <span class="btn btn-success mr-2 mb-2">
+                                        <span class="btn btn-success mr-2 mb-2">
                                             <i class="fas fa-check-circle"></i> Today's Added: {{ $tower->total_amount }} L
                                         </span>
                                         <span class="btn btn-danger mr-2 mb-2">
                                             <i class="fas fa-exclamation-circle"></i> Remaining: {{ $reading->petrol_sold- $tower->total_amount }} L
-                                        </span> --}}
+                                        </span>
                                     </div>
                                 </div>
                             @endforeach
@@ -60,6 +61,8 @@
                                 </div>
                             </div>
                         @endif
+                        @endif
+                    
                     </div>
                 </td>
             </tr>

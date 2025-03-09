@@ -29,39 +29,42 @@
             <input placeholder="Amount" type="number" class="form-control" id="amount" name="amount" required>
         </div>
         <div class="form-group mr-2">
-            <input placeholder="Discribtion" type="text" class="form-control" id="discribtion" name="discribtion" required>
+            <input placeholder="Discribtion" type="text" class="form-control" id="discribtion" name="discribtion">
         </div>
         <button type="submit" class="btn brannedbtn h-9">Add</button>
     </div>
 </form>
 
 <script>
-    $(document).ready(function() {
-        // When the tower is selected, filter contracts by product
-        $('#tower_id').change(function() {
-            var selectedTower = $(this).find(':selected');
-            var productId = selectedTower.data('product-id');
+   $(document).ready(function() {
+    // When the tower is selected, filter contracts by product
+    $('#tower_id').change(function() {
+        var selectedTower = $(this).find(':selected');
+        var productId = selectedTower.data('product-id');
+        var towerName = selectedTower.text().toLowerCase(); // Get the tower name in lowercase
 
-            // Filter contracts by product
-            $('#contract_id option').each(function() {
-                var contractProductId = $(this).data('product-id');
-                if (contractProductId == productId) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-
-            // Reset the contract and rate fields
-            $('#contract_id').val('');
-            $('#contractrate').val('');
+        // Filter contracts by product or show all if tower name is 'money'
+        $('#contract_id option').each(function() {
+            var contractProductId = $(this).data('product-id');
+            if (towerName.includes('money')) {
+                $(this).show(); // Show all contracts if tower name is 'money'
+            } else if (contractProductId == productId) {
+                $(this).show(); // Show contracts with matching product ID
+            } else {
+                $(this).hide(); // Hide other contracts
+            }
         });
 
-        // When a contract is selected, load its rate
-        $('#contract_id').change(function() {
-            var selectedContract = $(this).find(':selected');
-            var rate = selectedContract.data('rate');
-            $('#contractrate').val(rate);
-        });
+        // Reset the contract and rate fields
+        $('#contract_id').val('');
+        $('#contractrate').val('');
     });
+
+    // When a contract is selected, load its rate
+    $('#contract_id').change(function() {
+        var selectedContract = $(this).find(':selected');
+        var rate = selectedContract.data('rate');
+        $('#contractrate').val(rate);
+    });
+});
 </script>

@@ -20,19 +20,29 @@
         @php
             $totalAmount = 0;
             $grandTotal = 0;
+            $moneyTotalAmount = 0;
+            $moneyGrandTotal = 0;
         @endphp
         @foreach($distributions as $distribution)
             @php
-                $totalAmount += $distribution->amount;
-                $grandTotal += $distribution->amount * $distribution->rate;
+                $amount = $distribution->amount;
+                $total = $distribution->amount * $distribution->rate;
+
+                if ($distribution->tower->name == 'money') {
+                    $moneyTotalAmount += $amount;
+                    $moneyGrandTotal += $total;
+                } else {
+                    $totalAmount += $amount;
+                    $grandTotal += $total;
+                }
             @endphp
             <tr>
                 <td>{{ $distribution->id }}</td>
                 <td>{{ $distribution->contract->customer->name ?? 'N/A' }}</td>
                 <td>{{ $distribution->tower->serial ?? 'N/A' }}-{{ $distribution->tower->name ?? 'N/A' }} </td>
                 <td>{{ $distribution->rate }}</td>
-                <td>{{ number_format($distribution->amount,0) }}</td>
-                <td>{{ number_format($distribution->amount * $distribution->rate,1) }}</td>
+                <td>{{ number_format($amount, 0) }}</td>
+                <td>{{ number_format($total, 1) }}</td>
                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($distribution->date) }}</td>
                 {{-- <td>{{ $distribution->description }}</td> --}}
                 <td>
@@ -49,9 +59,21 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="4" class=" ">Total:</th>
+            <th colspan="4" class=" ">Total Fuel:</th>
             <th>{{ number_format($totalAmount, 0) }}</th>
             <th>{{ number_format($grandTotal, 1) }}</th>
+            <th colspan="2"></th>
+        </tr>
+        <tr>
+            <th colspan="4" class=" ">Total Money:</th>
+            <th> </th>
+            <th>{{ number_format($moneyGrandTotal, 1) }}</th>
+            <th colspan="2"></th>
+        </tr>
+        <tr>
+            <th colspan="4" class=" ">Cash:</th>
+            <th> </th>
+            <th>{{ number_format($grandTotal - $moneyGrandTotal, 1) }}</th>
             <th colspan="2"></th>
         </tr>
     </tfoot>
