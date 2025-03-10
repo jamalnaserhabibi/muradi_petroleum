@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                         </form>
-                        <a href="{{ route('adddestributionform') }}" class="btn brannedbtn ml-3  fluid-right">+ Add </a>
+                        <a href="{{ route('adddestributionform') }}" class="btn brannedbtn ml-3  fluid-right">+ Add </a>
                         @if (session('success'))
                             <ol>
                                 <div class="alert alert-success" id="success-alert">
