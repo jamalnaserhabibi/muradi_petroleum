@@ -4,10 +4,12 @@
     <div class="d-flex flex-wrap">
         <div class="form-group mr-2">
             <select class="form-control" id="tower_id" name="tower_id" required>
-                <option value="">Select Tower</option>
+                <option value="">Select Item</option>
                 @foreach($towers as $tower)
                     <option value="{{ $tower->id }}" data-product-id="{{ $tower->product_id }}">
-                        {{ $tower->serial }} - {{ $tower->name }} - {{ $tower->product->product_name }}
+                        {{ $tower->serial }} 
+                     {{-- - {{ $tower->name }}  --}}
+                        - {{ $tower->product->product_name }}
                     </option>
                 @endforeach
             </select>
@@ -44,16 +46,15 @@
         var towerName = selectedTower.text().toLowerCase(); // Get the tower name in lowercase
 
         // Filter contracts by product or show all if tower name is 'money'
-        $('#contract_id option').each(function() {
-            var contractProductId = $(this).data('product-id');
-            if (towerName.includes('money')) {
-                $(this).show(); // Show all contracts if tower name is 'money'
-            } else if (contractProductId == productId) {
-                $(this).show(); // Show contracts with matching product ID
-            } else {
-                $(this).hide(); // Hide other contracts
-            }
-        });
+        // $('#contract_id option').each(function() {
+        //     var contractProductId = $(this).data('product-id');
+        //     if (towerName.includes('money')) {
+        //         $(this).show(); 
+        //     } else if (contractProductId == productId) {
+        //         $(this).show(); 
+        //     } else {
+        //         $(this).hide();             }
+        // });
 
         // Reset the contract and rate fields
         $('#contract_id').val('');

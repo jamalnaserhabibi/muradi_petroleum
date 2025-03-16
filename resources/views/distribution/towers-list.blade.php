@@ -19,7 +19,9 @@
                                     <div class="flex-wrap tower-info-delete d-flex align-items-center p-2 rounded">
                                         <!-- Tower Information -->
                                         <span class="btn btn-info mr-2 mb-2">
-                                            <i class="fas fa-gas-pump"></i> {{ $tower->serial }} - {{ $tower->name }} - {{ $reading->product_name }}
+                                            <i class="fas fa-gas-pump"></i> {{ $tower->serial }} -
+                                             {{-- {{ $tower->name }} -  --}}
+                                             {{ $reading->product_name }}
                                         </span>
                                         <!-- Date Information -->
                                         <span class="btn btn-info mr-2 mb-2">
@@ -27,7 +29,7 @@
                                             @if(\Carbon\Carbon::parse($reading->date)->isToday())
                                                 Today
                                             @else
-                                                {{\App\Helpers\AfghanCalendarHelper::toAfghanDateTime($reading->date); }}
+                                                {{\App\Helpers\AfghanCalendarHelper::toAfghanDate($reading->date); }}
                                             @endif
                                         </span>
                                         <!-- Serial Number Information -->
