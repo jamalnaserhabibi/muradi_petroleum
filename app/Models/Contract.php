@@ -26,5 +26,9 @@ class Contract extends Model
     {
         return $this->hasMany(Sales::class, 'contract_id', 'id');
     }
+    public function distribution()
+    {
+        return $this->hasMany(Distribution::class, 'contract_id', 'id');
+    }
     
 }

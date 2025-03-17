@@ -27,7 +27,7 @@ class paymentController extends Controller
         
         $balances = Contract::join('customers', 'contracts.customer_id', '=', 'customers.id')
         ->leftJoinSub(
-            DB::table('sales')
+            DB::table('distribution')
                 ->select('contract_id', DB::raw('SUM(amount * rate) as total_sales'))
                 ->groupBy('contract_id'),
             'sales_summary',

@@ -50,7 +50,7 @@ class CustomerController extends Controller
         })
         ->with([
             'contract.product',
-            'contract.sales' => function ($query) use ($startOfMonth, $endOfMonth) {
+            'contract.distribution' => function ($query) use ($startOfMonth, $endOfMonth) {
                 $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
             }
         ])
@@ -58,7 +58,7 @@ class CustomerController extends Controller
         ->map(function ($customer) {
             // Check if the customer has contracts
             $customer->current_month_sales_total = $customer->contract 
-                ? $customer->contract->sales->sum('amount') 
+                ? $customer->contract->distribution->sum('amount') 
                 : 0;
             return $customer;
         });
@@ -82,7 +82,7 @@ class CustomerController extends Controller
         })
         ->with([
             'contract.product',
-            'contract.sales' => function ($query) use ($startOfMonth, $endOfMonth) {
+            'contract.distribution' => function ($query) use ($startOfMonth, $endOfMonth) {
                 $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
             }
         ])
@@ -90,7 +90,7 @@ class CustomerController extends Controller
         ->map(function ($customer) {
             // Check if the customer has contracts
             $customer->current_month_sales_total = $customer->contract 
-                ? $customer->contract->sales->sum('amount') 
+                ? $customer->contract->distribution->sum('amount') 
                 : 0;
             return $customer;
         });
@@ -139,7 +139,7 @@ class CustomerController extends Controller
             'document' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:500',
         ]);
-        dd($payment);
+        // dd($payment);
         $customer->update($request->all());
 
         return redirect()->route('customers')->with('success', 'Customer updated successfully!');

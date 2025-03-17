@@ -6,6 +6,7 @@ use App\Models\Customers;
 use App\Models\Sales;
 use App\Helpers\AfghanCalendarHelper;
 use App\Models\Contract;
+use App\Models\Distribution;
 use App\Models\CustomerType;
 use Morilog\Jalali\Jalalian;
 
@@ -28,7 +29,7 @@ class salesController extends Controller
         $startOfMonth = $monthRange['start'];
         $endOfMonth = $monthRange['end'];    
 
-        $sales = Sales::with(['tower', 'contract.customer', 'contract.product']) // Include related data
+        $sales = Distribution::with(['tower', 'contract.customer', 'contract.product']) // Include related data
                     ->whereHas('contract', function ($query) use ($id) {
                         $query->where('contract_id', $id); // Filter by customer ID
                     })
