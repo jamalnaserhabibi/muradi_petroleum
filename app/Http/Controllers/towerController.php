@@ -76,7 +76,6 @@ class towerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
             'serial' => 'required|numeric|unique:towers,serial',
             'product_id' => 'required|exists:products,id',
             'details' => 'nullable|string|max:255'
@@ -108,7 +107,6 @@ class towerController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
             'serial' => 'required|numeric|unique:towers,serial,' . $id,
             'product_id' => 'required|exists:products,id',
             'details' => 'nullable|string|max:255'

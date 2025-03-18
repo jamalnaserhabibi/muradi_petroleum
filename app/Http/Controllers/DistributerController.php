@@ -23,11 +23,9 @@ class DistributerController extends Controller
             $availableTowers = Tower::with('product')
                 ->whereNotIn('id', $assignedTowerIds)
                 ->orWhere(function ($query) {
-                    $query->where('name', 'money')
-                          ->orWhere('name', 'like', 'exp%')
-                          ->orWhere('name', 'like', 'Exp%');
-                })
-                ->get();
+                        $query->whereIn('product_id', [13, 14]);
+                    })->get();
+                
 
             return view('distributers.distributers', compact('employees', 'availableTowers','allemployees'));
         }

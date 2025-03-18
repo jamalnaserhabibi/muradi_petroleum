@@ -31,7 +31,6 @@
                                     <h3 class="card-title ">Tower's Meter</h3>
                                 </div>
                                 @csrf
-
                                 @if (isset($serialNumber))
                                     @method('PATCH')
                                 @endif
@@ -41,14 +40,15 @@
                                     @enderror
                                     <!-- Type Dropdown -->
                                     <select class="form-control mb-3" name="tower_id" id="tower_id" required>
-                                        <option value="" disabled {{ isset($serialNumber) ? '' : 'selected' }}>
-                                            Select Tower</option>
+                                        <option value="" disabled {{ isset($serialNumber) ? '' : 'selected' }}>Select Tower</option>
                                         @foreach ($towers as $tower)
-                                            <option value="{{ $tower->id }}"
-                                                {{ old('id', $tower->id ?? '') == ($serialNumber->tower_id ?? '') ? 'selected' : '' }}>
-                                                {{ $tower->serial }} - {{ $tower->name }} -
-                                                {{ $tower->product->product_name }}
-                                            </option>
+                                            @if ($tower->product->id != 13 && $tower->product->id != 14)
+                                                <option value="{{ $tower->id }}"
+                                                    {{ old('id', $tower->id ?? '') == ($serialNumber->tower_id ?? '') ? 'selected' : '' }}>
+                                                    {{ $tower->serial }}  -
+                                                    {{ $tower->product->product_name }}
+                                                </option>
+                                            @endif
                                         @endforeach
                                     </select>
 
@@ -119,7 +119,7 @@
                                     
                                         @foreach ($result as $row)
                                             @php
-                                                $currentKey = $row['tower_serial'] . '-' . $row['name'] . '-' . $row['product_name'];
+                                                $currentKey = $row['tower_serial'] . '-' . $row['product_name'];
                                                 
                                                 // Count occurrences for rowspan
                                                 if (!isset($rowspan[$currentKey])) {
@@ -134,7 +134,7 @@
                                         
                                             @php
                                             
-                                                $currentKey = $row['tower_serial'] . '-' . $row['name'] . '-' . $row['product_name'];
+                                                $currentKey = $row['tower_serial'] . '-' . $row['product_name'];
                                             @endphp
                                             <tr>
                                                 {{-- <td>{{ $row['id'] }}</td> --}}
@@ -142,7 +142,7 @@
                                                 @if ($rowspan[$currentKey] > 0)
                                                     <td  style="vertical-align: middle; text-align: center;" rowspan="{{ $rowspan[$currentKey] }}">
                                                        <span class="btn btn-info mr-2 mb-2">
-                                                        <i class="fas fa-gas-pump"></i>- {{ $row['tower_serial'] }} - {{ $row['name'] }} - {{ $row['product_name'] }}
+                                                        <i class="fas fa-gas-pump"></i>- {{ $row['tower_serial'] }} - {{ $row['product_name'] }}
                                                        </span>
                                                     </td>
                                                     @php $rowspan[$currentKey] = 0; @endphp

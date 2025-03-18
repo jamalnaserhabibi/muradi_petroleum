@@ -116,7 +116,6 @@ class serial_numbersController extends Controller
                     'id' => $reading->id,
                     'tower_id' => $reading->tower_id,
                     'tower_serial' => $reading->tower->serial,
-                    'name' => $reading->tower->name,
                     'product_name' => $reading->tower->product->product_name,
                     'date' => $reading->date,
                     'current_reading' => $currentReading,

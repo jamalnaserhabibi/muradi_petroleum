@@ -8,7 +8,6 @@ class Tower extends Model
 {
     protected $fillable = [
         'serial',
-        'name',
         'product_id',
         'details'
     ];

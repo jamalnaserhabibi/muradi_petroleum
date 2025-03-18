@@ -58,9 +58,10 @@
                                                                 <!-- Combined Tower Information and Delete Button -->
                                                                 <div class="tower-info-delete d-flex align-items-center p-2 rounded">
                                                                     <!-- Tower Information -->
-                                                                    <span class="btn btn-info mr-2">{{ $tower->serial }} - 
-                                                                        {{-- {{ $tower->name }} -  --}}
-                                                                        {{ $tower->product->product_name }}</span>
+                                                                    <span class="btn btn-info mr-2">{{ $tower->serial }} -  {{ $tower->product->product_name }}
+                                                                       
+                                                                       
+                                                                    </span>
                                                     
                                                                     <form action="{{ route('delete_distributer', ['employee_id' => $employee->id, 'tower_id' => $tower->id]) }}" method="POST" style="display:inline;">
                                                                         @csrf
@@ -114,8 +115,8 @@
                             <label for="tower_id">Select Tower(s)</label>
                             <select class="form-control" id="tower_id" name="tower_id[]" multiple required>
                                 @foreach ($availableTowers as $tower)
-                                    <option value="{{ $tower->id }}">{{ $tower->serial }} - {{ $tower->name }}
-                                         -{{$tower->product->product_name}}</option>
+                                    <option value="{{ $tower->id }}">{{ $tower->serial }}-
+                                         {{$tower->product->product_name}}</option>
                                 @endforeach
                             </select>
                         </div>

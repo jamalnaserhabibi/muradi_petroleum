@@ -13,7 +13,7 @@
                     <h2>
 
                         @if (isset($tower[0]))
-                            {{ $tower[0]->tower->serial }}-{{ $tower[0]->tower->name }}-{{ $tower[0]->contract->product->product_name }}
+                            {{ $tower[0]->tower->serial }}-{{ $tower[0]->contract->product->product_name }}
                             {{ explode(' ', \App\Helpers\AfghanCalendarHelper::toAfghanDate($tower[0]->tower->date))[1] }}
                         @endif
 
@@ -80,7 +80,7 @@
                                             <tr>
                                                 <td> {{ $tower->contract->customer->name }} -
                                                     {{ $tower->contract->customer->company }} </td>
-                                                <td>{{ $tower->tower->serial }}-{{ $tower->tower->name }}</td>
+                                                <td>{{ $tower->tower->serial }}</td>
                                                 <td>{{ $tower->contract->product->product_name }}</td>
                                                 <td>{{ number_format($tower->rate, 0) }}</td>
                                                 <td>{{ $tower->amount }}</td>

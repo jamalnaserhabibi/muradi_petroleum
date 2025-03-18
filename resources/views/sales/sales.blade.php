@@ -100,7 +100,7 @@
                                             <tr>
                                                 <td> {{ $sale->contract->customer->name }} -
                                                     {{ $sale->contract->customer->company }} </td>
-                                                <td>{{ $sale->tower->serial }}-{{ $sale->tower->name }}</td>
+                                                <td>{{ $sale->tower->serial }}</td>
                                                 <td>{{ $sale->contract->product->product_name }}</td>
                                                 <td>{{ number_format($sale->rate, 0) }}</td>
                                                 <td>{{ $sale->amount }}</td>

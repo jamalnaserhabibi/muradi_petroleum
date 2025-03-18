@@ -12,7 +12,7 @@
                 <div class="totalamount searchBar row mb-1 ">
                     <h2>
                             <span class="btn btn-info mr-2 mb-2">
-                                <i class="fas fa-gas-pump"></i>- {{ isset($serialNumbers) && isset($serialNumbers[0]) ? ($serialNumbers[0]->tower->serial). '-' .($serialNumbers[0]->tower->name). '-' .($serialNumbers[0]->tower->product->product_name)  : 'No Data' }}
+                                <i class="fas fa-gas-pump"></i> {{ isset($serialNumbers) && isset($serialNumbers[0]) ? ($serialNumbers[0]->tower->serial). '-' .($serialNumbers[0]->tower->product->product_name)  : 'No Data' }}
                             </span>
                             <span class="btn btn-info mr-2 mb-2">
                                 <i class="fas fa-calendar-day"></i>  {{ isset($serialNumbers) && isset($serialNumbers[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($serialNumbers[0]->date) : 'No Data' }}

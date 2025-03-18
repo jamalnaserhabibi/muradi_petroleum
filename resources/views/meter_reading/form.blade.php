@@ -64,7 +64,7 @@
                                         @foreach ($towers as $tower)
                                             <option value="{{ $tower->id }}"
                                                 {{ old('id', $tower->id ?? '') == ($serialNumber->tower_id ?? '') ? 'selected' : '' }}>
-                                                {{ $tower->serial }} - {{ $tower->name }} -
+                                                {{ $tower->serial }} -
                                                 {{ $tower->product->product_name }}
                                             </option>
                                         @endforeach

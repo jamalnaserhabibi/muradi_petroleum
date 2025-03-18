@@ -8,8 +8,8 @@
                 @foreach($towers as $tower)
                     <option value="{{ $tower->id }}" data-product-id="{{ $tower->product_id }}">
                         {{ $tower->serial }} 
-                     - {{ $tower->name }} 
-                        {{-- - {{ $tower->product->product_name }} --}}
+                     {{-- - {{ $tower->name }}  --}}
+                        - {{ $tower->product->product_name }}
                     </option>
                 @endforeach
             </select>

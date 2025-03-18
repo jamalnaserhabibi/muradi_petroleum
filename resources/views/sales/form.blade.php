@@ -39,7 +39,7 @@
                                     <option value="" disabled {{ isset($sale) ? '' : 'selected' }}>Select Tower</option>
                                     @foreach ($towers as $tower)
                                         <option value="{{ $tower->id }}" data-product="{{ $tower->product->product_name }}">
-                                            {{ $tower->serial }} - {{ $tower->name }} - {{ $tower->product->product_name }}
+                                            {{ $tower->serial }} - {{ $tower->product->product_name }}
                                         </option>
                                     @endforeach
                                 </select>

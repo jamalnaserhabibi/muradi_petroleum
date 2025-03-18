@@ -147,7 +147,7 @@ class DistributionController extends Controller
         // Fetch today's distribution records for the selected distributer
         $distributions = Distribution::where('distributer_id', $distributerId)
             ->whereDate('date', now()->toDateString()) // Filter for today's date
-            ->with(['contract.customer', 'distributer', 'tower'])
+            ->with(['contract.customer', 'distributer', 'tower.product'])
             ->get();
 
         // Return the view with today's distribution data
@@ -162,7 +162,7 @@ class DistributionController extends Controller
                 serial_numbers.serial AS serial_number,
                 towers.serial AS tower_number,
                 serial_numbers.tower_id,
-                towers.name,
+               
                 towers.product_id,
                 products.product_name,
                 serial_numbers.date,

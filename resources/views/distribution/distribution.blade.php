@@ -76,8 +76,8 @@
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
-                                                <th>Contract</th>
+                                                {{-- <th>ID</th> --}}
+                                                <th>Customer</th>
                                                 <th>Distributer</th>
                                                 <th>Tower</th>
                                                 <th>Rate</th>
@@ -91,10 +91,10 @@
                                         <tbody>
                                             @foreach($distributions as $distribution)
                                                 <tr>
-                                                    <td>{{ $distribution->id }}</td>
-                                                    <td>{{ $distribution->contract->customer->name ?? 'N/A' }}</td>
+                                                    {{-- <td>{{ $distribution->id }}</td> --}}
+                                                    <td>{{ $distribution->contract->customer->name}} {{ $distribution->contract->customer->company}}</td>
                                                     <td>{{ $distribution->distributer->fullname ?? 'N/A' }}</td>
-                                                    <td>{{ $distribution->tower->serial ?? 'N/A' }}-{{ $distribution->tower->name ?? 'N/A' }} </td>
+                                                    <td>{{ $distribution->tower->serial ?? 'N/A' }} </td>
                                                     <td>{{ $distribution->rate }}</td>
                                                     <td>{{ number_format($distribution->amount,0) }}</td>
                                                     <td>{{number_format($distribution->amount*$distribution->rate,1)}}</td>

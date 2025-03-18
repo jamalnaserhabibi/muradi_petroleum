@@ -11,7 +11,7 @@
                 <td></td>
                 <td>
                     <div class="d-flex flex-wrap">
-                        @if ($tower->name != 'money' && !preg_match('/^exp/i', $tower->name))
+                        @if ($tower->product_id != 13 && $tower->product_id != 14)
                         @if($tower->meter_reading->isNotEmpty())
                             @foreach($tower->meter_reading as $reading)
                                 <div class="d-flex align-items-center m-2" style="border-left: 2px solid rgba(128, 128, 128, 0.453); border-radius:5px">
@@ -20,7 +20,7 @@
                                         <!-- Tower Information -->
                                         <span class="btn btn-info mr-2 mb-2">
                                             <i class="fas fa-gas-pump"></i> {{ $tower->serial }} -
-                                             {{-- {{ $tower->name }} -  --}}
+                                            
                                              {{ $reading->product_name }}
                                         </span>
                                         <!-- Date Information -->
@@ -54,7 +54,7 @@
                             <div class="d-flex align-items-center mb-2 me-2">
                                 <div class="tower-info-delete d-flex align-items-center p-2 rounded">
                                     <span class="btn btn-warning">
-                                        <i class="fas fa-gas-pump"></i> {{ $tower->serial }} - {{ $tower->name }} No meter reading data available.
+                                        <i class="fas fa-gas-pump"></i> {{ $tower->serial }} -  {{ $tower->product->product_name }} No meter reading data available.
                                     </span>
                                     <!-- Total Amount Information (Today's Date) -->
                                     <span class="btn btn-success mr-2">

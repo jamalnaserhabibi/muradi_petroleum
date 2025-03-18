@@ -56,7 +56,7 @@
                                             @foreach($towers as $tower)
                                             <tr>
                                                 
-                                                <td><span class=" mr-2">{{ $tower->serial }}</span>{{ $tower->name }}</td>
+                                                <td>{{ $tower->serial }}</td>
                                                 <td>{{ $tower->product->product_name }}</td>
                                                 <td>{{ $tower->distribution_sum_amount ?? 0 }}</td>
                                                 <td>{{ $tower->details }}</td>
@@ -64,8 +64,6 @@
                                                 <a href="{{ route('tower.seeksale', $tower->id) }}"
                                                     class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
                                                 </a>
-                                                {{-- @if($tower->name != 'money') --}}
-
                                                 <a href="{{ route('tower.edit', $tower->id) }}"
                                                     class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                 </a>
@@ -80,7 +78,6 @@
                                                         <li class="fas fa-trash"></li>
                                                     </button>
                                                 </form>
-                                               {{-- @endif --}}
 
                                             </td>
                                                </td>
