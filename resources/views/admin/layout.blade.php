@@ -193,28 +193,13 @@
                                 </p>
                             </a>
                         </li> --}}
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item">
+                            <a href="{{route('readings')}}" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Meter Reading
-                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('meter_reading') }}" class="nav-link">
-                                        <i class="fas fa-tachometer-alt nav-icon"></i>
-                                        <p>Reading Meter 1</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('readings')}}" class="nav-link">
-                                        <i class="fas fa-list-alt nav-icon"></i>
-                                        <p>Reading Meter 2</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('distributers') }}" class="nav-link">

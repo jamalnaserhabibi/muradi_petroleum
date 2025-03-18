@@ -59,11 +59,7 @@
                                         <h5><strong>ID: </strong> {{$customer[0]->id}}</h5>
                                         <h5><strong>Name: </strong> {{$customer[0]->name}}</h5>
                                         <h5><strong>Company: </strong> {{$customer[0]->company}}</h5>
-                                        <h5><strong>Customer Type: </strong> 
-                                            @foreach ($types as $type)
-                                            {{ $customer[0]->customer_type === $type['id'] ? $type['customer_type'] : '' }}
-                                            @endforeach
-                                        </h5>
+                                        <h5><strong>Customer Type: </strong></h5> 
                                         <h5><strong>Contact: </strong> {{$customer[0]->contact}}</h5>
                                         <h5><strong>Document: </strong> {{$customer[0]->document}}</h5>
                                         <h5><strong>Details: </strong> {{$customer[0]->description}}</h5>

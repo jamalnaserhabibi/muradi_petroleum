@@ -46,7 +46,7 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Product</th>
-                                                <th>Sales</th>
+                                                <th>Distribution</th>
                                                 <th>Details</th>
                                                 <th></th>
                                                
@@ -58,13 +58,13 @@
                                                 
                                                 <td><span class=" mr-2">{{ $tower->serial }}</span>{{ $tower->name }}</td>
                                                 <td>{{ $tower->product->product_name }}</td>
-                                                <td>{{ $tower->sales_sum_amount ?? 0 }}</td>
+                                                <td>{{ $tower->distribution_sum_amount ?? 0 }}</td>
                                                 <td>{{ $tower->details }}</td>
                                                <td>
                                                 <a href="{{ route('tower.seeksale', $tower->id) }}"
                                                     class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
                                                 </a>
-                                                @if($tower->name != 'money')
+                                                {{-- @if($tower->name != 'money') --}}
 
                                                 <a href="{{ route('tower.edit', $tower->id) }}"
                                                     class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
@@ -80,7 +80,7 @@
                                                         <li class="fas fa-trash"></li>
                                                     </button>
                                                 </form>
-                                               @endif
+                                               {{-- @endif --}}
 
                                             </td>
                                                </td>

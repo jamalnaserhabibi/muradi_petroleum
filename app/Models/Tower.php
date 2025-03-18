@@ -29,6 +29,10 @@ class Tower extends Model
     {
         return $this->hasMany(Sales::class, 'tower_id', 'id');
     }
+    public function distribution()
+    {
+        return $this->hasMany(Distribution::class, 'tower_id', 'id');
+    }
     
     public function employees()
     {

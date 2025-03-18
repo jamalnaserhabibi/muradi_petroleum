@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('company')->unique();
-            $table->unsignedBigInteger('customer_type'); // Foreign key column
+            // $table->unsignedBigInteger('customer_type'); // Foreign key column
             $table->foreign('customer_type')->references('id')->on('customer_types')->onDelete('cascade');
             $table->date('date');
             $table->string('contact');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AfghanCalendarHelper;
+use App\Models\Distribution;
 use App\Models\Tower;
 use App\Models\Product;
 use App\Models\Sales;
@@ -34,7 +35,7 @@ class towerController extends Controller
         }
     
         // Query sales data
-        $tower = Sales::with(['tower', 'contract.customer', 'contract.product'])
+        $tower = Distribution::with(['tower', 'contract.customer', 'contract.product'])
             ->where('tower_id', $tower_id)
             ->whereBetween('date', [$start_date, $end_date])
             ->get();
@@ -61,14 +62,13 @@ class towerController extends Controller
         $startOfMonth = $monthRange['start'];
         $endOfMonth = $monthRange['end'];   
     
-        // Fetch towers with their total sales for the current month
-        $towers = Tower::with('sales') // Ensure you define the 'sales' relationship in the Tower model
-        ->withSum(['sales' => function ($query) use ($startOfMonth, $endOfMonth) {
+ 
+        $towers = Tower::with('distribution') 
+        ->withSum(['distribution' => function ($query) use ($startOfMonth, $endOfMonth) {
             $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
         }], 'amount')
         ->get();
-        // Pass the data to the view
-        // dd($towers);
+       
         return view('towers.tower', compact('towers'));
 
     }

@@ -11,7 +11,7 @@
                 <td></td>
                 <td>
                     <div class="d-flex flex-wrap">
-                        @if ($tower->name !='money')
+                        @if ($tower->name != 'money' && !preg_match('/^exp/i', $tower->name))
                         @if($tower->meter_reading->isNotEmpty())
                             @foreach($tower->meter_reading as $reading)
                                 <div class="d-flex align-items-center m-2" style="border-left: 2px solid rgba(128, 128, 128, 0.453); border-radius:5px">

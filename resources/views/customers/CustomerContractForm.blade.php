@@ -67,6 +67,7 @@
                                 <!-- Product Dropdown -->
                                 <select class="form-control mb-3" name="product_id" id="product" required>
                                     <option value="" disabled {{ old('product_id', $contract->product_id ?? null) === null ? 'selected' : '' }}>Select Product</option>
+                                   
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}" {{ old('product_id', $contract->product_id ?? null) == $product->id ? 'selected' : '' }}>
                                             {{ $product->product_name }}

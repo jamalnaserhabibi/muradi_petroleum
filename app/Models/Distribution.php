@@ -30,8 +30,9 @@ class Distribution extends Model
     }
 
     // Relationship with Tower model
+    
     public function tower()
     {
-        return $this->belongsTo(Tower::class);
+        return $this->belongsTo(Tower::class, 'tower_id', 'id');
     }
 }

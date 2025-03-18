@@ -22,7 +22,11 @@ class DistributerController extends Controller
             // Retrieve towers that are not in the list of assigned towers
             $availableTowers = Tower::with('product')
                 ->whereNotIn('id', $assignedTowerIds)
-                ->orWhere('name', '=', 'money')
+                ->orWhere(function ($query) {
+                    $query->where('name', 'money')
+                          ->orWhere('name', 'like', 'exp%')
+                          ->orWhere('name', 'like', 'Exp%');
+                })
                 ->get();
 
             return view('distributers.distributers', compact('employees', 'availableTowers','allemployees'));

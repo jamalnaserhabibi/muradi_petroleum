@@ -60,23 +60,13 @@
                                     @error('product_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                    <!-- Type Dropdown -->
-                                    <select class="form-control mb-3" name="customer_type" id="product" required>
-                                        <option value="" disabled
-                                            {{ old('customer_type', $customer->customer_type ?? null) === null ? 'selected' : '' }}>
-                                            Type</option>
-                                        @foreach ($customerTypes as $customerType)
-                                            <option value="{{ $customerType->id }}"
-                                                {{ old('customer_type', $customer->customer_type ?? null) == $customerType->id ? 'selected' : '' }}>
-                                                {{ $customerType->customer_type }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                             
+
                                     @error('company')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                     <input class="form-control form-control mb-3" name="company" type="text"
-                                        id="expensecompany" placeholder="Company"
+                                        id="expensecompany" placeholder="Last Name"
                                         value="{{ old('amount', $customer->company ?? '') }}" required>
 
                                     @error('contact')

@@ -24,26 +24,7 @@
                                 </script>
                             {{-- </ol>  --}}
                         @endif
-                        <form id="filter-form" action="{{ route('typefilter') }}" method="GET">
-                            <div class="dropdown ml-1">
-                                <select id="product-filter" name="type_id[]" class="select2 form-control"
-                                multiple="multiple" data-placeholder="Type" style="width:100%">
-                                @if ($types->count() > 0)
-                                    @foreach ($types as $type)
-                                        @if ($type->customerType) <!-- Ensure the related customerType exists -->
-                                            <option value="{{ $type->customerType->id }}" 
-                                                {{ in_array($type->customerType->id, request('type_id', [])) ? 'selected' : '' }}>
-                                                {{ $type->customerType->customer_type }}
-                                            </option>
-                                        @endif
-                                    @endforeach
-                                @else
-                                    <option value="" disabled>No Data Available</option>
-                                @endif
-                            </select>
-
-                            </div>
-                        </form>        
+                          
                    
                         <span>
                             <a href="{{ route('customers') }}" class="btn btn-info ml-3  fluid-right">Active</a>
@@ -70,13 +51,12 @@
                                         <tr>
                                             {{-- <th>ID</th> --}}
                                             <th>Name</th>
-                                            <th>Company</th>
+                                            <th>Last_Name</th>
                                             {{-- <th>Contact</th> --}}
-                                            <th>Type</th>
                                             <th>Rate</th>
                                             <th>Product</th>
                                             {{-- <th>Doc</th> --}}
-                                            <th>Sales</th>
+                                            <th>Distribution</th>
                                             {{-- <th>Date</th> --}}
                                             <th>Status</th>
                                             {{-- <th>AddedBy</th> --}}
@@ -91,7 +71,6 @@
                                                 <td>{{ $customer->name }}</td>
                                                 <td>{{ $customer->company }}</td>
                                                 {{-- <td>{{ $customer->contact }}</td> --}}
-                                                <td>{{ $customer->customerType->customer_type }}</td>
                                                 <td>{{ $customer->contract->rate }}</td>
                                                 <td>{{ $customer['contract']['product']->product_name }}</td>
                                                 {{-- <td>{{ $customer->document }}</td> --}}
