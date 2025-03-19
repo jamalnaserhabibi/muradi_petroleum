@@ -43,15 +43,22 @@ class AfghanCalendarHelper
 
         return $jalali;
     }
-    public static function getAfghanMonth($date)
-{
-    $jalali = Jalalian::fromDateTime($date)->format('%B'); // Get only the month
-    foreach (self::$afghanMonths as $persian => $afghan) {
-        $jalali = str_replace($persian, $afghan, $jalali);
+    public static function toAfghanDateFormat($date, $format = 'Y/m/d')
+    {
+        // Convert Gregorian date to Jalali
+        $jalali = Jalalian::fromDateTime($date)->format($format);
+
+        return $jalali; // Return the date in the format like 1403/12/09
     }
-    return $jalali; // Return Afghan month name
-}
-public static function toAfghanDateTime($datetime, $format = '%d %B %Y %I:%M %P')
+    public static function getAfghanMonth($date)
+    {
+        $jalali = Jalalian::fromDateTime($date)->format('%B'); // Get only the month
+        foreach (self::$afghanMonths as $persian => $afghan) {
+            $jalali = str_replace($persian, $afghan, $jalali);
+        }
+        return $jalali; // Return Afghan month name
+    }
+    public static function toAfghanDateTime($datetime, $format = '%d %B %Y %I:%M %P')
     {
         // Convert Gregorian datetime to Jalali
         $jalaliDateTime = Jalalian::fromDateTime($datetime)->format($format);

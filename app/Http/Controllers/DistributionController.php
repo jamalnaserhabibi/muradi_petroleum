@@ -38,7 +38,6 @@ class DistributionController extends Controller
         return view('distribution.form', compact('distributions', 'distributers', 'contracts'));
     }
 
-
     public function index(Request $request)
     {
         // Handle date filtering
@@ -53,8 +52,8 @@ class DistributionController extends Controller
             $start_date = $monthRange['start'];
             $end_date = $monthRange['end'];
 
-            $afghaniStartDate = AfghanCalendarHelper::toAfghanDate($start_date);
-            $afghaniEndDate =  AfghanCalendarHelper::toAfghanDate($end_date);
+            $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
+            $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
         }
     
         // Fetch distribution data with relationships
