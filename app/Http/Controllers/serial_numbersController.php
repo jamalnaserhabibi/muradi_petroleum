@@ -192,8 +192,13 @@ class serial_numbersController extends Controller
             ->whereBetween('date', [$start_date, $end_date])
             ->orderBy('date', 'asc')
             ->get();
+            if (isset($request->start_date) && isset($request->end_date)) {
+                return view('meter_reading.singletowerreadings',compact('serialNumbers','afghaniStartDate','afghaniEndDate'));
 
-        return view('meter_reading.singletowerreadings',compact('serialNumbers'));
+            }else{
+                return view('meter_reading.singletowerreadings',compact('serialNumbers'));
+
+            }
     }
 
     public function edit($id)

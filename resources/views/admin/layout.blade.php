@@ -457,13 +457,11 @@
         $(function() {
             $(document).ready(function() {
                 $('#date').persianDatepicker({
-                    format: 'YYYY/MM/DD hh:mm a', // 12-hour format with AM/PM
+                    format: 'YYYY/MM/DD', // 12-hour format with AM/PM
                     initialValueType: 'persian', // Use Jalali date format
                     initialValue: true,
                     autoClose: true, // Close after selection
-                    timePicker: {
-                        enabled: true, // Enable time selection
-                    },
+                   
                     calendar: {
                         persian: {
                             locale: 'en' // Use English for the calendar numbers

@@ -142,7 +142,8 @@
                                                 @if ($rowspan[$currentKey] > 0)
                                                     <td  style="vertical-align: middle; text-align: center;" rowspan="{{ $rowspan[$currentKey] }}">
                                                        <span class="btn btn-info mr-2 mb-2">
-                                                        <i class="fas fa-gas-pump"></i>- {{ $row['tower_serial'] }} - {{ $row['product_name'] }}
+                                                        <a style="color: white" href="{{ route('singletowereadings', ['tower_id' => $row['tower_id']]) }}"> <i class="fas fa-gas-pump"></i>- {{ $row['tower_serial'] }} - {{ $row['product_name'] }}</a>
+                                                       
                                                        </span>
                                                     </td>
                                                     @php $rowspan[$currentKey] = 0; @endphp
@@ -157,7 +158,7 @@
                                                      <span style="margin-left: -25px">🔴</span>    
                                                     @endif
                                                 
-                                                    {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($row['date']) }}
+                                                    {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($row['date']) }}
                                                 </td>
                                                 <td>{{ $row['current_reading'] }}</td>
                                                 {{-- <td>{{ $row['previous_reading'] ?? 'N/A' }}</td> --}}
@@ -172,7 +173,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn pt-0 pb-0 btn-danger" title="Delete"
-                                                        onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                        onclick="return confirm('Are you sure you want to delete this reading?')">
                                                         <li class="fas fa-trash"></li>
                                                     </button>
                                                 </form>

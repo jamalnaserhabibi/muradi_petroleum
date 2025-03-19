@@ -138,10 +138,10 @@
     
                                                 @if (!empty($record->date) && \Carbon\Carbon::parse($record->date)->isToday())
                                                     <td style="color:red;white-space: nowrap;">Today:
-                                                        {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($record->date); }}
+                                                        {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($record->date); }}
                                                     </td>
                                                 @elseif(!empty($record->date))
-                                                    <td style="white-space: nowrap;"> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($record->date); }}</td>
+                                                    <td style="white-space: nowrap;"> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($record->date); }}</td>
                                                 @endif
     
                                                 <td>

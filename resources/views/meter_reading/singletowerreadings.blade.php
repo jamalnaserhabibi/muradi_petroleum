@@ -20,8 +20,7 @@
                              
                     </h2>
 
-                    <form class="expensefilterform" id="filter-form" action="{{ route('singletowereadings', ['tower_id' => $serialNumbers[0]->tower_id]) }}" method="GET">
-                        {{-- <input type="hidden" name="start_date" id="start-date"> --}}
+                    <form class="expensefilterform" id="filter-form" action="{{ route('singletowereadings', ['tower_id' => isset($serialNumbers[0]) ? $serialNumbers[0]->tower_id : request('tower_id') ]) }}" method="GET">                        {{-- <input type="hidden" name="start_date" id="start-date"> --}}
                         {{-- <input type="hidden" name="end_date" id="end-date"> --}}
                         <!-- Date Range Picker and Category Dropdown -->
                         <div class="form-group d-flex">
@@ -59,7 +58,6 @@
                             </div>
                         </div>
                     </form>
-            <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">+ New</a>
 
                     @if (session('success'))
                         <ol>
