@@ -16,7 +16,7 @@
                         {{ isset($distributions) && isset($distributions[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($distributions[0]->date) : 'No Data' }}
                     </h2>
                     <div class="col-8 d-flex align-items-center justify-content-end">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
+                        <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#filterModal">
                             <i class="fas fa-filter"></i> Filters
                         </button>
                         <a href="{{ route('adddestributionform') }}" class="btn btn-success ml-3">

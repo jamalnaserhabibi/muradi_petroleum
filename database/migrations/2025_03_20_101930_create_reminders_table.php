@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
-            $table->note();
-            $table->timestamps();
+            $table->text('note');
+            $table->date('reminder_date')->nullable();
+            $table->date('date_added');
+            $table->string('created_by');
+            $table->string('status')->default('pending'); // Added status field
+            $table->timestamps(); // Ensure timestamps are added if needed
         });
     }
 

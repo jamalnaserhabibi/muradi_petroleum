@@ -174,7 +174,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-distribution', [DistributionController::class, 'addDistribution']);
     
     Route::get('/reminders', [ReminderController::class, 'index'])->name('reminders');
-
-});
+    Route::delete('/reminders/{reminders}', [ReminderController::class, 'destroy'])->name('reminder.destroy');
+    Route::post('/add-reminders', [ReminderController::class, 'create'])->name('reminder.create');
+    Route::put('/reminder/update', [ReminderController::class, 'update'])->name('reminder.update');});
 
 require __DIR__.'/auth.php';
