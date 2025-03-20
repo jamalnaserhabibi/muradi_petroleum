@@ -17,6 +17,7 @@ use App\Http\Controllers\serial_numbersController;
 use App\Models\Serial_Numbers;
 use App\Http\Controllers\DistributerController;
 use App\Http\Controllers\DistributionController;
+use App\Http\Controllers\ReminderController;
 
 Route::get('/', function () {
     return view('admin/login');
@@ -172,6 +173,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/get-add-distribution-form', [DistributionController::class, 'getAddDistributionForm']);
     Route::post('/add-distribution', [DistributionController::class, 'addDistribution']);
     
+    Route::get('/reminders', [ReminderController::class, 'index'])->name('reminders');
+
 });
 
 require __DIR__.'/auth.php';
