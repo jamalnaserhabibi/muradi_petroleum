@@ -127,7 +127,12 @@ class serial_numbersController extends Controller
                 $previousReading = $currentReading;
             }
         }
-        $towers = Tower::with('product')->get();
+        $towers = Tower::with('product')
+            ->whereDoesntHave('serial_numbers', function ($query) {
+            $query->whereDate('date', Carbon::today());
+            })
+            ->get();
+
         // Pass the result to the view
         return view('meter_reading.readings', compact('result','towers'));
     }
@@ -153,21 +158,16 @@ class serial_numbersController extends Controller
 
         $jalaliDate = $request->input('date'); 
 
-        $dateTimeParts = explode(' ', $jalaliDate); 
-        $timeParts = date('H:i', strtotime($dateTimeParts[1] . ' ' . $dateTimeParts[2])); // Convert time to 24-hour format
-        $jalaliDateIn24HourFormat = $dateTimeParts[0] . ' ' . $timeParts;
+        $gregorianDate = Jalalian::fromFormat('Y/m/d', $jalaliDate)->toCarbon();
+        $formattedDate = $gregorianDate->format('Y-m-d'); // Only store the date without time
 
-        $gregorianDate = Jalalian::fromFormat('Y/m/d H:i', $jalaliDateIn24HourFormat)->toCarbon();
-        $formattedDate = $gregorianDate->format('Y-m-d H:i:s');
         // Create the record
-
         Serial_Numbers::create([
             'tower_id' => $request->input('tower_id'),
             'serial' => $request->input('serial'),
             'date' => $formattedDate, // Use the converted Gregorian date
         ]);
 
-    
         return redirect()->route('readings')->with('success', 'Tower Meter Added successfully.');
     }
     public function singletowereadings(Request $request,$tower_id)

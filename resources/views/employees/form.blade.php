@@ -24,7 +24,7 @@
                         <div class="card mt-3">
                             <div class="card-header brannedbtn">
 
-                                <h3 class="card-title ">Add Purchase</h3>
+                                <h3 class="card-title ">استخدام کارمند جدید</h3>
                             </div>
                             @if (session('success'))
                                 <ol>

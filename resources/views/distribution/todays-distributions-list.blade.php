@@ -1,4 +1,4 @@
-{{-- @if($distributions->isEmpty())
+ @if($distributions->isEmpty())
     <div class="alert alert-info text-center">
         <i class="fas fa-info-circle"></i> No distribution records found for today.
     </div>
@@ -56,7 +56,8 @@
                                             <span class="badge bg-success">Total: {{ number_format($total, 1) }}</span>
                                         </div>
                                     </div>
-                                    <small class="text-muted">Date: {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($distribution->date) }}</small>
+                                    <small class="text-muted">Date: {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($distribution->date) }}</small> <br>
+                                    <small class="text-muted">Details: {{  $distribution->details }}</small>
                                     <div class="mt-2">
                                         <form action="{{ route('distribution_delete', $distribution->id) }}" method="POST" style="display:inline;">
                                             @csrf
@@ -112,14 +113,13 @@
             </div>
         </div>
     </div>
-@endif --}}
+@endif 
 
 
 
 
 
-
-@if($distributions->isEmpty())
+{{-- @if($distributions->isEmpty())
     <p class="text-muted p-2">No distribution records found for today.</p>
 @else
     @php
@@ -234,4 +234,4 @@
             </div>
         </div>
     </div>
-@endif
+@endif --}}

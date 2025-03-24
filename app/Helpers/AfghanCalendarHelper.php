@@ -10,18 +10,18 @@ class AfghanCalendarHelper
      * Map Persian month names to Afghan calendar month names.
      */
     private static $afghanMonths = [
-        'فروردین' => 'Hamal',
-        'اردیبهشت' => 'Sowr',
-        'خرداد' => 'Jowza',
-        'تیر' => 'Saratan',
-        'مرداد' => 'Asad',
-        'شهریور' => 'Sunbuola',
-        'مهر' => 'Mizan',
-        'آبان' => 'Aqrab',
-        'آذر' => 'Qaws',
-        'دی' => 'Jadi',
-        'بهمن' => 'Dalwa',
-        'اسفند' => 'Hoot',
+        'فروردین' => 'حمل',
+        'اردیبهشت' => 'ثور',
+        'خرداد' => 'جوزا',
+        'تیر' => 'سرطان',
+        'مرداد' => 'اسد',
+        'شهریور' => 'سنبله',
+        'مهر' => 'میزان',
+        'آبان' => 'عقرب',
+        'آذر' => 'قوس',
+        'دی' => 'جدی',
+        'بهمن' => 'دلو',
+        'اسفند' => 'حوت',
     ];
 
     /**
@@ -79,15 +79,13 @@ class AfghanCalendarHelper
         // Get current Jalali year and month
         $jalaliNow = Jalalian::now();
         $jalaliYear = $jalaliNow->getYear();
-        $jalaliMonth = $jalaliNow->getMonth();
-
-        // Start of the Jalali month
+        $jalaliMonth = str_pad($jalaliNow->getMonth(), 2, '0', STR_PAD_LEFT);
+       
         $startOfMonth = Jalalian::fromFormat('Y/m/d', "$jalaliYear/$jalaliMonth/01")->toCarbon();
 
-        // Number of days in the Jalali month
+    
         $daysInMonth = Jalalian::fromFormat('Y/m/d', "$jalaliYear/$jalaliMonth/01")->getMonthDays();
 
-        // End of the Jalali month
         $endOfMonth = Jalalian::fromFormat('Y/m/d', "$jalaliYear/$jalaliMonth/$daysInMonth")->toCarbon()->endOfDay();
 
         return [

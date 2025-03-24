@@ -11,7 +11,8 @@
                 <div class="container-fluid">
                     <div  class="row mb-2">
                         <div class="col-6">
-                            <h1>Towers</h1>
+                            <a href="{{ route('addtowerform') }}" class="btn brannedbtn">جدید +</a>
+
                         </div>
                         <div class="col-6 d-flex align-items-center justify-content-end">
                                 
@@ -27,7 +28,8 @@
                             </script> 
                             </ol>
                         @endif
-                            <a href="{{ route('addtowerform') }}" class="btn brannedbtn">+ New</a>
+                        <h1>پایه ها</h1>
+
                         </div>
                     </div>
                 </div>
@@ -44,10 +46,10 @@
                                     <table id="example1" class="table table-bordered table-striped useraccounts">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Product</th>
-                                                <th>Distribution</th>
-                                                <th>Details</th>
+                                                <th>نام</th>
+                                                <th>محصول</th>
+                                                <th>توزیع ماه فعلی</th>
+                                                <th>جزیات</th>
                                                 <th></th>
                                                
                                             </tr>

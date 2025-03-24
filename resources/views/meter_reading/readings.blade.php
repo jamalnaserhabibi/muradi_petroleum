@@ -155,7 +155,7 @@
                                                     @endphp
                                                 
                                                     @if ($date === $today)
-                                                     <span style="margin-left: -25px">🔴</span>    
+                                                     <span style="margin-right: -25px">🔴</span>    
                                                     @endif
                                                 
                                                     {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($row['date']) }}

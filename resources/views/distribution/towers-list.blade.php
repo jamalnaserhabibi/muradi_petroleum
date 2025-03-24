@@ -13,6 +13,7 @@
                     <div class="d-flex flex-wrap">
                         @if ($tower->product_id != 13 && $tower->product_id != 14)
                         @if($tower->meter_reading->isNotEmpty())
+                        
                             @foreach($tower->meter_reading as $reading)
                                 <div class="d-flex align-items-center m-2" style="border-left: 2px solid rgba(128, 128, 128, 0.453); border-radius:5px">
                                     <!-- Combined Meter Reading Information -->
@@ -24,12 +25,14 @@
                                              {{ $reading->product_name }}
                                         </span>
                                         <!-- Date Information -->
-                                        <span class="btn btn-info mr-2 mb-2">
-                                            <i class="fas fa-calendar-day"></i> 
+                                        <span class="btn btn-info mr-2 mb-2" dir="rtl">
+                                            {{-- <i class="fas fa-calendar-day"></i>  --}}
                                             @if(\Carbon\Carbon::parse($reading->date)->isToday())
-                                                Today
+                                              <span style="border:1px solid white;  border-radius:3px">  {{\App\Helpers\AfghanCalendarHelper::toAfghanDate($reading->second_date ?? ''); }}  </span>  -
+                                            امروز
                                             @else
-                                                {{\App\Helpers\AfghanCalendarHelper::toAfghanDate($reading->date); }}
+                                             <span style="border:1px solid white;  border-radius:3px">  {{\App\Helpers\AfghanCalendarHelper::toAfghanDate($reading->second_date ?? ''); }}  </span>  -
+                                             <span style="border:1px solid white;  border-radius:3px">  {{\App\Helpers\AfghanCalendarHelper::toAfghanDate($reading->date ?? ''); }}  </span>  
                                             @endif
                                         </span>
                                         <!-- Serial Number Information -->
@@ -42,10 +45,10 @@
                                         </span>
                                         <!-- Total Amount Information (Today's Date) -->
                                         <span class="btn btn-success mr-2 mb-2">
-                                            <i class="fas fa-check-circle"></i> Today's Added: {{ $tower->total_amount }} L
+                                            <i class="fas fa-check-circle"></i> ثبت امروز: {{ $tower->total_amount }} لیتر
                                         </span>
                                         <span class="btn btn-danger mr-2 mb-2">
-                                            <i class="fas fa-exclamation-circle"></i> Remaining: {{ $reading->petrol_sold- $tower->total_amount }} L
+                                            <i class="fas fa-exclamation-circle"></i> باقی مانده: {{ $reading->petrol_sold- $tower->total_amount }} لیتر
                                         </span>
                                     </div>
                                 </div>
@@ -58,7 +61,7 @@
                                     </span>
                                     <!-- Total Amount Information (Today's Date) -->
                                     <span class="btn btn-success mr-2">
-                                        <i class="fas fa-coins"></i> Today's Total Amount: {{ $tower->total_amount }}
+                                        <i class="fas fa-coins"></i> مقدار فروش امروز: {{ $tower->total_amount }}
                                     </span>
                                 </div>
                             </div>

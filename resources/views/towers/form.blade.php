@@ -20,11 +20,11 @@
         <section class="content ">
             <div class="container-fluid">
                 <div class="row ">
-                    <div class="col-md-12">
+                    <div class="col-md-12" dir="rtl">
                         <div class="card mt-3">
                             <div class="card-header brannedbtn">
-                                <h3 class="card-title ">{{ isset($towers) ? 'Update' : 'Add'}} 
-                                 Tower Details</h3>
+                                <h3 class="card-title " >{{ isset($towers) ? 'اپدیت' : 'افزودن'}} 
+                                 مشخصات پایه</h3>
                             </div>
                             @if (session('success'))
                                 <ol>
@@ -53,7 +53,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                                 <input class="form-control form-control mb-3" name="serial" type="number" 
-                                id="serial" placeholder="Tower Number"
+                                id="serial" placeholder="نمبر پایه"
                                 value="{{ old('serial', $towers->serial ?? request('serial')) }}" required>
  
 
@@ -62,7 +62,7 @@
                                 @enderror
                                 <!-- Product Dropdown -->
                                 <select class="form-control mb-3" name="product_id" id="product" required>
-                                    <option value="" disabled {{ old('product_id', $towers->product_id ?? null) === null ? 'selected' : '' }}>Select Product</option>
+                                    <option value="" disabled {{ old('product_id', $towers->product_id ?? null) === null ? 'selected' : '' }}>محصول</option>
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}" {{ old('product_id', $towers->product_id ?? null) == $product->id ? 'selected' : '' }}>
                                             {{ $product->product_name }}
@@ -76,12 +76,12 @@
                         
                                 <!-- Details Input -->
                                 <textarea class="form-control form-control" name="details" rows="4"
-                                          placeholder="Details">{{ old('details', $towers->details ?? '') }}</textarea>
+                                          placeholder="جزیات">{{ old('details', $towers->details ?? '') }}</textarea>
                         
                                 <!-- Submit Button -->
                                 <div class="card-footer bg-white d-flex justify-content-center">
                                     <button type="submit" class="btn brannedbtn w-100">
-                                        {{ isset($towers) ? 'Update Tower' : 'Add Tower' }}
+                                        {{ isset($towers) ? 'ثبت تغیرات' : 'اضافه' }}
                                     </button>
                                 </div>
                             </div>

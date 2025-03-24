@@ -11,9 +11,8 @@
             <div class="container-fluid">
                 <div class="totalSalary searchBar row mb-1">
 
-                    <h2>Employees</h2>
 
-                    <div class="col-6 d-flex align-items-center justify-content-end">
+                    <div class="d-flex align-items-center justify-content-end">
                         @if (session('success'))
                             <ol>
                                 <div class="alert alert-success" id="success-alert">
@@ -26,9 +25,10 @@
                                 </script>
                             </ol>
                         @endif
-                        <a href="{{ route('addemployee') }}" class="btn brannedbtn">+ New</a>
-                        <a href="{{ route('expenseaddform',['amount' => $totalSalaries, 'category' => 'Staff Salary','item' => 'Salary of '],) }}" class="btn brannedbtn ml-1">Pay Salary</a>
+                        <a href="{{ route('addemployee') }}" class="btn brannedbtn">+ جدید</a>
+                        <a href="{{ route('expenseaddform',['amount' => $totalSalaries, 'category' => 'Staff Salary','item' => 'Salary of '],) }}" class="btn brannedbtn ml-1">پرداخت معاش</a>
                     </div>
+                    <h2>کارمندان</h2>
                 </div>
             </div>
         </section>
@@ -43,12 +43,12 @@
                                     <thead>
                                         <tr>
                                             {{-- <th>ID</th> --}}
-                                            <th>Fullname</th>
-                                            <th>Salary</th>
-                                            <th>Hired</th>
-                                            <th>Photo</th>
-                                            <th>Description</th>
-                                            <th>Actions</th>
+                                            <th>نام</th>
+                                            <th>معاش</th>
+                                            <th> استخدام</th>
+                                            <th>عکس</th>
+                                            <th>توضیحات</th>
+                                            <th>.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,7 +56,7 @@
                                             <tr>
                                                 {{-- <td>{{ $employee->id }}</td> --}}
                                                 <td>{{ $employee->fullname }}</td>
-                                                <td>{{ number_format($employee->salary, 2) }}</td>
+                                                <td>{{ number_format($employee->salary,0) }}</td>
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($employee->date); }}</td>
                                                 <td>
                                                     @if ($employee->photo)
@@ -87,7 +87,7 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="1">Total</th>
+                                            <th colspan="1">مجموعه:</th>
                                             <th id="total-footer"></th>
                                             <!-- Footer for the total amount -->
                                             <th colspan="4"></th>
@@ -178,19 +178,19 @@
 
 
             // Add a label for the total amount
-            const totalLabel = $('<h2>')
-                .addClass('ml-3') // Add styling
-                .attr('id', 'total-amount-label')
-                .text('Total: 0.00'); // Initial value
+            // const totalLabel = $('<h2>')
+            //     .addClass('ml-3') // Add styling
+            //     .attr('id', 'total-amount-label')
+            //     .text('Total: 0.00'); // Initial value
 
-            $('.totalSalary').children().eq(0).after(totalLabel);
+            // $('.totalSalary').children().eq(0).after(totalLabel);
 
             // Update both the footer and the <h2> label
                 function updateFooterTotal() {
     const total = calculateTotal();
-    const formattedTotal = parseFloat(total).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    const formattedTotal = parseFloat(total).toLocaleString('en-US');
     $('#total-footer').text(formattedTotal); // Update the footer cell with the formatted total
-    totalLabel.text(`Total: ${formattedTotal}`); // Update the <h2> label with the formatted total
+    // totalLabel.text(`Total: ${formattedTotal}`); // Update the <h2> label with the formatted total
 }
             // Update total after DataTable initialization
             updateFooterTotal();

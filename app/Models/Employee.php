@@ -26,6 +26,11 @@ class Employee extends Model
     {
         return $this->belongsTo(Employee::class, 'distributer_id');
     }
+      // Relationship with Distributer model
+      public function distributers()
+      {
+          return $this->hasMany(Distributer::class, 'employee_id');
+      }
 
     // Relationship with Contract model
     public function contract()

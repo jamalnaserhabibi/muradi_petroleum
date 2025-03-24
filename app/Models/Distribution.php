@@ -14,7 +14,7 @@ class Distribution extends Model
         'tower_id',
         'rate',
         'amount',
-        'description',
+        'details',
     ];
 
     // Relationship with Employee model

@@ -1618,6 +1618,8 @@ pre code {
     }
 }
 .table {
+    direction: rtl;
+    text-align: right;
     width: 100%;
     margin-bottom: 1rem;
     color: #212529;
@@ -4592,6 +4594,7 @@ input[type="submit"].btn-block {
     margin-bottom: 0;
     background-color: rgba(0, 0, 0, 0.03);
     border-bottom: 0 solid rgba(0, 0, 0, 0.125);
+    text-align: right;
 }
 .card-header:first-child {
     border-radius: calc(0.25rem - 0) calc(0.25rem - 0) 0 0;
@@ -30665,7 +30668,7 @@ html.maximized-card {
     position: relative;
 }
 .card-title {
-    float: left;
+   
     font-size: 1.1rem;
     font-weight: 400;
     margin: 0;
@@ -30675,7 +30678,7 @@ html.maximized-card {
 }
 .btn-tool {
     background-color: transparent;
-    color: #adb5bd;
+    color: white;
     font-size: 0.875rem;
     margin: -0.75rem 0;
     padding: 0.25rem 0.5rem;

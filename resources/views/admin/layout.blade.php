@@ -304,7 +304,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{route('reminders')}}" class="nav-link">
-                                <i class="nav-icon fas fa-sticky-note"></i>
+                                <i class="nav-icon fas fa-bell"></i>
                                 <p>
                                     Reminders
                                 </p>
@@ -490,7 +490,7 @@
                             autoClose: true,
                             calendar: {
                                 persian: {
-                                    locale: 'en',
+                                    locale: 'fa',
                                 },
                             },
                             observer: true,

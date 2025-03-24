@@ -7,13 +7,14 @@
                 <div class="col-md-12">
                     <!-- Distributer Card -->
                     <div class="card mt-3">
-                        <div class="card-header brannedbtn">
-                            <h3 class="card-title">Towers</h3>
-                            <div class="card-tools">
+                        <div class="card-header brannedbtn d-flex justify-content-between">
+                            <div class="card-tools mr-auto">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>  
                                 </button>
                             </div>
+                            <h3 class="card-title">پایه های مربوط</h3>
+
                         </div>
                         <div class="card-body">
                             <div class="form-group p-1 mb-0">
@@ -32,13 +33,14 @@
 
                     <!-- Add Distribution Card -->
                     <div class="card mt-1">
-                        <div class="card-header brannedbtn">
-                            <h3 class="card-title">Add Distribution</h3>
-                            <div class="card-tools">
+                        <div class="card-header brannedbtn d-flex justify-content-between">
+                            <div class="card-tools mr-auto">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>  
                                 </button>
                             </div>
+                            <h3 class="card-title">ثبت توزیع</h3>
+
                         </div>
                         <div class="card-body">
                             <div id="distribution-add" class="pl-2">
@@ -46,16 +48,15 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Today's Distribution Card -->
                     <div class="card mt-1">
-                        <div class="card-header brannedbtn">
-                            <h3 class="card-title">Today's Distribution</h3>
-                            <div class="card-tools">
+                        <div class="card-header brannedbtn d-flex justify-content-between">
+                            <div class="card-tools mr-auto">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>  
                                 </button>
                             </div>
+                            <h3 class="card-title">توزیع امروز</h3>
                         </div>
                         <div class="card-body">
                             <div id="distribution-list" >

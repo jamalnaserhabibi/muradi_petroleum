@@ -31,9 +31,8 @@ class DistributionController extends Controller
     public function adddestributionform(){
         $distributions = Distribution::with(['contract.customer', 'distributer', 'tower'])->get();
         // Fetch distributers and contracts for dropdowns
-        $distributers = Employee::all(); // Assuming distributers are employees
+        $distributers = Employee::whereHas('distributers')->get(); // Assuming distributers are employees
         $contracts = Contract::with(['customer','Product'])->get();
-
         // Pass the data to the view
         return view('distribution.form', compact('distributions', 'distributers', 'contracts'));
     }
@@ -42,23 +41,21 @@ class DistributionController extends Controller
     {
         // Handle date filtering
         if (isset($request->start_date) && isset($request->end_date)) {
-            $afghaniStartDate = $request->start_date;
-            $afghaniEndDate = $request->end_date;
-    
-            $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
-            $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
-        } else {
-            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-            $start_date = $monthRange['start'];
-            $end_date = $monthRange['end'];
-
-            $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
-            $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
+                $afghaniStartDate = $request->start_date;
+                $afghaniEndDate = $request->end_date;
+                $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+                $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+            } else {
+                $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+                $start_date = $monthRange['start'];
+                $end_date = $monthRange['end'];
+                $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
+                $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
         }
-    
         // Fetch distribution data with relationships
         $distributions = Distribution::whereBetween('date', [$start_date, $end_date])
-            ->with(['contract.customer', 'distributer', 'tower']);
+            ->with(['contract.customer', 'distributer', 'tower'])
+            ->orderBy('date', 'asc');
     
         // Apply distributer filter if selected
         if ($request->has('distributer') && !empty($request->distributer)) {
@@ -85,8 +82,7 @@ class DistributionController extends Controller
         $contracts = Contract::with(['customer', 'product'])->get();
     
         // Return the view with the necessary data
-        
-            return view('distribution.distribution', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
+        return view('distribution.distribution', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
        
     }
 
@@ -129,7 +125,7 @@ class DistributionController extends Controller
             'distributer_id' => 'required|exists:employees,id',
             'rate' => 'required|numeric',
             'amount' => 'required|numeric',
-            'description' => 'nullable|string',
+            'details' => 'nullable|string',
         ]);
 
         Distribution::create($request->all());
@@ -216,6 +212,7 @@ class DistributionController extends Controller
                 $secondLastRecord = $records->get(1);
                 $petrolSold = $lastRecord->serial_number - $secondLastRecord->serial_number;
                 $lastRecord->petrol_sold = number_format($petrolSold, 2, '.', '');
+                $lastRecord->second_date = $secondLastRecord->date;
             } else {
                 $lastRecord->petrol_sold = 0;
             }
@@ -234,9 +231,9 @@ class DistributionController extends Controller
             'contract_id' => 'required|exists:contracts,id',
             'rate' => 'required|numeric',
             'amount' => 'required|numeric',
-            'description' => 'nullable|string',
+            'discribtion' => 'nullable|string',
         ]);
-
+        dd($request->all());
         Distribution::create($request->all());
 
         return redirect()->route('distribution')->with('success', 'Distribution added successfully!');

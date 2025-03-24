@@ -18,19 +18,25 @@
                     </h2>
 
 
-                    <form class="expensefilterform" id="filter-form" action="{{ route('expensefilterdate') }}" method="GET">
+                    <form class="expensefilterform" id="filter-form" action="{{ route('expensefilterdate') }}"
+                        method="GET">
                         {{-- <input type="hidden" name="start_date" id="start-date"> --}}
                         {{-- <input type="hidden" name="end_date" id="end-date"> --}}
                         <!-- Date Range Picker and Category Dropdown -->
                         <div class="form-group d-flex">
                             <!-- Date Range Picker -->
-                            <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
+                            <div style="max-width: 400px;" id="reservationdate"
+                                class="d-flex align-items-center justify-content-between">
                                 {{-- {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($expenses[0]->date) }} --}}
-                                <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="Start Date" style="max-width: 150px;" required />
+                                <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text"
+                                    name="start_date" id="start_date" class="form-control" placeholder="Start Date"
+                                    style="max-width: 150px;" required />
                                 <span style="margin: 0 10px; font-weight: bold;">to</span>
-                                <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
+                                <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text"
+                                    name="end_date" id="end_date" class="form-control" placeholder="End Date"
+                                    style="max-width: 150px;" required />
                             </div>
-                            
+
 
                             <!-- Category Filter -->
                             <div class="ml-4">
@@ -57,7 +63,7 @@
                             </div>
                         </div>
                     </form>
-    <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">+ New</a>
+                    <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">+ New</a>
 
                     @if (session('success'))
                         <ol>
