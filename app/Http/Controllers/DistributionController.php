@@ -85,6 +85,54 @@ class DistributionController extends Controller
         return view('distribution.distribution', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
        
     }
+    public function indexfortable(Request $request)
+    {
+        // Handle date filtering
+        if (isset($request->start_date) && isset($request->end_date)) {
+                $afghaniStartDate = $request->start_date;
+                $afghaniEndDate = $request->end_date;
+                $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+                $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+            } else {
+                $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+                $start_date = $monthRange['start'];
+                $end_date = $monthRange['end'];
+                $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
+                $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
+        }
+        // Fetch distribution data with relationships
+        $distributions = Distribution::whereBetween('date', [$start_date, $end_date])
+            ->with(['contract.customer', 'distributer', 'tower'])
+            ->orderBy('date', 'asc');
+    
+        // Apply distributer filter if selected
+        if ($request->has('distributer') && !empty($request->distributer)) {
+            $distributions->whereIn('distributer_id', $request->distributer);
+        }
+    
+        // Apply product filter if selected
+        if ($request->has('product') && !empty($request->product)) {
+            $distributions->whereHas('tower.product', function ($query) use ($request) {
+                $query->whereIn('id', $request->product);
+            });
+        }
+    
+        // Apply contract filter if selected
+        if ($request->has('contract') && !empty($request->contract)) {
+            $distributions->whereIn('contract_id', $request->contract);
+        }
+    
+        // Get the filtered distributions
+        $distributions = $distributions->get();
+    
+        // Fetch distributers and contracts for dropdowns
+        $distributers = Employee::all(); // Assuming distributers are employees
+        $contracts = Contract::with(['customer', 'product'])->get();
+    
+        // Return the view with the necessary data
+        return view('distribution.distribution_table', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
+       
+    }
 
     public function destroy($id)
     {

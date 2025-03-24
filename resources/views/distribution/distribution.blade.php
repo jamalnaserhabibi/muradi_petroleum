@@ -460,8 +460,8 @@
                         <a href="{{ route('adddestributionform') }}" class="btn btn-success ml-3">
                             ثبت فروشات پایه <i class="fas fa-plus"></i>
                         </a>
-                        <a href="{{ route('adddestributionform') }}" class="btn btn-success ml-3">
-                            جدول <i class="fas fa-plus"></i>
+                        <a href="{{ route('indexfortable') }}" class="btn btn-success ml-3">
+                            نمایش جدول <i class="fas fa-table"></i>
                         </a>
                         @if (session('success'))
                             <div class="alert alert-success" id="success-alert">

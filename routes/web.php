@@ -161,6 +161,7 @@ Route::middleware('auth')->group(function () {
 
     //distribution
     Route::get('/distribution', [DistributionController::class, 'index'])->name('distribution');
+    Route::get('/distribution/table', [DistributionController::class, 'indexfortable'])->name('indexfortable');
     Route::get('/distribution/adddestributionform', [DistributionController::class, 'adddestributionform'])->name('adddestributionform');
 
     Route::delete('/distribution/{distribution}', [DistributionController::class, 'destroy'])->name('distribution_delete');
