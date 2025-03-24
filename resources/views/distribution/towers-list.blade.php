@@ -11,7 +11,7 @@
                 <td></td>
                 <td>
                     <div class="d-flex flex-wrap">
-                        @if ($tower->product_id != 13 && $tower->product_id != 14)
+                        @if ($tower->product_id != 13 && $tower->product_id != 14 && $tower->product_id != 15)
                         @if($tower->meter_reading->isNotEmpty())
                         
                             @foreach($tower->meter_reading as $reading)

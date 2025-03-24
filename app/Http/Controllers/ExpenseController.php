@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AfghanCalendarHelper;
+use App\Models\Distribution;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Morilog\Jalali\CalendarUtils;
 use App\Models\Expense;
+use App\Models\Contract;
 
 class ExpenseController extends Controller
 {
@@ -36,14 +38,48 @@ class ExpenseController extends Controller
         return view('expenses.expenses', compact('expenses','afghaniStartDate','afghaniEndDate'));
     }
 
-    public function expenses()
+    public function expenses(Request $request)
     {
-        $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-        $startOfMonth = $monthRange['start'];
-        $endOfMonth = $monthRange['end'];   
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $startOfMonth = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
+            $endOfMonth = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
+            $afghaniStartDate = $request->start_date;
+            $afghaniEndDate = $request->end_date;
+        }else{
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $startOfMonth = $monthRange['start'];
+            $endOfMonth = $monthRange['end'];   
+            $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($startOfMonth);
+            $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($endOfMonth);
+        }
+        if ($request->has('contract_id')) {
+            $expenses = Distribution::whereBetween('date', [$startOfMonth, $endOfMonth])
+                ->where('contract_id', $request->contract_id)
+                ->whereHas('contract.product', function ($query) {
+                    $query->where('id', 15);
+                })
+                ->with(['contract.customer', 'distributer', 'tower'])
+                ->orderBy('date', 'asc')
+                ->get();
+        } else {
+            $expenses = Distribution::whereBetween('date', [$startOfMonth, $endOfMonth])
+                ->whereHas('contract.product', function ($query) {
+                    $query->where('id', 15);
+                })
+                ->with(['contract.customer', 'distributer', 'tower'])
+                ->orderBy('date', 'asc')
+                ->get();
+        }
         
-        $expenses = Expense::whereBetween('date', [$startOfMonth, $endOfMonth])->get();
-        return view('expenses.expenses', compact('expenses'));
+       
+
+        $contracts = Contract::with(['customer', 'product'])
+            ->whereHas('product', function ($query) {
+            $query->whereIn('id', [15]);
+            })
+            ->get();
+
+        return view('expenses.expenses', compact('expenses','afghaniStartDate', 'afghaniEndDate', 'contracts'));
     }
 
     public function create()

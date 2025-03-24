@@ -58,7 +58,7 @@
                                             <th>مقدار</th>
                                             <th>مجموع</th>
                                             <th>تاریخ</th>
-                                            <th>توضیعات</th>
+                                            <th>توضیحات</th>
                                             <th>.</th>
                                         </tr>
                                     </thead>
@@ -76,7 +76,7 @@
                                                 </td>
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($distribution->date) }}
                                                 </td>
-                                                <td>{{ $distribution->description }}</td>
+                                                <td>{{ $distribution->details }}</td>
                                                 <td>
                                                     <form action="{{ route('distribution_delete', $distribution->id) }}"
                                                         method="POST" style="display:inline;">

@@ -23,7 +23,7 @@ class DistributerController extends Controller
             $availableTowers = Tower::with('product')
                 ->whereNotIn('id', $assignedTowerIds)
                 ->orWhere(function ($query) {
-                        $query->whereIn('product_id', [13, 14]);
+                        $query->whereIn('product_id', [13, 14, 15]);
                     })->get();
                 
 

@@ -490,7 +490,7 @@
                             autoClose: true,
                             calendar: {
                                 persian: {
-                                    locale: 'fa',
+                                    locale: 'en',
                                 },
                             },
                             observer: true,

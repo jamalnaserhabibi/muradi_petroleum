@@ -11,14 +11,10 @@
             <div class="container-fluid">
 
                 <div class="totalamount searchBar row mb-1 ">
-                    <h2>
-                        Expenses of
-                        {{ isset($expenses) && isset($expenses[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($expenses[0]->date) : 'No Data' }}
-
-                    </h2>
+                    
 
 
-                    <form class="expensefilterform" id="filter-form" action="{{ route('expensefilterdate') }}"
+                    <form class="expensefilterform" id="filter-form" action="{{ route('expenses') }}"
                         method="GET">
                         {{-- <input type="hidden" name="start_date" id="start-date"> --}}
                         {{-- <input type="hidden" name="end_date" id="end-date"> --}}
@@ -38,33 +34,32 @@
                             </div>
 
 
-                            <!-- Category Filter -->
+                            <!-- cust Filter -->
                             <div class="ml-4">
                                 {{-- <label>Category:</label> --}}
-                                <select id="category-filter" name="category" class="form-control">
-                                    <option value="">All Category</option>
-                                    <option value="personal" {{ request('category') == 'personal' ? 'selected' : '' }}>
-                                        Personal</option>
-                                    <option value="Tank Maintenance"
-                                        {{ request('category') == 'Tank Maintenance' ? 'selected' : '' }}>Tank Maintenance
-                                    </option>
-                                    <option value="Staff Salary"
-                                        {{ request('category') == 'Staff Salary' ? 'selected' : '' }}>Staff Salary</option>
-                                    <option value="tank" {{ request('category') == 'tank' ? 'selected' : '' }}>Tank
-                                    </option>
-                                    <option value="Fuel" {{ request('category') == 'Fuel' ? 'selected' : '' }}>Fuel
-                                    </option>
-                                    <option value="Tax" {{ request('category') == 'Tax' ? 'selected' : '' }}>Tax</option>
-                                    <option value="office" {{ request('category') == 'office' ? 'selected' : '' }}>Office
-                                    </option>
-                                    <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other
-                                    </option>
-                                </select>
+                                <select id="contract-filter" name="contract[]" class="select2 form-control"
+                                multiple="multiple" data-placeholder="Select Contract" style="width:100%">
+                                @if (count($contracts) > 0)
+                                    <option value="">All Contracts</option>
+                                    @foreach ($contracts as $contract)
+                                        <option value="{{ $contract->id }}"
+                                            {{ in_array($contract->id, request('contract', [])) ? 'selected' : '' }}>
+                                            {{ $contract->customer->name }} {{ $contract->customer->company }}
+                                        </option>
+                                    @endforeach
+                                @else
+                                    <option value="" disabled>No Data Available</option>
+                                @endif
+                            </select>
                             </div>
                         </div>
                     </form>
-                    <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">+ New</a>
-
+                    {{-- <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">+ New</a> --}}
+                    <h2>
+                        مصارف شروع از
+                         {{ isset($expenses) && isset($expenses[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($expenses[0]->date) : 'No Data' }}
+ 
+                     </h2>
                     @if (session('success'))
                         <ol>
                             <div class="alert alert-success" id="success-alert">
@@ -90,65 +85,64 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped useraccounts">
-                                    <thead>
+                                <table id="example1" class="table table-bordered table-striped table-hover "
+                                dir="rtl">
+                                <thead>
+                                    <tr>
+                                        <th>مشتری</th>
+                                        <th>کارمند</th>
+                                        {{-- <th>پایه</th> --}}
+                                        <th>نرخ</th>
+                                        <th>مقدار</th>
+                                        <th>مجموع</th>
+                                        <th>تاریخ</th>
+                                        <th>توضیعات</th>
+                                        <th>.</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($expenses as $distribution)
                                         <tr>
-                                            <th>Item</th>
-                                            <th>Amount</th>
-                                            <th>Category</th>
-                                            <th>Date</th>
-                                            {{-- <th>Document</th> --}}
-                                            <th>Description</th>
-                                            <th></th>
+                                            <td>{{ $distribution->contract->customer->name ?? 'N/A'}}
+                                                {{ $distribution->contract->customer->company ?? 'N/A'}}</td>
+                                            <td>{{ $distribution->distributer->fullname ?? 'N/A' }}</td>
+                                            {{-- <td>{{ $distribution->tower->serial ?? 'N/A'}} -
+                                                {{ $distribution->tower->product->product_name ?? 'N/A'}}</td> --}}
+                                            <td>{{ $distribution->rate }}</td>
+                                            <td>{{ number_format($distribution->amount, 0) }}</td>
+                                            <td>{{ number_format($distribution->amount * $distribution->rate, 1) }}
+                                            </td>
+                                            <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($distribution->date) }}
+                                            </td>
+                                            <td>{{ $distribution->details }}</td>
+                                            <td>
+                                                <form action="{{ route('distribution_delete', $distribution->id) }}"
+                                                    method="POST" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-icon btn-danger"
+                                                        title="Delete"
+                                                        onclick="return confirm('Are you sure you want to delete this?')">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
                                         </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach ($expenses as $expense)
-                                            <tr>
-                                                <td>{{ $expense->item }}</td>
-                                                <td>{{ number_format($expense->amount, 2) }}</td>
-                                                <td>{{ $expense->category }}</td>
-                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($expense->date) }}
-                                                </td>
-                                                <td>
-                                                    @if ($expense->document)
-                                                        <a href="{{ asset('storage/' . $expense->document) }}"
-                                                            target="_blank">
-                                                            {{ $expense->description ?? 'Document' }}
-                                                            {{-- <img class="useraccountsimage" src={{ asset('storage/' . $expense->document) }} alt="Document"> --}}
-                                                        </a>
-                                                    @else
-                                                        {{ $expense->description }} (No Document)
-                                                    @endif
-                                                </td>
-                                                {{-- <td></td> --}}
-                                                <td>
-                                                    <a href="{{ route('expenses.edit', $expense) }}"
-                                                        class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit"></a>
-                                                    <form action="{{ route('expenses.destroy', $expense) }}" method="POST"
-                                                        style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger"
-                                                            title="Delete"
-                                                            onclick="return confirm('Are you sure you want to delete this user?')">
-                                                            <li class="fas fa-trash"></li>
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan="1">Total</th>
-                                            <th id="total-footer"></th> <!-- Footer for the total amount -->
-                                            <th colspan="4"></th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th id="total-sum"></th> <!-- This will display the sum -->
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                              </table>
                             </div>
 
                         </div>
@@ -180,88 +174,80 @@
     <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script src="plugins/select2/js/select2.full.min.js"></script>
+
     {{-- commented for the sidebar btn not worked --}}
     {{-- <script src="dist/js/adminlte.min2167.js?v=3.2.0"></script> --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            $(function() {
-                const table = $("#example1").DataTable({
-                    "responsive": true,
-                    "lengthChange": false,
-                    // "dom": 'fBrtip',
-                    "autoWidth": false,
-                    "buttons": [{
-                            extend: 'excel',
-                            footer: true,
-                            exportOptions: {
-                                columns: ':not(:last-child)' // Exclude the last column (Action column)
-                            }
-                        },
-                        {
-                            extend: 'pdf',
-                            footer: true,
-                            exportOptions: {
-                                columns: ':not(:last-child)'
-                            }
-                        },
-                        {
-                            extend: 'print',
-                            footer: true,
-                            exportOptions: {
-                                columns: ':not(:last-child)'
-                            }
-                        }
-                    ]
-                });
+    $(document).ready(function() {
+    // Initialize Select2 with Bootstrap4 theme
+    $('.select2').select2({
+        theme: 'bootstrap4',
+        placeholder: 'Select Products',
+        allowClear: true
+    });
 
-                // Append buttons to the container
-                table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $(function() {
+        const table = $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api();
+                
+                // Calculate the total of the 'مجموع' column (index 4)
+                var total = api
+                    .column(4, { page: 'current' })
+                    .data()
+                    .reduce(function(a, b) {
+                        // Remove any formatting and convert to number
+                        return a + parseFloat(b.replace(/,/g, ''));
+                    }, 0);
 
-                // Calculate total of the "Amount" column
-                function calculateTotal() {
-                    let total = 0;
-                    table.rows({
-                        search: 'applied'
-                    }).every(function() {
-                        const rowData = this.data();
-                        const amount = parseFloat(rowData[1].replace(/,/g,
-                            ''));
-                        if (!isNaN(amount)) {
-                            total += amount;
-                        }
-                    });
-                    return total;
+                // Update footer
+                $(api.column(4).footer()).html(
+                    number_format(total, 1) // Format the number with 1 decimal place
+                );
+            },
+            "buttons": [{
+                    extend: 'excel',
+                    footer: true,
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'pdf',
+                    footer: true,
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
+                },
+                {
+                    extend: 'print',
+                    footer: true,
+                    exportOptions: {
+                        columns: ':not(:last-child)'
+                    }
                 }
-
-
-                // Add a label for the total amount
-                // const totalLabel = $('<h2>')
-                //     .addClass('ml-3') // Add styling
-                //     .attr('id', 'total-amount-label')
-                //     .text('Total: 0.00'); // Initial value
-
-                // $('.totalamount').children().eq(0).after(totalLabel);
-
-                // Update both the footer and the <h2> label
-                function updateFooterTotal() {
-                    const total = calculateTotal();
-                    const formattedTotal = parseFloat(total).toLocaleString('en-US', {
-                        minimumFractionDigits: 1,
-                        maximumFractionDigits: 1
-                    });
-                    $('#total-footer').text(formattedTotal);
-                    // totalLabel.text(`Total: ${formattedTotal}`);
-                }
-
-                // Update total after DataTable initialization
-                updateFooterTotal();
-
-                // Update total on table draw (e.g., pagination, search)
-                table.on('draw', function() {
-                    updateFooterTotal();
-                });
-            });
+            ]
         });
+        
+        // Append buttons to the container
+        table.buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+});
+
+// Helper function to format numbers (similar to PHP's number_format)
+function number_format(number, decimals) {
+    number = parseFloat(number);
+    decimals = decimals || 0;
+    
+    var parts = number.toFixed(decimals).split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    
+    return parts.join(".");
+}
     </script>
 
     {{-- <script src="dist/js/demo.js"></script> --}}
