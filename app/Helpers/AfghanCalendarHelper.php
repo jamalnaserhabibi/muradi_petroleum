@@ -31,6 +31,10 @@ class AfghanCalendarHelper
      * @param string $format
      * @return string
      */
+    public static function getCurrentShamsiDate(){
+        $jalali = Jalalian::now()->format('Y/m/d');
+        return $jalali;
+    }
     public static function toAfghanDate($date, $format = '%d %B %Y')
     {
         // Convert Gregorian date to Jalali

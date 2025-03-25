@@ -459,7 +459,7 @@
                 $('#date').persianDatepicker({
                     format: 'YYYY/MM/DD', // 12-hour format with AM/PM
                     initialValueType: 'persian', // Use Jalali date format
-                    initialValue: true,
+                    initialValue: false,
                     autoClose: true, // Close after selection
                    
                     calendar: {
@@ -469,7 +469,10 @@
                     },
                     observer: true, // Automatically update the input field
                     altField: '#altField', // Optional: For additional hidden fields
+                    
                 });
+             
+                
                 $('#start_date').persianDatepicker({
                     format: 'YYYY/MM/DD',
                     initialValueType: 'persian',

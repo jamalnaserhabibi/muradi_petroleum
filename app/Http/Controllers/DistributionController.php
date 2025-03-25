@@ -68,12 +68,12 @@ class DistributionController extends Controller
                 $query->whereIn('id', $request->product);
             });
         }
-    
+     
         // Apply contract filter if selected
         if ($request->has('contract') && !empty($request->contract)) {
             $distributions->whereIn('contract_id', $request->contract);
         }
-    
+        
         // Get the filtered distributions
         $distributions = $distributions->get();
     

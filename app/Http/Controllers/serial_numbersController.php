@@ -76,6 +76,7 @@ class serial_numbersController extends Controller
             'finalResults' => $flatResults
         ]);
     }
+    
     public function readings()
     {
         // Fetch the serial numbers with their related tower and product data
@@ -132,9 +133,69 @@ class serial_numbersController extends Controller
             $query->whereDate('date', Carbon::today());
             })
             ->get();
-
+        $afghancurrentdate = AfghanCalendarHelper::getCurrentShamsiDate();
         // Pass the result to the view
-        return view('meter_reading.readings', compact('result','towers'));
+        return view('meter_reading.readings', compact('result','towers','afghancurrentdate'));
+    }
+    public function meter_reading_table()
+    {
+        // Fetch the serial numbers with their related tower and product data
+        $serialNumbers = Serial_Numbers::with(['tower.product'])
+            ->whereHas('tower', function ($query) {
+                $query->whereIn('id', function ($subQuery) {
+                    $subQuery->select('tower_id')
+                        ->from('serial_numbers as sn2')
+                        ->whereRaw('sn2.tower_id = serial_numbers.tower_id')
+                        ->whereRaw('sn2.date >= serial_numbers.date')
+                        ->groupBy('sn2.tower_id')
+                        ->havingRaw('COUNT(*) <= 2');
+                });
+            })
+            ->orderBy('tower_id')
+            ->orderBy('date') // Sort by date in ascending order
+            ->get();
+    
+        // Group the readings by tower_id
+        $groupedReadings = $serialNumbers->groupBy('tower_id');
+    
+        // Calculate the sold petrol for each tower
+        $result = [];
+        foreach ($groupedReadings as $towerId => $readings) {
+            $previousReading = null;
+    
+            foreach ($readings as $reading) {
+                // Use the 'serial' column for meter readings
+                $currentReading = $reading->serial;
+    
+                // Calculate the sold petrol
+                $soldPetrol = $previousReading !== null
+                    ? $currentReading - $previousReading
+                    : 0;
+    
+                // Add the result for this reading
+                $result[] = [
+                    'id' => $reading->id,
+                    'tower_id' => $reading->tower_id,
+                    'tower_serial' => $reading->tower->serial,
+                    'product_name' => $reading->tower->product->product_name,
+                    'date' => $reading->date,
+                    'current_reading' => $currentReading,
+                    'previous_reading' => $previousReading ?? 'N/A',
+                    'sold_petrol' => $soldPetrol,
+                ];
+    
+                // Update the previous reading for the next iteration
+                $previousReading = $currentReading;
+            }
+        }
+        $towers = Tower::with('product')
+            ->whereDoesntHave('serial_numbers', function ($query) {
+            $query->whereDate('date', Carbon::today());
+            })
+            ->get();
+        $afghancurrentdate = AfghanCalendarHelper::getCurrentShamsiDate();
+        // Pass the result to the view
+        return view('meter_reading.readings_table', compact('result','towers','afghancurrentdate'));
     }
     public function destroy($id)
     {

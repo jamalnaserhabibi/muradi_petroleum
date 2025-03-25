@@ -11,9 +11,9 @@
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
-                <div class="totalamount searchBar row mb-1">
+                <div dir="rtl" class="totalamount searchBar row mb-1">
                     <h2>
-                        Payments Balance
+                        بیلانس حساب مشتریان
                     </h2>
                     <div class="col-6 d-flex align-items-center justify-content-end">
                         <form id="filter-form" action="{{ route('filtercustomer') }}" method="GET">
@@ -21,10 +21,9 @@
                             <input type="hidden" name="end_date" id="end-date">
                             <div class="form-group d-flex">
 
-                                <div class="dropdown ml-4">
-                                    {{-- <label for="product-filter">Select</label> --}}
+                                {{-- <div   class="dropdown ml-4">
                                     <select id="product-filter" name="product_id[]" class="select2 form-control"
-                                        multiple="multiple" data-placeholder="Select Customers" style="width:100%">
+                                        multiple="multiple" data-placeholder="انتخاب مشتری" style="width:100%">
                                         @if (count($customers) > 0)
                                             @foreach ($customers as $customer)
                                                 <option value="{{ $customer->id }}"
@@ -37,10 +36,10 @@
                                         @endif
                                     </select>
 
-                                </div>
+                                </div> --}}
                             </div>
                         </form>
-                        <a href="{{ route('addpaymentform') }}" class="btn brannedbtn ml-2">+ New</a>
+                        <a href="{{ route('addpaymentform') }}" class="btn brannedbtn ml-2">+ جدید </a>
                     </div>
 
                     @if (session('success'))
@@ -76,7 +75,7 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-
+                                 
                                     <tbody>
                                         @foreach ($balances as $balance)
                                             <tr>
@@ -90,7 +89,10 @@
                                                 @endif
                                                 <td>
                                                     <a href="{{ route('singlecustomerpayments', $balance->id) }}"
-                                                        class="btn pt-0 pb-0 btn-primary fa fa-eye" title="Payments">
+                                                        class="btn pt-0 pb-0 btn-info" title="Payments">  Payments
+                                                    </a>
+                                                    <a href="{{ route('distribution', ['contract[]' => $balance->id]) }}"
+                                                        class="btn pt-0 pb-0 btn-success " title="Sales"> Sales
                                                     </a>
 
                                                     {{-- <form action="{{ route('saledelete', $balance->id) }}" method="POST"

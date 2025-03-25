@@ -2,41 +2,14 @@
 @section('content')
     <div class="content-wrapper">
 
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        @php
-    $jalaliDate = \Morilog\Jalali\Jalalian::now();
-    
-    $afghanMonths = [
-        'فروردین' => 'حمل',
-        'اردیبهشت' => 'ثور',
-        'خرداد' => 'جوزا',
-        'تیر' => 'سرطان',
-        'مرداد' => 'اسد',
-        'شهریور' => 'سنبله',
-        'مهر' => 'میزان',
-        'آبان' => 'عقرب',
-        'آذر' => 'قوس',
-        'دی' => 'جدی',
-        'بهمن' => 'دلو',
-        'اسفند' => 'حوت',
-    ];
-
-    // Get year, month, and day
-    $jalaliYear = $jalaliDate->getYear();
-    $jalaliMonth = $jalaliDate->format('F'); // Get the Jalali month name
-    $afghanMonth = $afghanMonths[$jalaliMonth]; // Get the Afghan month name
-    $jalaliDay = $jalaliDate->getDay();
-@endphp
-
-<h1 class="dashboardtitle">
-    Dashboard | {{ $jalaliDay }} {{ $afghanMonth }} {{ $jalaliYear }}
-</h1>
-                    </div>
-
-                </div>
+        <div class="content-header" >
+            <div class="container-fluid text-center">
+                <h1 class="dashboardtitle">
+                    {{ \Morilog\Jalali\Jalalian::now()->format('%A  %d') }} 
+                    {{ ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'][\Morilog\Jalali\Jalalian::now()->getMonth() - 1] }}
+                    {{ \Morilog\Jalali\Jalalian::now()->format('%Y | %I:%M') }} 
+                    {{ \Morilog\Jalali\Jalalian::now()->format('a') == 'am' ? 'قبل از ظهر' : 'بعد از ظهر' }}
+                </h1>
             </div>
         </div>
 
@@ -206,8 +179,7 @@
 @endsection
 
 @section('CustomScripts')
-
-<script src="plugins/chart.js/Chart.min.js"></script>
+    <script src="plugins/chart.js/Chart.min.js"></script>
 
     <script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
     <script>

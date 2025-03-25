@@ -113,6 +113,7 @@ Route::middleware('auth')->group(function () {
     //serial_numbers
     Route::post('/meter_reading/addsaleinfoform/store_serial', [serial_numbersController::class, 'store'])->name('serial_numbers_store');
     Route::get('/meter_reading', [serial_numbersController::class, 'meter_reading'])->name('meter_reading');
+    Route::get('/meter/reading/table', [serial_numbersController::class, 'meter_reading_table'])->name('meter_reading_table');
     Route::post('/meter_reading/addsaleinfoform/{id}/edit', [serial_numbersController::class, 'edit'])->name('editserialnumber');
     Route::patch('/meter_reading/addsaleinfoform/{id}/update', [serial_numbersController::class, 'update'])->name('serial_numbers_update');
     Route::get('/meter_reading/addsaleinfoform/serials', [serial_numbersController::class, 'sales'])->name('towers_info');
