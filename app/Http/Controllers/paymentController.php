@@ -147,7 +147,7 @@ class paymentController extends Controller
             }]);
         }])
             ->where('contract_id', $contractId)
-            ->whereBetween('date', [$start, $end])  // Adding the date range filter
+            ->whereBetween('date', [$start, $end])  
             ->get();
 
         return view('payment/customerpayment', compact('payments', 'astart', 'aend', 'contractId'));
