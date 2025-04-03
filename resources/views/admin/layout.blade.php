@@ -13,9 +13,9 @@
     <link
         rel="stylesheet"href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback">
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-
     <link rel="stylesheet" href="ionicons/2.0.1/css/ionicons.min.css">
 
+    {{-- <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@200;300;400;500;600;700;800&family=Mirza:wght@400;500;600;700&family=Noto+Naskh+Arabic:wght@400..700&display=swap" rel="stylesheet"> --}}
     <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
     <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
@@ -39,9 +39,9 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper" >
 
-        {{-- <div class="preloader">
+        <div class="preloader">
             <img class="animation__wobble" src="img/logo.png" alt="Muradi Petroleum" height="120">
-        </div> --}}
+        </div>
 
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 

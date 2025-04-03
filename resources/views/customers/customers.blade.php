@@ -50,18 +50,18 @@
                                     <thead>
                                         <tr>
                                             {{-- <th>ID</th> --}}
-                                            <th>Name</th>
-                                            <th>Last_Name</th>
+                                            <th>نام</th>
+                                            <th>تخلص</th>
                                             {{-- <th>Contact</th> --}}
-                                            <th>Rate</th>
-                                            <th>Product</th>
+                                            <th>نرخ</th>
+                                            {{-- <th>محصول</th> --}}
                                             {{-- <th>Doc</th> --}}
-                                            <th>Distribution</th>
+                                            <th>دریافت توضیغ</th>
                                             {{-- <th>Date</th> --}}
-                                            <th>Status</th>
+                                            <th>فعال</th>
                                             {{-- <th>AddedBy</th> --}}
                                             {{-- <th>Details</th> --}}
-                                            <th>Operations</th>
+                                            <th>.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -72,9 +72,9 @@
                                                 <td>{{ $customer->company }}</td>
                                                 {{-- <td>{{ $customer->contact }}</td> --}}
                                                 <td>{{ $customer->contract->rate }}</td>
-                                                <td>{{ $customer['contract']['product']->product_name }}</td>
+                                                {{-- <td>{{ $customer['contract']['product']->product_name }}</td> --}}
                                                 {{-- <td>{{ $customer->document }}</td> --}}
-                                                <td>{{ $customer->current_month_sales_total  }}</td>
+                                                <td>{{number_format( $customer->current_month_sales_total,0)  }}</td>
                                                 {{-- <td style="white-space: nowrap;"> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($customer->date)}}</td> --}}
                                                 <td>
                                                     <div class="custom-control custom-switch">

@@ -20,29 +20,33 @@ class CustomerController extends Controller
         $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
         $startOfMonth = $monthRange['start'];
         $endOfMonth = $monthRange['end'];   
+    
         $customer = Customers::whereHas('contract', function ($query) {
             $query->where('isActive', 1);
         })
         ->with([
             'contract.product',
             'contract.distribution' => function ($query) use ($startOfMonth, $endOfMonth) {
-                $query->whereBetween('date', [$startOfMonth, $endOfMonth]);
+                $query->whereBetween('date', [$startOfMonth, $endOfMonth])
+                    ->whereHas('tower', function ($towerQuery) {
+                        $towerQuery->where('product_id', '!=', 14);
+                    });
             }
         ])
         ->get()
         ->map(function ($customer) {
-            // Check if the customer has contracts
+            // Calculate sales total excluding product_id 14
             $customer->current_month_sales_total = $customer->contract 
-                ? $customer->contract->distribution->sum('amount') 
-                : 0;
+            ? $customer->contract->distribution->sum(function ($distribution) {
+                return $distribution->amount * $distribution->rate;
+            }) 
+            : 0;
             return $customer;
         });
-        
-      
-        
-
+    
         return view('customers.customers', compact('customer'));
     }
+    
    
     public function customer0()
     {
