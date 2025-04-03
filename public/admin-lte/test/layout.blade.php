@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Muradi Petroleum</title>
+    <title>مرادی پطرولیم</title>
     <base href="{{ asset('admin-lte') }}/" />
     <link rel="stylesheet" href="admincss/useraccounts/styleforall.css">
     <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
@@ -143,7 +143,7 @@
             <a href="{{ route('admin.dashboard') }}"
                 class="brand-link d-flex justify-content-center align-items-center flex-column">
                 <img src="img/logo.png" alt="AdminLTE Logo" class="brand-image">
-                <span class="brand-text font-weight-light">Muradi Petroleum</span>
+                <span class="brand-text font-weight-light">مرادی پطرولیم</span>
             </a>
 
             <div class="sidebar">

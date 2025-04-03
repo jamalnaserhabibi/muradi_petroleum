@@ -180,4 +180,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-reminders', [ReminderController::class, 'create'])->name('reminder.create');
     Route::put('/reminder/update', [ReminderController::class, 'update'])->name('reminder.update');});
 
+
+    //debits
+    Route::get('/debits', [ExpenseController::class, 'debits'])->name('debits');
+
 require __DIR__.'/auth.php';

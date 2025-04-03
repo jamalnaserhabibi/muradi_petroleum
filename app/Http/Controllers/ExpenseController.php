@@ -82,6 +82,47 @@ class ExpenseController extends Controller
         return view('expenses.expenses', compact('expenses','afghaniStartDate', 'afghaniEndDate', 'contracts'));
     }
 
+    public function debits(Request $request)
+    {
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $startOfMonth = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->start_date)->toDateString();
+            $endOfMonth = CalendarUtils::createCarbonFromFormat('Y/m/d', $request->end_date)->toDateString();
+            $afghaniStartDate = $request->start_date;
+            $afghaniEndDate = $request->end_date;
+        }else{
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $startOfMonth = $monthRange['start'];
+            $endOfMonth = $monthRange['end'];   
+            $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($startOfMonth);
+            $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($endOfMonth);
+        }
+        $debitsQuery = Distribution::whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->whereHas('contract.product', function ($query) {
+                $query->whereIn('id', [13,14]);
+            })
+            ->with(['contract.customer', 'distributer', 'tower'])
+            ->orderBy('date', 'asc');
+
+        if ($request->has('contract_id')) {
+            $debitsQuery->where('contract_id', $request->contract_id);
+        }
+        if ($request->has('distributer')) {
+            $debitsQuery->where('distributer_id', $request->distributer);
+        }
+
+        $debits = $debitsQuery->get();
+        
+       
+
+        $contracts = Contract::with(['customer', 'product'])
+            ->whereHas('product', function ($query) {
+            $query->whereIn('id', [13,14]);
+            })
+            ->get();
+
+        return view('debits.debits', compact('debits','afghaniStartDate', 'afghaniEndDate', 'contracts'));
+    }
+
     public function create()
     {
         return view('expenses.form');

@@ -5,7 +5,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Muradi Petroleum</title>
+    <title>مرادی پطرولیم</title>
     <base href="{{ asset('admin-lte') }}/" />
     <link rel="stylesheet" href="admincss/useraccounts/styleforall.css">
     <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
@@ -37,7 +37,7 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+    <div class="wrapper" >
 
         {{-- <div class="preloader">
             <img class="animation__wobble" src="img/logo.png" alt="Muradi Petroleum" height="120">
@@ -130,10 +130,10 @@
 
                         <div class="userbox">
                             <li class="user-footer">
-                                <a href="{{ route('logout') }}" class="fas fa-sign-out-alt"> Sign Out</a>
+                                <a href="{{ route('logout') }}" class="fas fa-sign-out-alt"> خروج</a>
                             </li>
                             <li class="user-footer">
-                                <a href="{{ route('admin.useraccounts') }}" class="fas fa-user"> Users</a>
+                                <a href="{{ route('admin.useraccounts') }}" class="fas fa-user"> کاربر</a>
                             </li>
                         </div>
                     </ul>
@@ -145,21 +145,21 @@
         </nav>
 
 
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside  class="main-sidebar sidebar-dark-primary elevation-4">
 
             <a href="{{ route('admin.dashboard') }}"
                 class="brand-link d-flex justify-content-center align-items-center flex-column">
                 <img src="img/logo.png" alt="AdminLTE Logo" class="brand-image">
-                <span class="brand-text font-weight-light">Muradi Petroleum</span>
+                <span class="brand-text font-weight-light"><strong>مرادی پطرولیم</strong></span>
             </a>
 
-            <div class="sidebar">
+            <div class="sidebar" >
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview"
                         role="menu" data-accordion="false">
                         <div class="form-inline mb-1">
                             <div class="input-group" data-widget="sidebar-search">
-                                <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                                <input  class="form-control form-control-sidebar" type="search" placeholder="جستجو"
                                     aria-label="Search">
                                 <div class="input-group-append">
                                     <button class="btn btn-sidebar">
@@ -171,18 +171,18 @@
 
                         <li class="nav-item">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
                                 <p>
-                                    Dashboard
+                                    دشبورد
                                 </p>
+                                <i class="nav-icon fas fa-th"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('payment') }}" class="nav-link">
-                                <i class="nav-icon fas fa-dollar-sign"></i>
                                 <p>
-                                    Payments
+                                    بیلانس مشتریان
                                 </p>
+                                <i class="nav-icon fas fa-dollar-sign"></i>
                             </a>
                         </li>
                         {{-- <li class="nav-item">
@@ -195,26 +195,26 @@
                         </li> --}}
                         <li class="nav-item">
                             <a href="{{route('readings')}}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    Meter Reading
+                                    میتر خوانی
                                 </p>
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('distributers') }}" class="nav-link">
-                                <i class="nav-icon fas fa-tint"></i>
                                 <p>
-                                    Distributers
+                                    توزیع کننده
                                 </p>
+                                <i class="nav-icon fas fa-tint"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('distribution') }}" class="nav-link">
-                                <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
-                                    Distribution
+                                    توزیعات
                                 </p>
+                                <i class="nav-icon fas fa-chart-line"></i>
                             </a>
                         </li>
                         {{-- <li class="nav-item">
@@ -255,59 +255,68 @@
 
                         <li class="nav-item">
                             <a href="{{ route('expenses') }}" class="nav-link">
-                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
                                 <p>
-                                    Expenses
+                                    مصارف
                                 </p>
+                                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('debits') }}" class="nav-link">
+                                <p>
+                                    قرض
+                                </p>
+                                <i class="nav-icon fas fa-money-bill-wave"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('purchase') }}" class="nav-link">
-                                <i class="nav-icon fas fas fa-shopping-cart"></i>
                                 <p>
-                                    Purchase
+                                    خریداری
                                 </p>
+                                <i class="nav-icon fas fas fa-shopping-cart"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('employees') }}" class="nav-link">
-                                <i class="nav-icon fas fa-user-tie"></i>
                                 <p>
-                                    Employees
+                                    کارمندان
                                 </p>
+                                <i class="nav-icon fas fa-user-tie"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('customers') }}" class="nav-link">
-                                <i class="nav-icon fas fa-users"></i>
                                 <p>
-                                    Customers
+                                    مشتریان
                                 </p>
+                                <i class="nav-icon fas fa-users"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('towers') }}" class="nav-link">
-                                <i class="fas fa-gas-pump nav-icon"></i>
-
                                 <p>
-                                    Towers
+                                    پایه ها
                                 </p>
+                                <i class="fas fa-gas-pump nav-icon"></i>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('backup') }}" class="nav-link">
-                                <i class="nav-icon fas fa-database"></i>
                                 <p>
                                     Backup And Restore
                                 </p>
+                                <i class="nav-icon fas fa-database"></i>
+
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{route('reminders')}}" class="nav-link">
-                                <i class="nav-icon fas fa-bell"></i>
                                 <p>
-                                    Reminders
+                                    یادداشت
                                 </p>
+                                <i class="nav-icon fas fa-bell"></i>
+
                             </a>
                         </li>
                         <li class="nav-item">

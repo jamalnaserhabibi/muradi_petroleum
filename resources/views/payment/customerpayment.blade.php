@@ -12,9 +12,10 @@
         <section class="content-header">
             <div class="container-fluid">
                 <div class="totalamount searchBar row mb-1">
+                    {{$payments}}
                     @if(isset($payments) && count($payments) > 0)
                         <h2>
-                            Payments of
+                            
                             {{ $payments[0]->contract->customer->name }} - {{ $payments[0]->contract->customer->company }}
                         </h2>
                     @else
@@ -75,6 +76,8 @@
                                         <tr>
                                             <th>Customer</th>
                                             <th>Amount</th>
+                                            <th>Rate</th>
+                                            <th>Total</th>
                                             <th>Date</th>
                                             <th>Details</th>
                                             <th>Action</th> <!-- Ensure this column exists -->
@@ -85,6 +88,8 @@
                                         <tr>
                                             <td>{{ $payment->contract->customer->name }} - {{ $payment->contract->customer->company }}</td>
                                             <td>{{ number_format($payment->amount, 0) }}</td>
+                                            <td>{{ number_format($payment->rate, 0) }}</td>
+                                            <td>{{ number_format($payment->rate * $payment->amount, 0 )}}</td>
                                             <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($payment->date); }}</td>
                                             <td>{{ $payment->details }}</td>
                                             <td>

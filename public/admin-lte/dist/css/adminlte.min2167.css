@@ -12345,6 +12345,8 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 }
 .nav-sidebar > .nav-item {
     margin-bottom: 0;
+    text-align: right;
+    
 }
 .nav-sidebar > .nav-item .nav-icon {
     margin-left: 0.05rem;

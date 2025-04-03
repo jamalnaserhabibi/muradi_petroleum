@@ -90,7 +90,7 @@
                                     <select class="form-control mb-3" name="tower_id" id="tower_id" required>
                                         <option value="" disabled {{ isset($serialNumber) ? '' : 'selected' }}>انتخاب پایه</option>
                                         @foreach ($towers as $tower)
-                                            @if ($tower->product->id != 13 && $tower->product->id != 14)
+                                            @if ($tower->product->id != 13 && $tower->product->id != 14 && $tower->product->id != 15)
                                                 <option value="{{ $tower->id }}"
                                                     {{ old('id', $tower->id ?? '') == ($serialNumber->tower_id ?? '') ? 'selected' : '' }}>
                                                     {{ $tower->serial }} -

@@ -102,6 +102,10 @@
   color: white;
 }
 
+.custombadge strong {
+  color: red !important;
+}
+
 .searchBar {
   display: flex;
   flex-direction: row;
@@ -233,7 +237,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: row-reverse !important;
+  flex-direction: row !important;
   justify-content: space-evenly !important;
 }
 @media (max-width: 768px) {

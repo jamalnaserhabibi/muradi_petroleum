@@ -65,15 +65,20 @@ class DistributionController extends Controller
         // Apply product filter if selected
         if ($request->has('product') && !empty($request->product)) {
             $distributions->whereHas('tower.product', function ($query) use ($request) {
-                $query->whereIn('id', $request->product);
+                if ($request->product == [0]) {
+                    $query->where('id', '!=', 14);
+                } else {
+                    $query->whereIn('id', $request->product);
+                }
             });
         }
-     
+    
         // Apply contract filter if selected
         if ($request->has('contract') && !empty($request->contract)) {
+
             $distributions->whereIn('contract_id', $request->contract);
         }
-        
+    
         // Get the filtered distributions
         $distributions = $distributions->get();
     
@@ -112,13 +117,18 @@ class DistributionController extends Controller
     
         // Apply product filter if selected
         if ($request->has('product') && !empty($request->product)) {
-            $distributions->whereHas('tower.product', function ($query) use ($request) {
-                $query->whereIn('id', $request->product);
-            });
+            if($request->has('notMoneyIn') && !empty($request->notMoneyIn)){
+                dd($request->all());
+            }else{
+                $distributions->whereHas('tower.product', function ($query) use ($request) {
+                    $query->whereIn('id', $request->product);
+                });
+            }
         }
     
         // Apply contract filter if selected
         if ($request->has('contract') && !empty($request->contract)) {
+
             $distributions->whereIn('contract_id', $request->contract);
         }
     

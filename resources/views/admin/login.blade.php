@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Muradi Petroleum</title>
+    <title>مرادی پطرولیم</title>
     <base href="{{ asset('admin-lte') }}/" />
 
     <link rel="stylesheet"
@@ -25,12 +25,12 @@
     <div class="login-box">
         <div class="login-logo d-flex flex-column align-items-center">
             <img src="img/logo.png" style="width: 100px" alt="">
-            <a href="index2.html"><b>Muradi </b> Petroleum</a>
+            <a href=""><b>مرادی </b> پطرولیم</a>
         </div>
 
-        <div class="card">
+        <div class="card" >
             <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start</p>
+                <p class="login-box-msg">ورود به سیستم</p>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="input-group mb-3">
@@ -87,13 +87,13 @@
                                     {{ old('remember') ? 'checked' : '' }}
                                 >
                                 <label for="remember">
-                                    Remember Me
+                                    ذخیره رمز برای ورود بعدی
                                 </label>
                             </div>
                         </div>
                         <div class="col-4">
                             <button type="submit" class="btn btn-primary btn-block">
-                                Log In
+                                ورود
                             </button>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                     <div class="mt-3">
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}" class="text-sm">
-                                Forgot Your Password?
+                                رمز ورودی را فراموش کردید؟
                             </a>
                         @endif
                     </div>

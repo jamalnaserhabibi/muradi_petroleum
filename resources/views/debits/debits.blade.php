@@ -10,11 +10,8 @@
         <section class="content-header">
             <div class="container-fluid">
 
-                <div class="totalamount searchBar row mb-1 ">
-                    
-
-
-                    <form dir="rtl" class="expensefilterform" id="filter-form" action="{{ route('expenses') }}"
+                <div dir="rtl" class="totalamount searchBar row mb-1 ">
+                    <form class="expensefilterform" id="filter-form" action="{{ route('debits') }}"
                         method="GET">
                         {{-- <input type="hidden" name="start_date" id="start-date"> --}}
                         {{-- <input type="hidden" name="end_date" id="end-date"> --}}
@@ -34,13 +31,13 @@
                             </div>
 
 
-                            <!-- cust Filter -->
+                            <!-- contract Filter -->
                             <div class="mr-4">
                                 {{-- <label>Category:</label> --}}
                                 <select id="contract-filter" name="contract[]" class="select2 form-control"
-                                multiple="multiple" data-placeholder="مشتری" style="width:100%">
+                                multiple="multiple" data-placeholder="نوع" style="width:100%">
                                 @if (count($contracts) > 0)
-                                    <option value="">All Contracts</option>
+                                    <option value="">همه</option>
                                     @foreach ($contracts as $contract)
                                         <option value="{{ $contract->id }}"
                                             {{ in_array($contract->id, request('contract', [])) ? 'selected' : '' }}>
@@ -52,12 +49,42 @@
                                 @endif
                             </select>
                             </div>
+                            <!-- cust Filter -->
+                            <div class="mr-4">
+                                {{-- <label>Category:</label> --}}
+                                <select id="employee-filter" name="distributer[]" class="select2 form-control"
+                                multiple="multiple" data-placeholder="کارمند" style="width:100%">
+                                @if (count($debits) > 0)
+                                    <option value="">تمام کارمندان</option>
+                                    @php
+                                        // Extract unique distributers
+                                        $uniqueDistributers = [];
+                                        foreach ($debits as $contract) {
+                                            $distributerId = $contract['distributer']['id'];
+                                            if (!isset($uniqueDistributers[$distributerId])) {
+                                                $uniqueDistributers[$distributerId] = $contract['distributer'];
+                                            }
+                                        }
+                                    @endphp
+                                    
+                                    @foreach ($uniqueDistributers as $distributer)
+                                        <option value="{{ $distributer['id'] }}"
+                                            {{ in_array($distributer['id'], request('distributer', [])) ? 'selected' : '' }}>
+                                            {{ $distributer['fullname'] }}
+                                        </option>
+                                    @endforeach
+                                @else
+                                    <option value="" disabled>No Data Available</option>
+                                @endif
+                            </select>
+                            </div>
                         </div>
                     </form>
+                    
                     {{-- <a href="{{ route('expenseaddform') }}" class="btn brannedbtn">+ New</a> --}}
                     <h2>
-                        مصارف شروع از
-                         {{ isset($expenses) && isset($expenses[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($expenses[0]->date) : 'No Data' }}
+                        قرض شروع از
+                         {{ isset($debits) && isset($debits[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($debits[0]->date) : 'No Data' }}
  
                      </h2>
                     @if (session('success'))
@@ -101,7 +128,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($expenses as $distribution)
+                                    @foreach ($debits as $distribution)
                                         <tr>
                                             <td>{{ $distribution->contract->customer->name ?? 'N/A'}}
                                                 {{ $distribution->contract->customer->company ?? 'N/A'}}</td>

@@ -12,9 +12,9 @@
         <section class="content-header">
             <div class="container-fluid">
 
-                <div class="totalamount searchBar row mb-1">
+                <div class="totalamount searchBar row mb-1" dir="rtl">
                     <h2>
-                        Purchases of
+                        خریداری شروع از
                         {{ isset($purchases) && isset($purchases[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($purchases[0]->date) : 'No Data' }}
 
                     </h2>
@@ -27,16 +27,16 @@
                             <div>
                                 {{-- <label>Date range:</label> --}}
                                 <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
-                                    <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="Start Date" style="max-width: 150px;" required />
+                                    <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="شروع تاریخ" style="max-width: 150px;" required />
                                     <span style="margin: 0 10px; font-weight: bold;">to</span>
-                                    <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="End Date" style="max-width: 150px;" required />
+                                    <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="ختم تاریخ" style="max-width: 150px;" required />
                                 </div>
                             </div>
                             {{-- {{$products}}--}}
-                            <div class="dropdown ml-4">
+                            <div class="dropdown mr-4">
                                 {{-- <label for="product-filter">Select</label> --}}
                                 <select id="product-filter" name="product_id[]" class="select2 form-control"
-                                multiple="multiple" data-placeholder="Type" style="width:100%">
+                                multiple="multiple" data-placeholder="محصول" style="width:100%">
                                     @if (count($products) > 0)
                                     @foreach ($products as $product)
                                         <option value="{{ $product->id }}"
@@ -52,7 +52,7 @@
                         </div>
                     </form>
 
-                    <a href="{{ route('addpurchaseform') }}" class="btn brannedbtn">+ New</a>
+                    <a href="{{ route('addpurchaseform') }}" class="btn brannedbtn"> جدید +</a>
 
                     @if (session('success'))
                         <ol>
@@ -82,14 +82,14 @@
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
-                                            <th>Type</th>
-                                            <th>Ton</th>
-                                            <th>Weight</th>
-                                            <th>Ton Rate</th>
-                                            <th>Total Amount</th>
-                                            <th>Total Liter</th>
-                                            <th>Date</th>
-                                            <th>Details</th>
+                                            <th>مصحول</th>
+                                            <th>تن</th>
+                                            <th>سقلت</th>
+                                            <th>نرخ فی تن</th>
+                                            <th>مجموعه مقدار</th>
+                                            <th>مجموع لیتر</th>
+                                            <th>تاریخ</th>
+                                            <th>ملاحظات</th>
                                             <th></th>
                                         </tr>
                                     </thead>

@@ -39,7 +39,7 @@
                                 </div> --}}
                             </div>
                         </form>
-                        <a href="{{ route('addpaymentform') }}" class="btn brannedbtn ml-2">+ جدید </a>
+                        {{-- <a href="{{ route('addpaymentform') }}" class="btn brannedbtn ml-2">+ جدید </a> --}}
                     </div>
 
                     @if (session('success'))
@@ -68,14 +68,14 @@
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
-                                            <th>Customer</th>
-                                            <th>Total Sales</th>
-                                            <th>Total Payments</th>
-                                            <th>Balance</th>
+                                            <th>مشتری</th>
+                                            <th>دریافت توزیع</th>
+                                            <th>مجموع پرداخت</th>
+                                            <th>بیلانس</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                 
+                                
                                     <tbody>
                                         @foreach ($balances as $balance)
                                             <tr>
@@ -88,11 +88,11 @@
                                                     <td>{{ number_format($balance->balance, 0) }}</td>
                                                 @endif
                                                 <td>
-                                                    <a href="{{ route('singlecustomerpayments', $balance->id) }}"
-                                                        class="btn pt-0 pb-0 btn-info" title="Payments">  Payments
-                                                    </a>
-                                                    <a href="{{ route('distribution', ['contract[]' => $balance->id]) }}"
-                                                        class="btn pt-0 pb-0 btn-success " title="Sales"> Sales
+                                                    <a href="{{ route('distribution', ['contract' => [$balance->id], 'product' => [14]]) }}"
+                                                    
+                                                        class="btn pt-0 pb-0 btn-info" title="Payments">  پرداخت                                                   </a>
+                                                    <a href="{{ route('distribution', ['contract' => [$balance->id], 'product' => [0]]) }}"
+                                                        class="btn pt-0 pb-0 btn-success " title="Sales"> توزیع
                                                     </a>
 
                                                     {{-- <form action="{{ route('saledelete', $balance->id) }}" method="POST"
