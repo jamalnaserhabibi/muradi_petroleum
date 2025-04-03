@@ -52,30 +52,19 @@
                                             {{-- <th>ID</th> --}}
                                             <th>نام</th>
                                             <th>تخلص</th>
-                                            {{-- <th>Contact</th> --}}
                                             <th>نرخ</th>
-                                            {{-- <th>محصول</th> --}}
-                                            {{-- <th>Doc</th> --}}
                                             <th>دریافت توضیغ</th>
-                                            {{-- <th>Date</th> --}}
                                             <th>فعال</th>
-                                            {{-- <th>AddedBy</th> --}}
-                                            {{-- <th>Details</th> --}}
                                             <th>.</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($customer as $customer)
                                             <tr>
-                                                {{-- <td>{{ $customer->id }}</td> --}}
                                                 <td>{{ $customer->name }}</td>
                                                 <td>{{ $customer->company }}</td>
-                                                {{-- <td>{{ $customer->contact }}</td> --}}
                                                 <td>{{ $customer->contract->rate }}</td>
-                                                {{-- <td>{{ $customer['contract']['product']->product_name }}</td> --}}
-                                                {{-- <td>{{ $customer->document }}</td> --}}
                                                 <td>{{number_format( $customer->current_month_sales_total,0)  }}</td>
-                                                {{-- <td style="white-space: nowrap;"> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($customer->date)}}</td> --}}
                                                 <td>
                                                     <div class="custom-control custom-switch">
                                                         <input type="checkbox" class="custom-control-input isActiveSwitch" 
@@ -83,7 +72,6 @@
                                                                {{ $customer->contract->isActive ? 'checked' : '' }} 
                                                                data-customer-id="{{ $customer->contract->id }}">
                                                         <label  class="custom-control-label" for="switch{{ $customer->contract->id }}">
-                                                            {{-- {{ $customer->contract->isActive ? 'Active' : 'Inactive' }} --}}
                                                         </label>
                                                     </div>
                                                 </td>
