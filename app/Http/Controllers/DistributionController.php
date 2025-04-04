@@ -88,7 +88,6 @@ class DistributionController extends Controller
     
         // Return the view with the necessary data
         return view('distribution.distribution', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
-       
     }
     public function indexfortable(Request $request)
     {
@@ -185,7 +184,7 @@ class DistributionController extends Controller
             'amount' => 'required|numeric',
             'details' => 'nullable|string',
         ]);
-
+        // dd($request->all());
         Distribution::create($request->all());
 
         return response()->json(['message' => 'Distribution added successfully!']);

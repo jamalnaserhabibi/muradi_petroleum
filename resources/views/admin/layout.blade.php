@@ -217,42 +217,6 @@
                                 <i class="nav-icon fas fa-chart-line"></i>
                             </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-chart-line"></i>
-                                <p>
-                                    Sales
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="pages/charts/chartjs.html" class="nav-link">
-                                       <i class="fas fa-gas-pump nav-icon"></i> <!-- Icon for Petrol -->
-                                        <p>Petrol</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/flot.html" class="nav-link">
-                                        <i class="fas fa-oil-can nav-icon"></i> <!-- Icon for Super Petrol -->
-                                        <p>Super Petrol</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/inline.html" class="nav-link">
-                                        <i class="fas fa-truck-pickup nav-icon"></i> <!-- Icon for Diesel -->
-                                        <p>Diesel</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="pages/charts/uplot.html" class="nav-link">
-                                        <i class="fas fa-burn nav-icon"></i> <!-- Icon for Gas -->
-                                        <p>Gas</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>                    --}}
-
                         <li class="nav-item">
                             <a href="{{ route('expenses') }}" class="nav-link">
                                 <p>
@@ -318,6 +282,33 @@
                                 <i class="nav-icon fas fa-bell"></i>
 
                             </a>
+                        </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <p>
+                                    صرافی
+                                    {{-- <i class="right fas fa-angle-left"></i> --}}
+                                </p>
+                                <i class="nav-icon fas fa-exchange-alt"></i>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('sarafipayments') }}" class="nav-link">
+                                        <p>
+                                            برداشت
+                                        </p>
+                                        <i class="nav-icon fas fa-arrow-down"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('sarafipayments') }}" class="nav-link">
+                                        <p>
+                                            پرداخت
+                                        </p>
+                                        <i class="nav-icon fas fa-arrow-up"></i>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a   class="nav-link">

@@ -14,12 +14,10 @@
 
                 <div class="totalamount searchBar row mb-1" dir="rtl">
                     <h2>
-                        خریداری شروع از
-                        {{ isset($purchases) && isset($purchases[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($purchases[0]->date) : 'No Data' }}
+                        برداشت شروع از
+                        {{ isset($purchases) && isset($purchases[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($purchases[0]->date) : 'No Data' }}
 
                     </h2>
-
-
                     <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">
                         {{-- <input type="hidden" name="start_date" id="start-date"> --}}
                         {{-- <input type="hidden" name="end_date" id="end-date"> --}}
@@ -31,23 +29,6 @@
                                     <span style="margin: 0 10px; font-weight: bold;">to</span>
                                     <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="ختم تاریخ" style="max-width: 150px;" required />
                                 </div>
-                            </div>
-                            {{-- {{$products}}--}}
-                            <div class="dropdown mr-4">
-                                {{-- <label for="product-filter">Select</label> --}}
-                                <select id="product-filter" name="product_id[]" class="select2 form-control"
-                                multiple="multiple" data-placeholder="محصول" style="width:100%">
-                                    @if (count($products) > 0)
-                                    @foreach ($products as $product)
-                                        <option value="{{ $product->id }}"
-                                            {{ in_array($product->id, request('product_id', [])) ? 'selected' : '' }}>
-                                            {{ $product->product_name }}
-                                        </option>
-                                    @endforeach
-                                    @else
-                                        <option value="" disabled>No Data in Purchase</option>
-                                    @endif
-                                </select>
                             </div>
                         </div>
                     </form>
@@ -94,7 +75,7 @@
                                         </tr>
                                     </thead>
 
-                                    <tbody>
+                                    {{-- <tbody>
                                         @foreach ($purchases as $purchase)
                                             <tr>
                                                 <td>{{ $purchase->product->product_name }}</td>
@@ -129,7 +110,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    </tbody>
+                                    </tbody> --}}
                                     <tfoot>
                                         <tr>
                                             <th>Total</th>
@@ -166,13 +147,6 @@
     <script src="plugins/select2/js/select2.full.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Initialize Select2 with Bootstrap4 theme
-            $('.select2').select2({
-                theme: 'bootstrap4',
-                placeholder: 'Select Products',
-                allowClear: true
-            });
-
             // Auto-submit on change
             $('#product-filter').on('change', function() {
                 $('#filter-form').submit();
@@ -198,30 +172,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Date Range Picker
-            // $('#daterange-btn').daterangepicker({
-            //         ranges: {
-            //             'Today': [moment(), moment()],
-            //             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            //             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            //             'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            //             'This Month': [moment().startOf('month'), moment().endOf('month')],
-            //             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-            //                 'month').endOf('month')]
-            //         },
-            //         startDate: moment().subtract(29, 'days'),
-            //         endDate: moment()
-            //     },
-            //     function(start, end) {
-            //         // Set values and submit form
-            //         const form = document.getElementById('filter-form');
-            //         document.getElementById('start-date').value = start.format('YYYY-MM-DD');
-            //         document.getElementById('end-date').value = end.format('YYYY-MM-DD');
-            //         form.submit();
-            //     }
-            // );
-
-
             // Category Filter
             document.getElementById('product-filter').addEventListener('change', function() {
 

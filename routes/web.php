@@ -18,6 +18,7 @@ use App\Models\Serial_Numbers;
 use App\Http\Controllers\DistributerController;
 use App\Http\Controllers\DistributionController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\SarafiController;
 
 Route::get('/', function () {
     return view('admin/login');
@@ -180,6 +181,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-reminders', [ReminderController::class, 'create'])->name('reminder.create');
     Route::put('/reminder/update', [ReminderController::class, 'update'])->name('reminder.update');});
 
+    //sarafi
+    Route::get('/sarafi/payments', [SarafiController::class, 'index'])->name('sarafipayments');
+    Route::post('/sarafi/payments/store', [SarafiController::class, 'store'])->name('sarafi_payment.store');
 
     //debits
     Route::get('/debits', [ExpenseController::class, 'debits'])->name('debits');
