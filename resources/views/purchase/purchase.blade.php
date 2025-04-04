@@ -18,14 +18,9 @@
                         {{ isset($purchases) && isset($purchases[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($purchases[0]->date) : 'No Data' }}
 
                     </h2>
-
-
                     <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">
-                        {{-- <input type="hidden" name="start_date" id="start-date"> --}}
-                        {{-- <input type="hidden" name="end_date" id="end-date"> --}}
                         <div class="form-group d-flex">
                             <div>
-                                {{-- <label>Date range:</label> --}}
                                 <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
                                     <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="شروع تاریخ" style="max-width: 150px;" required />
                                     <span style="margin: 0 10px; font-weight: bold;">to</span>
