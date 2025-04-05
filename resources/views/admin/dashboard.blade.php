@@ -26,9 +26,11 @@
                             </div>
                             <div class="icon">
                                 @if($balance <= 0)
-                                    <i class="fas fa-arrow-down text-danger"></i>
+                                <i class="fas fa-minus text-danger"></i>
+
                                 @else
-                                    <i class="fas fa-arrow-up text-success"></i>
+                                <i class="fas fa-plus text-success"></i>
+
                                 @endif
                             </div>
                             <div class="small-box-footer d-flex justify-content-between pl-3 pr-3">
