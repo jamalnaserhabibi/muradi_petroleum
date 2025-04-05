@@ -30,23 +30,20 @@
                                     style="max-width: 150px;" required />
                             </div>
 
-
                             <!-- contract Filter -->
                             <div class="mr-4">
                                 {{-- <label>Category:</label> --}}
                                 <select id="contract-filter" name="contract[]" class="select2 form-control"
                                 multiple="multiple" data-placeholder="نوع" style="width:100%">
-                                @if (count($contracts) > 0)
+                                
                                     <option value="">همه</option>
-                                    @foreach ($contracts as $contract)
+                                    @foreach ($debitsType as $contract)
                                         <option value="{{ $contract->id }}"
                                             {{ in_array($contract->id, request('contract', [])) ? 'selected' : '' }}>
-                                            {{ $contract->customer->name }} {{ $contract->customer->company }}
+                                            {{ $contract->product->product_name }}
                                         </option>
                                     @endforeach
-                                @else
-                                    <option value="" disabled>No Data Available</option>
-                                @endif
+                               
                             </select>
                             </div>
                             <!-- cust Filter -->
@@ -105,7 +102,7 @@
         </section>
 
 
-
+ 
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -122,6 +119,7 @@
                                         <th>نرخ</th>
                                         <th>مقدار</th>
                                         <th>مجموع</th>
+                                        <th>نوع</th>
                                         <th>تاریخ</th>
                                         <th>توضیعات</th>
                                         <th>.</th>
@@ -133,11 +131,10 @@
                                             <td>{{ $distribution->contract->customer->name ?? 'N/A'}}
                                                 {{ $distribution->contract->customer->company ?? 'N/A'}}</td>
                                             <td>{{ $distribution->distributer->fullname ?? 'N/A' }}</td>
-                                            {{-- <td>{{ $distribution->tower->serial ?? 'N/A'}} -
-                                                {{ $distribution->tower->product->product_name ?? 'N/A'}}</td> --}}
                                             <td>{{ $distribution->rate }}</td>
                                             <td>{{ number_format($distribution->amount, 0) }}</td>
                                             <td>{{ number_format($distribution->amount * $distribution->rate, 1) }}
+                                                <td>{{ $distribution->tower->product->product_name ?? 'N/A'}}</td>
                                             </td>
                                             <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($distribution->date) }}
                                             </td>
@@ -164,6 +161,7 @@
                                         <th></th>
                                         <th></th>
                                         <th id="total-sum"></th> <!-- This will display the sum -->
+                                        <th></th>
                                         <th></th>
                                         <th></th>
                                         <th></th>

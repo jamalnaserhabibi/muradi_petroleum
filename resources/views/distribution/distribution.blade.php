@@ -254,7 +254,7 @@
                             }
                             
                             // Calculate net total for this card
-                            $netTotal = ($totalOther + $totalDebitsIn) - ($totalDebitsOut + $totalExpenses);
+                            $netTotal =  ($totalOther + $totalDebitsIn)-($totalDebitsOut + $totalExpenses);
                             
                             // Add to grand totals
                             $grandTotalAmount += $totalAmount;

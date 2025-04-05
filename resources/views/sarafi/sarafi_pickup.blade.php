@@ -100,14 +100,14 @@
                                     </tbody>
                                 
                                     <tfoot>
-                                        {{-- <tr>
-                                            <th>مجموع</th>
-                                            <th id="total-footer-ton"></th> <!-- Ton column -->
-                                            <th></th> <!-- Empty cell to keep alignment -->
-                                            <th></th> <!-- Empty cell to keep alignment -->
-                                            <th id="total-footer-amount"></th> <!-- Total Amount column -->
-                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
-                                        </tr> --}}
+                                         <tr>
+                                             <th id="total-footer-ton"></th> <!-- Ton column -->
+                                             <th></th> <!-- Empty cell to keep alignment -->
+                                             <th></th> <!-- Empty cell to keep alignment -->
+                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
+                                             <th>مجموع</th>
+                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
+                                        </tr> 
                                     </tfoot>
                                 </table>
                             </div>
@@ -142,19 +142,7 @@
                     @csrf
             
                     <div class="form-group">
-                        <input type="number" placeholder="مقدار افغانی" step="0.01" name="amount_afghani" class="form-control" required>
-                    </div>
-            
-                    <div class="form-group">
-                        <input type="number" placeholder="معادل دالر" step="0.01" name="equivalent_dollar" class="form-control" required>
-                    </div>
-            
-                    <div class="form-group">
-                        <input type="number" placeholder="مقدار دالر" step="0.01" name="amount_dollar" class="form-control" required>
-                    </div>
-            
-                    <div class="form-group">
-                        <input type="number" placeholder="معادل افغانی" step="0.01" name="moaadil_afghani" class="form-control" required>
+                        <input type="number" placeholder="مقدار" step="0.01" name="amount" class="form-control" required>
                     </div>
             
                     <div>
@@ -163,12 +151,16 @@
             
                     <div class="form-group">
                         {{-- <label>از درک</label> --}}
+                        <input type="text" placeholder="به حساب" name="toAccount" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        {{-- <label>از درک</label> --}}
                         <input type="text" placeholder="از درک" name="az_darak" class="form-control" required>
                     </div>
             
                     <div class="form-group">
                         {{-- <label>جزیات</label> --}}
-                        <textarea name="details" placeholder="تفصیلات" class="form-control" rows="3"></textarea>
+                        <textarea name="details" placeholder="تفصیلات" class="form-control" rows="2"></textarea>
                     </div>
             
                     <div class="modal-footer">
@@ -268,28 +260,17 @@
 
                 // Update the footer with calculated totals
                 function updateFooterTotals() {
-                    const tonTotal = calculateColumnTotal(1); // Ton column
-                    const amountTotal = calculateColumnTotal(4); // Total Amount column
-                    const literTotal = calculateColumnTotal(5); // Total Liter column
+                    const tonTotal = calculateColumnTotal(0); // Ton column
+                    
 
                     // Format the totals
                     const formattedTonTotal = tonTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 3,
-                        maximumFractionDigits: 3
-                    });
-                    const formattedAmountTotal = amountTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                    });
-                    const formattedLiterTotal = literTotal.toLocaleString('en-US', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1
                     });
 
                     // Update the footer
                     $('#total-footer-ton').text(formattedTonTotal);
-                    $('#total-footer-amount').text(formattedAmountTotal);
-                    $('#total-footer-liter').text(formattedLiterTotal);
                 }
                 updateFooterTotals();
 

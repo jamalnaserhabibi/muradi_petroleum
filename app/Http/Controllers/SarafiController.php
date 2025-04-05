@@ -105,10 +105,8 @@ class SarafiController extends Controller
 
     public function storePickup(Request $request){
         $data = $request->validate([
-            'amount_afghani' => 'required|numeric',
-            'equivalent_dollar' => 'required|numeric',
-            'amount_dollar' => 'required|numeric',
-            'moaadil_afghani' => 'required|numeric',
+            'amount' => 'required|numeric',
+            'toAccount' => 'required|string|max:255',
             'date' => 'required',
             'az_darak' => 'required|string|max:255',
             'details' => 'nullable|string|max:255',
@@ -121,30 +119,28 @@ class SarafiController extends Controller
         $formattedDate = $gregorianDate->format('Y-m-d');
 
         // Save the data to the database
-        Sarafi_payments::create([
-            'amount_afghani' => $data['amount_afghani'],
-            'equivalent_dollar' => $data['equivalent_dollar'],
-            'amount_dollar' => $data['amount_dollar'],
-            'moaadil_afghani' => $data['moaadil_afghani'],
-            'date' => $data['date'],
+        sarafi_pickup::create([
+            'amount' => $data['amount'],
+            'toAccount' => $data['toAccount'],
             'az_darak' => $data['az_darak'],
             'details' => $data['details'],
             'date' => $formattedDate,
         ]);
 
         // Redirect back to the index page with a success message
-        return redirect()->route('sarafipayments')->with('success', 'Payment recorded successfully');
+        return redirect()->route('sarafipickup')->with('success', 'Pickup recorded successfully');
     }
 
     public function destroyPickup($id)
     {
         // Find the distribution record
-        $distribution = Sarafi_payments::find($id);
+        $distribution = Sarafi_pickup::find($id);
 
         // Delete the record
         $distribution->delete();
 
         // Redirect back with a success message
-        return redirect()->route('sarafipayments')->with('success', 'Sarafi Payment Deleted Successfully.');
+        return redirect()->route('sarafipickup')->with('success', 'Sarafi Payment Deleted Successfully.');
     }
+  
 }

@@ -19,6 +19,36 @@
 
                 <div class="row">
                     <div class="col-lg-3 col-6">
+                        <div class="small-box bg-primary ">
+                            <div class="inner">
+                                <h3>{{ number_format($balance, 1) }}</h3>
+                                <p>Sarafi Balance</p>
+                            </div>
+                            <div class="icon">
+                                @if($balance <= 0)
+                                    <i class="fas fa-arrow-down text-danger"></i>
+                                @else
+                                    <i class="fas fa-arrow-up text-success"></i>
+                                @endif
+                            </div>
+                            <div class="small-box-footer d-flex justify-content-between pl-3 pr-3">
+                                <span>
+                                    <i class="fas fa-arrow-up text-success"></i>
+                                </span>
+                                <span>
+                                   {{ $sarafiPayments->latest_payment_date ? \App\Helpers\AfghanCalendarHelper::toAfghanDateFormat($sarafiPayments->latest_payment_date) : 'N/A' }}
+                                </span>
+                                <span>
+                                    {{ $sarafiPickups->latest_pickup_date ? \App\Helpers\AfghanCalendarHelper::toAfghanDateFormat($sarafiPickups->latest_pickup_date) : 'N/A' }}
+                                </span>
+                                <span>
+                                    <i class="fas fa-arrow-down text-danger"></i>
+                                </span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">                           
 
                         <div class="small-box bg-info">
                             <div class="inner">
@@ -139,41 +169,7 @@
 
             </div>
         </section>
-        <section class="col-lg-7 connectedSortable">
-
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        Sales
-                    </h3>
-                    <div class="card-tools">
-                        <ul class="nav nav-pills ml-auto">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content p-0">
-
-                        <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
-                            <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                        </div>
-                        <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                            <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-        </section>
+         
 
     </div>
 @endsection

@@ -79,11 +79,15 @@
                                             <tr>
                                                 <td>{{ number_format($Payments->amount_afghani,1) }}</td>
                                                 <td>{{ number_format($Payments->equivalent_dollar,1) }}</td>
-                                                <td>{{ number_format($Payments->amount_afghani / $Payments->equivalent_dollar,1) }}</td>
+                                            
+                                                <td>
+                                                    {{ $Payments->amount_afghani != 0 ? number_format($Payments->amount_afghani / $Payments->equivalent_dollar,1) : 0 }}
+                                                </td>
                                                 <td>{{ number_format($Payments->amount_dollar,1) }}</td>
                                                 <td>{{ number_format($Payments->moaadil_afghani,1) }}</td>
-                                                <td>{{ number_format($Payments->moaadil_afghani / $Payments->amount_dollar,1) }}</td>
-
+                                                <td>
+                                                    {{ $Payments->amount_dollar != 0 ? number_format($Payments->moaadil_afghani / $Payments->amount_dollar, 1) : 0 }}
+                                                </td>
                                                 <td>{{ $Payments->az_darak}}</td>
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($Payments->date); }}</td>
                                                 <td>{{ $Payments->details }}</td>
@@ -143,7 +147,7 @@
      <div class="modal-dialog" role="document">
          <div class="modal-content">
              <div class="modal-header">
-                 <h5 class="modal-title" id="assignTowerModalLabel">ثبت برداشت جدید</h5>
+                 <h5 class="modal-title" id="assignTowerModalLabel">ثبت پرداخت جدید</h5>
                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                      <span aria-hidden="true">&times;</span>
                  </button>

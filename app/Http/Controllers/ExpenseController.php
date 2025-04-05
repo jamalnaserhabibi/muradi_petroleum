@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Morilog\Jalali\CalendarUtils;
 use App\Models\Expense;
+use App\Models\Tower;
 use App\Models\Contract;
 
 class ExpenseController extends Controller
@@ -97,30 +98,31 @@ class ExpenseController extends Controller
             $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($endOfMonth);
         }
         $debitsQuery = Distribution::whereBetween('date', [$startOfMonth, $endOfMonth])
-            ->whereHas('contract.product', function ($query) {
+            ->whereHas('tower.product', function ($query) {
                 $query->whereIn('id', [13,14]);
             })
-            ->with(['contract.customer', 'distributer', 'tower'])
+            ->with(['contract.customer', 'distributer', 'tower.product'])
             ->orderBy('date', 'asc');
+           
 
-        if ($request->has('contract_id')) {
-            $debitsQuery->where('contract_id', $request->contract_id);
+        if ($request->has('contract')) {
+            $debitsQuery->whereIn('tower_id', $request->contract);
         }
         if ($request->has('distributer')) {
-            $debitsQuery->where('distributer_id', $request->distributer);
+            $debitsQuery->whereIn('distributer_id', $request->distributer);
         }
 
         $debits = $debitsQuery->get();
         
        
 
-        $contracts = Contract::with(['customer', 'product'])
+        $debitsType = Tower::with(['product'])
             ->whereHas('product', function ($query) {
             $query->whereIn('id', [13,14]);
             })
             ->get();
 
-        return view('debits.debits', compact('debits','afghaniStartDate', 'afghaniEndDate', 'contracts'));
+        return view('debits.debits', compact('debits','afghaniStartDate', 'afghaniEndDate', 'debitsType'));
     }
 
     public function create()
