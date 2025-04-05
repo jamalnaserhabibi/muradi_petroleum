@@ -14,7 +14,7 @@
 
                 <div class="totalamount searchBar row mb-1" dir="rtl">
                     <h2>
-                        رسیدات شروع از
+                        پرداخت شروع از
                         {{ isset($sarafiPayments) && isset($sarafiPayments[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($sarafiPayments[0]->date) : 'No Data' }}
 
                     </h2>
@@ -31,7 +31,7 @@
                     </form>
                     <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#addPaymentModal">
                         <i class="fas fa-plus"></i>
-                        ثبت برداشت جدید
+                         پرداخت جدید
                     </button>
 
                     @if (session('success'))
@@ -88,17 +88,17 @@
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($Payments->date); }}</td>
                                                 <td>{{ $Payments->details }}</td>
                                                 <td>
-                                                    <a href="{{ route('purchaseedit', $Payments->id) }}"
+                                                    {{-- <a href="{{ route('purchaseedit', $Payments->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
-                                                    </a>
+                                                    </a> --}}
 
-                                                    <form action="{{ route('purchasedelete', $Payments) }}" method="POST"
+                                                    <form action="{{ route('sarafi_payment.destroy', $Payments->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn pt-0 pb-0 btn-danger"
                                                             title="Delete"
-                                                            onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                            onclick="return confirm('Are you sure you want to delete this?')">
                                                             <li class="fas fa-trash"></li>
                                                         </button>
                                                     </form>
@@ -108,13 +108,14 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>مجموع</th>
+                                            <th id="total-footer-amountAfghani"></th> <!-- Empty cell to keep alignment -->
                                             <th id="total-footer-ton"></th> <!-- Ton column -->
                                             <th></th> <!-- Empty cell to keep alignment -->
-                                            <th></th> <!-- Empty cell to keep alignment -->
-                                            <th id="total-footer-amount"></th> <!-- Total Amount column -->
                                             <th id="total-footer-liter"></th> <!-- Total Liter column -->
+                                            <th id="total-footer-amount"></th> <!-- Total Amount column -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
+                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
+                                            <th>مجموع</th>
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                         </tr>
@@ -156,7 +157,7 @@
                     </div>
             
                     <div class="form-group">
-                        <input type="number" placeholder="معدل دالر" step="0.01" name="equivalent_dollar" class="form-control" required>
+                        <input type="number" placeholder="معادل دالر" step="0.01" name="equivalent_dollar" class="form-control" required>
                     </div>
             
                     <div class="form-group">
@@ -222,12 +223,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Category Filter
-            document.getElementById('product-filter').addEventListener('change', function() {
-
-                document.getElementById('filter-form').submit();
-            });
-
+       
 
             $(function() {
                 const table = $("#example1").DataTable({
@@ -283,9 +279,14 @@
                 function updateFooterTotals() {
                     const tonTotal = calculateColumnTotal(1); // Ton column
                     const amountTotal = calculateColumnTotal(4); // Total Amount column
-                    const literTotal = calculateColumnTotal(5); // Total Liter column
+                    const literTotal = calculateColumnTotal(3); // Total Liter column
+                    const totalfooteramountAfghani = calculateColumnTotal(0); // Total Liter column
 
                     // Format the totals
+                    const formattedtotalfooteramountAfghani = totalfooteramountAfghani.toLocaleString('en-US', {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1
+                    });
                     const formattedTonTotal = tonTotal.toLocaleString('en-US', {
                         minimumFractionDigits: 3,
                         maximumFractionDigits: 3
@@ -300,6 +301,7 @@
                     });
 
                     // Update the footer
+                    $('#total-footer-amountAfghani').text(formattedtotalfooteramountAfghani);
                     $('#total-footer-ton').text(formattedTonTotal);
                     $('#total-footer-amount').text(formattedAmountTotal);
                     $('#total-footer-liter').text(formattedLiterTotal);

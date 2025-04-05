@@ -295,15 +295,15 @@
                                 <li class="nav-item">
                                     <a href="{{ route('sarafipayments') }}" class="nav-link">
                                         <p>
-                                            برداشت
+                                            پرداخت
                                         </p>
                                         <i class="nav-icon fas fa-arrow-down"></i>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('sarafipayments') }}" class="nav-link">
+                                    <a href="{{ route('sarafipickup') }}" class="nav-link">
                                         <p>
-                                            پرداخت
+                                            برداشت
                                         </p>
                                         <i class="nav-icon fas fa-arrow-up"></i>
                                     </a>

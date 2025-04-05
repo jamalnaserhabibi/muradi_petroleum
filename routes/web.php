@@ -181,9 +181,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/add-reminders', [ReminderController::class, 'create'])->name('reminder.create');
     Route::put('/reminder/update', [ReminderController::class, 'update'])->name('reminder.update');});
 
-    //sarafi
+    //sarafiPayment
     Route::get('/sarafi/payments', [SarafiController::class, 'index'])->name('sarafipayments');
     Route::post('/sarafi/payments/store', [SarafiController::class, 'store'])->name('sarafi_payment.store');
+    Route::delete('/sarafi/payments{reminders}', [SarafiController::class, 'destroy'])->name('sarafi_payment.destroy');
+    //sarafiPickup
+    Route::get('/sarafi/pickups', [SarafiController::class, 'indexPickup'])->name('sarafipickup');
+    Route::post('/sarafi/pickups/store', [SarafiController::class, 'storePickup'])->name('sarafi_pickup.store');
+    Route::delete('/sarafi/pickups{reminders}', [SarafiController::class, 'destroyPickup'])->name('sarafi_pickup.destroy');
 
     //debits
     Route::get('/debits', [ExpenseController::class, 'debits'])->name('debits');

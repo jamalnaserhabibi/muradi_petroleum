@@ -14,26 +14,25 @@
 
                 <div class="totalamount searchBar row mb-1" dir="rtl">
                     <h2>
-                        برداشت شروع از
-                        {{ isset($purchases) && isset($purchases[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($purchases[0]->date) : 'No Data' }}
+                        برداشتی شروع از
+                        {{ isset($sarafiPickup) && isset($sarafiPickup[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($sarafiPickup[0]->date) : 'No Data' }}
 
                     </h2>
-                    <form id="filter-form" action="{{ route('purchasefilter') }}" method="GET">
-                        {{-- <input type="hidden" name="start_date" id="start-date"> --}}
-                        {{-- <input type="hidden" name="end_date" id="end-date"> --}}
+                    <form id="filter-form" action="{{ route('sarafipickup') }}" method="GET">
                         <div class="form-group d-flex">
                             <div>
-                                {{-- <label>Date range:</label> --}}
                                 <div style="max-width: 400px;" id="reservationdate" class="d-flex align-items-center justify-content-between">
-                                    <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="شروع تاریخ" style="max-width: 150px;" required />
-                                    <span style="margin: 0 10px; font-weight: bold;">to</span>
                                     <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text" name="end_date" id="end_date" class="form-control" placeholder="ختم تاریخ" style="max-width: 150px;" required />
+                                    <span style="margin: 0 10px; font-weight: bold;">to</span>
+                                    <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text" name="start_date" id="start_date" class="form-control" placeholder="شروع تاریخ" style="max-width: 150px" required />
                                 </div>
                             </div>
                         </div>
                     </form>
-
-                    <a href="{{ route('addpurchaseform') }}" class="btn brannedbtn"> جدید +</a>
+                    <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#addPaymentModal">
+                        <i class="fas fa-plus"></i>
+                         برداشت جدید
+                    </button>
 
                     @if (session('success'))
                         <ol>
@@ -63,66 +62,52 @@
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
-                                            <th>محصول</th>
-                                            <th>تن</th>
-                                            <th>سقلت</th>
-                                            <th>نرخ فی تن</th>
-                                            <th>مجموعه مقدار</th>
-                                            <th>مجموع لیتر</th>
+                                            <th>مقدار </th>
+                                            <th>به حساب</th>
+                                            <th>از درک</th>
                                             <th>تاریخ</th>
                                             <th>ملاحظات</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-
-                                    {{-- <tbody>
-                                        @foreach ($purchases as $purchase)
+                                   <tbody>
+                                        @foreach ($sarafiPickup as $Payments)
                                             <tr>
-                                                <td>{{ $purchase->product->product_name }}</td>
-                                                <td>{{ $purchase->amount }}</td>
-                                                <td>{{ $purchase->heaviness }}</td>
-                                                <td>{{ $purchase->rate}}</td>
-                                                <td>{{ number_format($purchase->rate * $purchase->amount, 0) }}</td>
+                                                <td>{{ number_format($Payments->amount,1) }}</td>
+                                                <td>{{ $Payments->toAccount }}</td>
+                                                <td>{{ $Payments->az_darak }}</td>
+                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($Payments->date); }}</td>
+                                                <td>{{ $Payments->details }}</td>
                                                 <td>
-                                                @if ($purchase->product->product_name === "Gas")
-                                                {{ number_format($purchase->amount * $purchase->heaviness,0)}}
-                                                @else
-                                                {{ number_format((1000000 / $purchase->heaviness) * $purchase->amount, 0) }}
-                                                @endif
-                                                </td>
-                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($purchase->date); }}</td>
-                                                <td>{{ $purchase->details }}</td>
-                                                <td>
-                                                    <a href="{{ route('purchaseedit', $purchase->id) }}"
+                                                    {{-- <a href="{{ route('purchaseedit', $Payments->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                     </a>
+                                                    --}}
 
-                                                    <form action="{{ route('purchasedelete', $purchase) }}" method="POST"
+                                                    <form action="{{ route('sarafi_pickup.destroy', $Payments->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn pt-0 pb-0 btn-danger"
                                                             title="Delete"
-                                                            onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                            onclick="return confirm('Are you sure you want to delete this?')">
                                                             <li class="fas fa-trash"></li>
                                                         </button>
                                                     </form>
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    </tbody> --}}
+                                    </tbody>
+                                
                                     <tfoot>
-                                        <tr>
-                                            <th>Total</th>
+                                        {{-- <tr>
+                                            <th>مجموع</th>
                                             <th id="total-footer-ton"></th> <!-- Ton column -->
                                             <th></th> <!-- Empty cell to keep alignment -->
                                             <th></th> <!-- Empty cell to keep alignment -->
                                             <th id="total-footer-amount"></th> <!-- Total Amount column -->
-                                            <th id="total-footer-liter"></th> <!-- Total Liter column -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
-                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
-                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
-                                        </tr>
+                                        </tr> --}}
                                     </tfoot>
                                 </table>
                             </div>
@@ -141,6 +126,61 @@
 
 
     </div>
+     <!-- Modal new -->
+     <div dir="rtl" class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="assignTowerModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="assignTowerModalLabel">ثبت برداشت جدید</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+                <form action="{{ route('sarafi_pickup.store') }}" method="POST">
+                    @csrf
+            
+                    <div class="form-group">
+                        <input type="number" placeholder="مقدار افغانی" step="0.01" name="amount_afghani" class="form-control" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <input type="number" placeholder="معادل دالر" step="0.01" name="equivalent_dollar" class="form-control" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <input type="number" placeholder="مقدار دالر" step="0.01" name="amount_dollar" class="form-control" required>
+                    </div>
+            
+                    <div class="form-group">
+                        <input type="number" placeholder="معادل افغانی" step="0.01" name="moaadil_afghani" class="form-control" required>
+                    </div>
+            
+                    <div>
+                            <input type="text" name="date" id="date" class="form-control mb-3" value={{ $afghancurrentdate }} required />
+                    </div>
+            
+                    <div class="form-group">
+                        {{-- <label>از درک</label> --}}
+                        <input type="text" placeholder="از درک" name="az_darak" class="form-control" required>
+                    </div>
+            
+                    <div class="form-group">
+                        {{-- <label>جزیات</label> --}}
+                        <textarea name="details" placeholder="تفصیلات" class="form-control" rows="3"></textarea>
+                    </div>
+            
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                        <button type="submit" class="btn btn-primary">ثبت</button>
+                    </div>
+                </form>
+            </div>
+            
+         </div>
+     </div>
+ </div>
 @endsection
 
 @section('CustomScript')
@@ -173,14 +213,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Category Filter
-            document.getElementById('product-filter').addEventListener('change', function() {
-
-                document.getElementById('filter-form').submit();
-            });
+         
 
 
             $(function() {
-
                 const table = $("#example1").DataTable({
                     "responsive": true,
                     "lengthChange": false,
