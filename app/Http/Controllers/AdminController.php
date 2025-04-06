@@ -20,14 +20,14 @@ class AdminController extends Controller
         ->select(
             DB::raw('COALESCE(SUM(equivalent_dollar), 0) as total_equivalent_dollar'),
             DB::raw('COALESCE(SUM(amount_dollar), 0) as total_amount_dollar'),
-            DB::raw('MAX(created_at) as latest_payment_date')
+           
         )
         ->first();
 
     $sarafiPickups = DB::table('sarafi_pickup')
         ->select(
             DB::raw('COALESCE(SUM(amount), 0) as total_amount'),
-            DB::raw('MAX(created_at) as latest_pickup_date')
+             
         )
         ->first();
 

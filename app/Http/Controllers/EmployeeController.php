@@ -31,12 +31,13 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'fullname' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
             'salary' => 'required|numeric',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'description' => 'nullable|string',
         ]);
 
-        $data = $request->only(['fullname', 'salary', 'description']);
+        $data = $request->only(['fullname','position', 'salary', 'description']);
 
         // Handle file upload if present
         if ($request->hasFile('photo')) {
@@ -65,12 +66,13 @@ class EmployeeController extends Controller
 
         $request->validate([
             'fullname' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
             'salary' => 'required|numeric',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'description' => 'nullable|string',
         ]);
 
-        $data = $request->only(['fullname', 'salary', 'description']);
+        $data = $request->only(['fullname','position', 'salary', 'description']);
 
         // Handle file upload if present
         if ($request->hasFile('photo')) {

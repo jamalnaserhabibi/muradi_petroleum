@@ -85,11 +85,35 @@
                                     <input class="form-control form-control mb-3" name="rate" type="number" 
                                         id="purchaseAmount" placeholder="Ton Rate"
                                         value="{{ old('amount', $purchase->rate ?? request('rate')) }}" required>
+
+                                    <input class="form-control form-control mb-3" name="supplier" type="text" 
+                                        id="supplier" placeholder="Supplier"
+                                        value="{{ old('supplier', $purchase->supplier ?? request('supplier')) }}" required>
                                     
                                     
                                     <textarea class="form-control form-control" name="details" id="details" rows="4"
                                         placeholder="Description">{{ old('description', $purchase->details ?? '') }}</textarea>
-                                    <div class="card-footer bg-white d-flex justify-content-center">
+                                    
+                                        @error('document')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    <div class="row mb-3 ml-1 mt-3">
+                                        <label class="btn brannedbtn fileinput-button">
+                                            <i class="fas fa-image"></i>
+                                            <span>Document</span>
+                                            <input type="file" name="document" class="d-none" id="profile_photo"
+                                                onchange="previewImage()">
+                                        </label>
+                                        <img id="profile_preview"
+                                            src="{{ isset($purchase) && $purchase->document ? asset('storage/' . $purchase->document) : '#' }}"
+                                            alt="Document"
+                                            style="border-radius:50%; 
+                                               width: 60px; height: 60px; object-fit:cover; 
+                                               margin:-15px; margin-left: 25px; margin-top: -5px; 
+                                               display: {{ isset($purchase) && $purchase->document ? 'block' : 'none' }};">
+                                        <!-- Image Preview -->
+                                        </div>
+                                        <div class="card-footer bg-white d-flex justify-content-center">
                                         <button type="submit" class="btn brannedbtn w-100">
                                             {{ isset($purchase) ? 'Update Purchase' : 'Add Purchase' }}</button>
                                     </div>
@@ -97,6 +121,22 @@
 
 
                             </form>
+                            <script>
+                                function previewImage() {
+                                    const file = document.getElementById('profile_photo').files[0];
+                                    const reader = new FileReader();
+
+                                    reader.onloadend = function() {
+                                        const imagePreview = document.getElementById('profile_preview');
+                                        imagePreview.src = reader.result;
+                                        imagePreview.style.display = 'inline'; // Show the image preview
+                                    }
+
+                                    if (file) {
+                                        reader.readAsDataURL(file); // Convert the file to base64
+                                    }
+                                }
+                            </script>
                         </div>
                     </div>
                 </div>

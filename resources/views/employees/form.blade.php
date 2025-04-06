@@ -53,7 +53,10 @@
                                     <input class="form-control form-control mb-3" name="fullname" type="text"
                                         id="employeefullname" placeholder="Fullname" value="{{ old('fullname', $employee->fullname ?? '') }}"
                                         required>
-
+                                    
+                                    <input class="form-control form-control mb-3" name="position" type="text"
+                                        id="position" placeholder="Position" value="{{ old('position', $position->fullname ?? '') }}"
+                                        required>
 
                                     @error('salary')
                                         <span class="text-danger">{{ $message }}</span>

@@ -26,11 +26,9 @@
                             </div>
                             <div class="icon">
                                 @if($balance <= 0)
-                                <i class="fas fa-minus text-danger"></i>
-
+                                <i class="fas fa-hand-holding-usd text-danger"></i>
                                 @else
-                                <i class="fas fa-plus text-success"></i>
-
+                                <i class="fas fa-hand-holding-usd text-success"></i>
                                 @endif
                             </div>
                             <div class="small-box-footer d-flex justify-content-between pl-3 pr-3">
@@ -38,10 +36,12 @@
                                     <i class="fas fa-arrow-up text-success"></i>
                                 </span>
                                 <span>
-                                   {{ $sarafiPayments->latest_payment_date ? \App\Helpers\AfghanCalendarHelper::toAfghanDateFormat($sarafiPayments->latest_payment_date) : 'N/A' }}
+                                    {{number_format($sarafiPickups->total_amount,0)}}
+                                   {{-- {{ $sarafiPayments->latest_payment_date ? \App\Helpers\AfghanCalendarHelper::toAfghanDateFormat($sarafiPayments->latest_payment_date) : 'N/A' }} --}}
                                 </span>
                                 <span>
-                                    {{ $sarafiPickups->latest_pickup_date ? \App\Helpers\AfghanCalendarHelper::toAfghanDateFormat($sarafiPickups->latest_pickup_date) : 'N/A' }}
+                                    {{number_format($sarafiPayments->total_equivalent_dollar + $sarafiPayments->total_amount_dollar,0)}}
+                                    {{-- {{ $sarafiPickups->latest_pickup_date ? \App\Helpers\AfghanCalendarHelper::toAfghanDateFormat($sarafiPickups->latest_pickup_date) : 'N/A' }} --}}
                                 </span>
                                 <span>
                                     <i class="fas fa-arrow-down text-danger"></i>

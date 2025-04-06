@@ -1,3 +1,18 @@
+/* Add these styles if you want to customize the appearance */
+.small-box .icon i.fa-arrow-up {
+  color: #28a745 !important; /* Green for up arrow */
+  font-size: 20px;
+}
+
+.small-box .icon i.fa-arrow-down {
+  color: #dc3545 !important; /* Red for down arrow */
+  font-size: 20px;
+}
+
+.small-box .inner {
+  min-height: 120px; /* Adjust as needed */
+}
+
 .brannedbtn {
   background-color: #ff0080 !important;
   color: white !important;

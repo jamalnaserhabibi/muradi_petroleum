@@ -44,6 +44,7 @@
                                         <tr>
                                             {{-- <th>ID</th> --}}
                                             <th>نام</th>
+                                            <th>وظیفه</th>
                                             <th>معاش</th>
                                             <th> استخدام</th>
                                             <th>عکس</th>
@@ -56,6 +57,7 @@
                                             <tr>
                                                 {{-- <td>{{ $employee->id }}</td> --}}
                                                 <td>{{ $employee->fullname }}</td>
+                                                <td>{{ $employee->position }}</td>
                                                 <td>{{ number_format($employee->salary,0) }}</td>
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($employee->date); }}</td>
                                                 <td>
