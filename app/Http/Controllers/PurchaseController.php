@@ -54,12 +54,22 @@ class PurchaseController extends Controller
     public function purchaseadd(Request $request)
     {   
         $validatedData = $request->validate([
-            'product_id' => 'required|exists:products,id', // Ensure product exists
+            'product_id' => 'required|exists:products,id',
             'heaviness' => 'required|numeric|min:700|max:2500',  
-            'amount' => 'required|numeric|min:0', // Weight constraints
-            'rate' => 'required|numeric|min:0', // Ensure rate is a positive number
-            'details' => 'nullable|string|max:255', // Optional description
+            'amount' => 'required|numeric|min:0',
+            'rate' => 'required|numeric|min:0',
+            'details' => 'nullable|string|max:255',
+            'supplier' => 'required|string|max:255', // New supplier field
+            'document' => 'required|file|mimes:pdf,jpg,png,jpeg,doc,docx,xls,xlsx|max:5120', // 5MB max
         ]);
+    
+        // Handle file upload
+        $documentPath = null;
+        
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $documentPath = $file->store('purchase_documents', 'public'); // This will store the file in storage/app/public/purchase_documents
+        }
     
         // Store the purchase
         $purchase = Purchase::create([
@@ -68,10 +78,12 @@ class PurchaseController extends Controller
             'heaviness' => $validatedData['heaviness'],
             'rate' => $validatedData['rate'],
             'details' => $validatedData['details'] ?? null,
+            'supplier' => $validatedData['supplier'],
+            'document_path' => $documentPath,
+            'document' => $documentPath,
         ]);
-        return redirect()->route('purchase')->with('success', 'Purchase Added successfully.');
-
-         
+    
+        return redirect()->route('purchase')->with('success', 'Purchase added successfully.');
     }
 
     public function purchaseform()

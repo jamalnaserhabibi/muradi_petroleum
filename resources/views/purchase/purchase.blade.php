@@ -83,6 +83,8 @@
                                             <th>نرخ فی تن</th>
                                             <th>مجموعه مقدار</th>
                                             <th>مجموع لیتر</th>
+                                            <th>فروشنده</th>
+                                            <th>پارچه</th>
                                             <th>تاریخ</th>
                                             <th>ملاحظات</th>
                                             <th></th>
@@ -104,6 +106,17 @@
                                                 {{ number_format((1000000 / $purchase->heaviness) * $purchase->amount, 0) }}
                                                 @endif
                                                 </td>
+                                                <td>{{ $purchase->supplier }}</td>
+
+                                                <td>
+                                                    @if ($purchase->document)
+                                                        <img src="{{ asset('storage/' . $purchase->document) }}"
+                                                            alt="purchase document" class="useraccountsimage">
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </td>
+
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($purchase->date); }}</td>
                                                 <td>{{ $purchase->details }}</td>
                                                 <td>

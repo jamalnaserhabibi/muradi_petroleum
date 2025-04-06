@@ -39,7 +39,7 @@
                                 </ol>
                             @endif
                             
-                            <form
+                            <form enctype="multipart/form-data"
                                 action="{{ isset($purchase) ? route('purchaseupdate', $purchase->id) : route('purchaseadd') }}"
                                 method="POST">
                                 @csrf
