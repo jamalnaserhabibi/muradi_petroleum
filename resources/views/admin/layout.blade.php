@@ -37,7 +37,7 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper" >
+    <div class="wrapper">
 
         <div class="preloader">
             <img class="animation__wobble" src="img/logo.png" alt="Muradi Petroleum" height="120">
@@ -132,10 +132,10 @@
                             <li class="user-footer">
                                 <a href="{{ route('logout') }}" class="fas fa-sign-out-alt"> خروج</a>
                             </li>
-                            @if(auth()->user()->usertype === 'admin')
-                            <li class="user-footer">
-                                <a href="{{ route('admin.useraccounts') }}" class="fas fa-user"> کاربر</a>
-                            </li>
+                            @if (auth()->user()->usertype === 'admin')
+                                <li class="user-footer">
+                                    <a href="{{ route('admin.useraccounts') }}" class="fas fa-user"> کاربر</a>
+                                </li>
                             @endif
                         </div>
                     </ul>
@@ -147,7 +147,7 @@
         </nav>
 
 
-        <aside  class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
             <a href="{{ route('admin.dashboard') }}"
                 class="brand-link d-flex justify-content-center align-items-center flex-column">
@@ -155,13 +155,13 @@
                 <span class="brand-text font-weight-light"><strong>مرادی پطرولیم</strong></span>
             </a>
 
-            <div class="sidebar" >
+            <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview"
                         role="menu" data-accordion="false">
                         <div class="form-inline mb-1">
                             <div class="input-group" data-widget="sidebar-search">
-                                <input  class="form-control form-control-sidebar" type="search" placeholder="جستجو"
+                                <input class="form-control form-control-sidebar" type="search" placeholder="جستجو"
                                     aria-label="Search">
                                 <div class="input-group-append">
                                     <button class="btn btn-sidebar">
@@ -196,7 +196,7 @@
                             </a>
                         </li> --}}
                         <li class="nav-item">
-                            <a href="{{route('readings')}}" class="nav-link">
+                            <a href="{{ route('readings') }}" class="nav-link">
                                 <p>
                                     میتر خوانی
                                 </p>
@@ -277,7 +277,7 @@
                             </a>
                         </li> --}}
                         <li class="nav-item">
-                            <a href="{{route('reminders')}}" class="nav-link">
+                            <a href="{{ route('reminders') }}" class="nav-link">
                                 <p>
                                     یادداشت
                                 </p>
@@ -313,50 +313,50 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a   class="nav-link">
+                            <a class="nav-link">
                                 <i class=" "></i>
                                 <p>
-                                     
+
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a   class="nav-link">
+                            <a class="nav-link">
                                 <i class=" "></i>
                                 <p>
-                                     
+
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a  class="nav-link">
+                            <a class="nav-link">
                                 <i class=" "></i>
                                 <p>
-                                     
+
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a  class="nav-link">
+                            <a class="nav-link">
                                 <i class=" "></i>
                                 <p>
-                                     
+
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a  class="nav-link">
+                            <a class="nav-link">
                                 <i class=" "></i>
                                 <p>
-                                     
+
                                 </p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a  class="nav-link">
+                            <a class="nav-link">
                                 <i class=" "></i>
                                 <p>
-                                     
+
                                 </p>
                             </a>
                         </li>
@@ -457,54 +457,76 @@
     <script src="{{ asset('admin-lte/plugins/chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('admin-lte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <script>
-        $(function() {
-            bsCustomFileInput.init();
-            
-            // Get chart data from PHP
-            var productLabels = @json($chartLabels);
-            var productValues = @json($chartValues);
-            console.log(productLabels, productValues);
-            // Area chart
-            var ctx = document.getElementById('productChart').getContext('2d');
-            var chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: productLabels,
-                    datasets: [{
-                        label: 'Distribution Amount (Liters)',
-                        backgroundColor: 'rgba(255,0,128,0.9)',
-                        borderColor: 'rgba(255,0,128,0.8)',
-                        pointRadius: false,
-                        pointColor: '#ff0080',
-                        pointStrokeColor: 'rgba(255,0,128,1)',
-                        pointHighlightFill: '#fff',
-                        pointHighlightStroke: 'rgba(255,0,128,1)',
-                        data: productValues
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    responsive: true,
-                    legend: {
-                        display: true,
-                        position: 'top',
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                callback: function(value) {
-                                    if (Number.isInteger(value)) {
-                                        return value;
-                                    }
-                                }
-                            }
-                        }]
+     $(function() {
+    bsCustomFileInput.init();
+    // Get chart data from PHP
+    var productLabels = @json($chartLabels ?? []);
+    var productValues = @json($chartValues ?? []);
+    // Area chart
+    var ctx = document.getElementById('productChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: productLabels,
+            datasets: [{
+                label: 'Distribution Amount (Liters)',
+                backgroundColor: 'rgba(255,0,128,0.9)',
+                borderColor: 'rgba(255,0,128,0.8)',
+                pointRadius: 4, // Visible points always
+                pointHoverRadius: 8, // Larger radius on hover
+                pointBackgroundColor: '#ff0080',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointHoverBackgroundColor: '#ff0080',
+                pointHoverBorderColor: '#ffffff',
+                pointHoverBorderWidth: 2,
+                data: productValues
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            legend: {
+                display: true,
+                position: 'top',
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+                backgroundColor: 'rgba(0,0,0,0.7)',
+                titleFontSize: 14,
+                titleFontColor: '#fff',
+                bodyFontColor: '#fff',
+                bodyFontSize: 12,
+                displayColors: false,
+                xPadding: 10,
+                yPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return data.datasets[tooltipItem.datasetIndex].label + ': ' + tooltipItem.yLabel + 'L';
                     }
                 }
-            });
-        });
-   
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        callback: function(value) {
+                            if (Number.isInteger(value)) {
+                                return value;
+                            }
+                        }
+                    }
+                }]
+            }
+        }
+    });
+});
+
         $(function() {
             $(document).ready(function() {
                 $('#date').persianDatepicker({
@@ -512,7 +534,7 @@
                     initialValueType: 'persian', // Use Jalali date format
                     initialValue: false,
                     autoClose: true, // Close after selection
-                   
+
                     calendar: {
                         persian: {
                             locale: 'en' // Use English for the calendar numbers
@@ -520,10 +542,10 @@
                     },
                     observer: true, // Automatically update the input field
                     altField: '#altField', // Optional: For additional hidden fields
-                    
+
                 });
-             
-                
+
+
                 $('#start_date').persianDatepicker({
                     format: 'YYYY/MM/DD',
                     initialValueType: 'persian',
@@ -689,7 +711,7 @@
                         $('#rate').prop('disabled', false).val(''); // Allow editing if rate is 0
                     } else {
                         $('#rate').prop('disabled', false).val(
-                        rate); // Set the rate value and make it read-only
+                            rate); // Set the rate value and make it read-only
                         $('#rate').prop('readonly', true); // Set the rate value and make it read-only
                     }
                 }

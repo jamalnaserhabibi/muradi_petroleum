@@ -123,7 +123,9 @@
                     </div>
                 </div>
             </div>
-            
+            <script src="{{ asset('admin-lte/plugins/chart.js/Chart.min.js') }}"></script>
+            <script src="{{ asset('admin-lte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+        
         </section>
     </div>
 @endsection
