@@ -8,7 +8,7 @@ use Morilog\Jalali\CalendarUtils;
 class ReminderController extends Controller
 {
     public function index(){
-        $reminder = Reminder::all();
+        $reminder = Reminder::orderBy('reminder_date', 'asc')->get();
         return view('reminder.reminder',compact('reminder'));
     }
     public function destroy($id){

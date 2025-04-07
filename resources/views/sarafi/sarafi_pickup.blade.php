@@ -29,10 +29,13 @@
                             </div>
                         </div>
                     </form>
+                    @if(Auth::user()->usertype !== 'guest')
                     <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#addPaymentModal">
                         <i class="fas fa-plus"></i>
                          برداشت جدید
-                    </button>
+                    </button>   
+                    @endif
+                   
 
                     @if (session('success'))
                         <ol>
@@ -83,7 +86,8 @@
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                     </a>
                                                     --}}
-
+ @if(Auth::user()->usertype !== 'guest')
+                            
                                                     <form action="{{ route('sarafi_pickup.destroy', $Payments->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
@@ -94,6 +98,8 @@
                                                             <li class="fas fa-trash"></li>
                                                         </button>
                                                     </form>
+                            @endif
+
                                                 </td>
                                             </tr>
                                         @endforeach

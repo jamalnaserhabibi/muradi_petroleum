@@ -11,8 +11,8 @@
             padding: 0;
         }
         .reminder-item {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
+            /* background: #ffffff; */
+            /* border: 1px solid #e0e0e0; */
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 10px;
@@ -75,9 +75,12 @@
                                 }, 4000); // Hide after 4 seconds
                             </script>
                         @endif
-                        <button type="button" class="btn btn-primary add-reminder-btn" data-toggle="modal" data-target="#addReminderModal">
+                        @if(Auth::user()->usertype !== 'guest')
+                       <button type="button" class="btn btn-primary add-reminder-btn" data-toggle="modal" data-target="#addReminderModal">
                             <i class="fas fa-plus"></i> Add Reminder
                         </button>
+                    @endif
+                     
                     </div>
                 </div>
             </div>
@@ -91,18 +94,27 @@
                             <div class="card-body">
                                 <ul class="reminder-list">
                                     @foreach ($reminder as $remind)
-                                        <li class="reminder-item" style="{{ \Carbon\Carbon::parse($remind->reminder_date)->isToday() ? 'backgroundColor: red;' : '' }}">
+                                        <li class="reminder-item  {{\Carbon\Carbon::parse($remind->reminder_date)->isToday()? 'reminderBadgeBorderGreen': ''}} {{\Carbon\Carbon::parse($remind->reminder_date)->isPast() && !\Carbon\Carbon::parse($remind->reminder_date)->isToday()? 'reminderBadgeBorderRed': ''}} {{\Carbon\Carbon::parse($remind->reminder_date)->isFuture()? 'reminderBadgeBorderUpcomming': ''}}">
                                             <div class="reminder-content">
+                                                @if(\Carbon\Carbon::parse($remind->reminder_date)->isPast() && !\Carbon\Carbon::parse($remind->reminder_date)->isToday())
+                                                <span class="reminderBadge">Overdue</span>
+                                            @elseif(\Carbon\Carbon::parse($remind->reminder_date)->isToday())
+                                                <span class="reminderBadge reminderBadgeRed">Today</span>
+                                            @elseif(\Carbon\Carbon::parse($remind->reminder_date)->isFuture())
+                                                <span class="reminderBadge reminderBadgeYellow">Upcoming</span>
+                                            @endif
                                                 <h5>{{ $remind->note }}</h5>
                                                 <p><strong>Remind Date:</strong> 
-                                                    <span >
+                                                    <span>
                                                         {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($remind->reminder_date) }}
                                                     </span>
                                                 </p>
                                                 <p><strong>Added Date:</strong> {{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($remind->date_added) }}</p>
-                                                <p class="status"><strong>Status:</strong> {{ $remind->status }}</p>
+                                                {{-- <p class="status"><strong>Status:</strong> {{ $remind->status }}</p> --}}
                                             </div>
-                                            <div class="reminder-actions">
+                                            <div class="reminder-actions">  
+                                                @if(Auth::user()->usertype !== 'guest')
+                                                
                                                 <button type="button" class="btn btn-warning btn-sm edit-reminder-btn" data-toggle="modal" data-target="#editReminderModal" data-id="{{ $remind->id }}" data-note="{{ $remind->note }}" data-reminder-date="{{  $remind->reminder_date   }}">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
@@ -113,6 +125,8 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
+                                                @endif
+
                                             </div>
                                         </li>
                                     @endforeach
@@ -130,7 +144,9 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
+                    
                     <h5 class="modal-title" id="addReminderModalLabel">Add Reminder</h5>
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -144,7 +160,7 @@
                         </div>
                         <div class="form-group">
                             <label for="remind_date">Remind Date</label>
-                            <input type="text" name="remind_date" id="remind_date" class="form-control" placeholder="Remind Date" required />
+                            <input type="text" name="remind_date" id="start_date" class="form-control" placeholder="Remind Date" required />
                         </div>
                         <input type="hidden" name="created_by" value="{{ Auth::user()->name }}" />
                         <div class="modal-footer">

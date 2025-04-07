@@ -17,9 +17,13 @@
                         <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#filterModal">
                             فلتر <i class="fas fa-filter"></i>
                         </button>
+
+                        @if(Auth::user()->usertype !== 'guest')
                         <a href="{{ route('adddestributionform') }}" class="btn btn-success ml-3">
                             ثبت فروشات پایه <i class="fas fa-plus"></i>
                         </a>
+                        @endif
+ 
                         <a href="{{ route('distribution') }}" class="btn btn-success ml-3">
                             نمایش کارت <i class="fas fa-th-large"></i>
                         </a>
@@ -78,6 +82,7 @@
                                                 </td>
                                                 <td>{{ $distribution->details }}</td>
                                                 <td>
+                                                    @if(Auth::user()->usertype !== 'guest')
                                                     <form action="{{ route('distribution_delete', $distribution->id) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
@@ -88,6 +93,8 @@
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </form>
+                                                    @endif
+                                                  
                                                 </td>
                                             </tr>
                                         @endforeach

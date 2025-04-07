@@ -177,6 +177,39 @@
   background-color: antiquewhite;
 }
 
+.reminderBadge {
+  position: relative;
+  top: -15px !important;
+  left: -16px;
+  padding: 2px 15px;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 8px;
+}
+
+.reminderBadgeRed {
+  background-color: green;
+}
+
+.reminderBadgeYellow {
+  background-color: rgb(255, 200, 0);
+}
+
+.reminderBadgeBorderGreen {
+  border: 1px solid green;
+  background-color: rgba(0, 128, 0, 0.15);
+}
+
+.reminderBadgeBorderUpcomming {
+  border: 1px solid rgb(255, 200, 0);
+  background-color: rgba(255, 200, 0, 0.15);
+}
+
+.reminderBadgeBorderRed {
+  border: 1px solid red;
+  background-color: rgba(255, 0, 0, 0.15);
+}
+
 .useraccounts tbody tr:hover {
   background-color: #f1f1f1; /* Light gray background on hover */
   cursor: pointer; /* Change cursor to pointer on hover */

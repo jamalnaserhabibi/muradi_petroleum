@@ -188,9 +188,13 @@
                         <button type="button" class="btn brannedbtn" data-toggle="modal" data-target="#filterModal">
                             فلتر <i class="fas fa-filter"></i>
                         </button>
+                        
+                        @if(Auth::user()->usertype !== 'guest')
                         <a href="{{ route('adddestributionform') }}" class="btn btn-success ml-3">
                             ثبت فروشات پایه <i class="fas fa-plus"></i>
                         </a>
+                        @endif
+
                         <a href="{{ route('indexfortable') }}" class="btn btn-success ml-3">
                             نمایش جدول <i class="fas fa-table"></i>
                         </a>
@@ -273,6 +277,7 @@
                                     @foreach ($distributionsGroup as $distribution)
                                         <div class="distribution-item">
                                             <div class="actions">
+                                                @if(Auth::user()->usertype !== 'guest')
                                                 <form action="{{ route('distribution_delete', $distribution->id) }}"
                                                     method="POST"  >
                                                     @csrf
@@ -282,6 +287,9 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
+                                                @endif
+
+                                              
                                             </div>
                                             <div class="details">
                                                 <div class="detail-row">

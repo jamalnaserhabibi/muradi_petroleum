@@ -35,4 +35,5 @@ class Distribution extends Model
     {
         return $this->belongsTo(Tower::class, 'tower_id', 'id');
     }
+    
 }

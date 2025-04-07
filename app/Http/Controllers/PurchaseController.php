@@ -90,6 +90,7 @@ class PurchaseController extends Controller
     {
            
         $products = Product::select('id', 'product_name')
+        ->whereNotIn('id', [13, 14, 15])
         ->orderBy('product_name', 'asc')
         ->get();
 

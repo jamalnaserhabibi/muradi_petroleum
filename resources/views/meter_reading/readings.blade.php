@@ -122,9 +122,14 @@
 
 
                                     <div class="ml-3">
+
+                                        @if(Auth::user()->usertype !== 'guest')
                                         <button type="submit" class="btn brannedbtn">
                                             {{ isset($serialNumber) ? 'Update' : 'ثبت' }}
                                         </button>
+                                        @endif
+
+                                       
                                     </div>
                                     <a href="{{ route('meter_reading_table') }}" class="btn btn-success ml-3 h-10">
                                           <span>جدول</span>

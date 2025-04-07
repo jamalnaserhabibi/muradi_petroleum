@@ -11,8 +11,11 @@
                 <div class="container-fluid">
                     <div  class="row mb-2">
                         <div class="col-6">
-                            <a href="{{ route('addtowerform') }}" class="btn brannedbtn">جدید +</a>
+                            @if(Auth::user()->usertype !== 'guest')
 
+                   
+                            <a href="{{ route('addtowerform') }}" class="btn brannedbtn">جدید +</a>
+@endif
                         </div>
                         <div class="col-6 d-flex align-items-center justify-content-end">
                                 
@@ -66,6 +69,9 @@
                                                 <a href="{{ route('tower.seeksale', $tower->id) }}"
                                                     class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
                                                 </a>
+                                                @if(Auth::user()->usertype !== 'guest')
+                            
+                                             
                                                 <a href="{{ route('tower.edit', $tower->id) }}"
                                                     class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                 </a>
@@ -80,7 +86,7 @@
                                                         <li class="fas fa-trash"></li>
                                                     </button>
                                                 </form>
-
+                                                @endif
                                             </td>
                                                </td>
                                             </tr>

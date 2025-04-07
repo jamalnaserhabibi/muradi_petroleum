@@ -35,10 +35,13 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // dd($request->all());
+        if (Auth::user()->usertype !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
 
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:' . User::class],
-            'usertype' => ['required', 'in:admin,manager'],
+            'usertype' => ['required', 'in:admin,manager,guest'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'profile_photo' => ['required', 'image', 'mimes:jpg,png,jpeg,gif', 'max:2048'],
         ]);
@@ -63,6 +66,9 @@ class RegisteredUserController extends Controller
     }
     public function destroy(User $user)
     {
+        if (Auth::user()->usertype !== 'admin') {
+            abort(403, 'Unauthorized action.');
+        }
         // Delete the user's profile photo if it exists
         if ($user->profile_photo) {
             Storage::disk('public')->delete($user->profile_photo);

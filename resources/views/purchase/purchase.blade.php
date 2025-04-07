@@ -46,8 +46,11 @@
                             </div>
                         </div>
                     </form>
-
+                    @if(Auth::user()->usertype !== 'guest')
                     <a href="{{ route('addpurchaseform') }}" class="btn brannedbtn"> جدید +</a>
+
+                    @endif
+
 
                     @if (session('success'))
                         <ol>
@@ -120,20 +123,24 @@
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($purchase->date); }}</td>
                                                 <td>{{ $purchase->details }}</td>
                                                 <td>
+                                                    @if(Auth::user()->usertype !== 'guest')
+
                                                     <a href="{{ route('purchaseedit', $purchase->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                     </a>
 
                                                     <form action="{{ route('purchasedelete', $purchase) }}" method="POST"
-                                                        style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger"
-                                                            title="Delete"
-                                                            onclick="return confirm('Are you sure you want to delete this purchase?')">
-                                                            <li class="fas fa-trash"></li>
-                                                        </button>
-                                                    </form>
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn pt-0 pb-0 btn-danger"
+                                                        title="Delete"
+                                                        onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                        <li class="fas fa-trash"></li>
+                                                    </button>
+                                                </form>
+                                                    @endif
+                                                  
                                                 </td>
                                             </tr>
                                         @endforeach

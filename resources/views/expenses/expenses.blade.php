@@ -116,6 +116,7 @@
                                             </td>
                                             <td>{{ $distribution->details }}</td>
                                             <td>
+                                                @if(Auth::user()->usertype !== 'guest')
                                                 <form action="{{ route('distribution_delete', $distribution->id) }}"
                                                     method="POST" style="display:inline;">
                                                     @csrf
@@ -126,6 +127,7 @@
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
+                        @endif
                                             </td>
                                         </tr>
                                     @endforeach

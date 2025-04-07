@@ -25,8 +25,10 @@
                                 </script>
                             </ol>
                         @endif
+                        @if(Auth::user()->usertype !== 'guest')
                         <a href="{{ route('addemployee') }}" class="btn brannedbtn">+ جدید</a>
-                        <a href="{{ route('expenseaddform',['amount' => $totalSalaries, 'category' => 'Staff Salary','item' => 'Salary of '],) }}" class="btn brannedbtn ml-1">پرداخت معاش</a>
+                        @endif
+                        {{-- <a href="{{ route('expenseaddform',['amount' => $totalSalaries, 'category' => 'Staff Salary','item' => 'Salary of '],) }}" class="btn brannedbtn ml-1">پرداخت معاش</a> --}}
                     </div>
                     <h2>کارمندان</h2>
                 </div>
@@ -70,6 +72,8 @@
                                                 </td>
                                                 <td>{{ $employee->description }}</td>
                                                 <td>
+                        @if(Auth::user()->usertype !== 'guest')
+
                                                     <a href="{{ route('editemployee', $employee->id) }}" title="Edit"
                                                         class="btn btn-warning pt-0 pb-0  fa fa-edit">
 
@@ -83,6 +87,7 @@
                                                             <li class="fas fa-trash"></li>
                                                         </button>
                                                     </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

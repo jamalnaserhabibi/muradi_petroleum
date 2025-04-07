@@ -5,7 +5,7 @@
     
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Muradi Petroleum - Register</title>
+    <title>مرادی پطرولیم</title>
     <base href="{{ asset('admin-lte') }}/" />
     
     <link rel="stylesheet" href="admincss/useraccounts/styleforall.css">
@@ -21,11 +21,11 @@
     <div class="login-box">
         <div class="login-logo d-flex flex-column align-items-center">
             <img src="img/logo.png" style="width: 50px" alt="">
-            <a href="#"><b>Muradi </b> Petroleum</a>
+            <a href="#"><b>مرادی </b> پطرولیم</a>
         </div>
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg" >Add a new User</p>
+                <p class="login-box-msg" >مشخصات کاربر جدید را درج کنید!</p>
                 <form method="POST" action="{{ route('addnewuser') }}" enctype="multipart/form-data">
                     @csrf
                 
@@ -47,6 +47,7 @@
                             <option value="" disabled selected>Select User Type</option>
                             <option value="admin">Admin</option>
                             <option value="manager">Manager</option>
+                            <option value="guest">Guest</option>
                         </select>
                         <div class="input-group-append">
                             <div class="input-group-text">

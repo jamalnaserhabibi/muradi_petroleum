@@ -132,9 +132,11 @@
                             <li class="user-footer">
                                 <a href="{{ route('logout') }}" class="fas fa-sign-out-alt"> خروج</a>
                             </li>
+                            @if(auth()->user()->usertype === 'admin')
                             <li class="user-footer">
                                 <a href="{{ route('admin.useraccounts') }}" class="fas fa-user"> کاربر</a>
                             </li>
+                            @endif
                         </div>
                     </ul>
                 </li>

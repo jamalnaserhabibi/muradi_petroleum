@@ -78,9 +78,13 @@
             <div class="container-fluid">
                 <div class="totalSalary searchBar row mb-1">
                     <div class=" d-flex align-items-center justify-content-end">
+                        @if(Auth::user()->usertype !== 'guest')
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#assignTowerModal">
                             تعین پایه
                         </button>
+                        @endif
+
+                      
                         @if (session('success'))
                             <div class="alert alert-success" id="success-alert">
                                 {{ session('success') }}

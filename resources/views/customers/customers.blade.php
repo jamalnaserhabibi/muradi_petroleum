@@ -29,7 +29,10 @@
                         <span>
                             <a href="{{ route('customers') }}" class="btn btn-info ml-3  fluid-right">Active</a>
                             <a href="{{ route('customers0') }}" class="btn btn-danger fluid-right">Inactive</a>
+                        @if(Auth::user()->usertype !== 'guest')
+
                             <a href="{{ route('customeradd') }}" class="btn brannedbtn fluid-right ml-3">+ New</a>
+                       @endif
                         </span>
                         </div>
                 </div>
@@ -91,6 +94,7 @@
                                                     <a href="{{ route('singlecustomersalescustomer', $customer->contract->id) }}"
                                                         class="btn pt-0 pb-0 btn-success  fa fa-eye " title="Search">
                                                     </a>
+                        @if(Auth::user()->usertype !== 'guest')
                                                     
                                                     <a href="{{ route('customer.edit', $customer) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
@@ -104,6 +108,7 @@
                                                             onclick="return confirm('Are you sure you want to delete this customer?')">
                                                         <li class="fas fa-trash"></li></button>
                                                     </form>
+                                                    @endif
                                                  </td>
                                             </tr>
                                         @endforeach

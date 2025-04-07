@@ -3,19 +3,62 @@
     <div class="content-wrapper">
 
         <div class="content-header" >
-            <div class="container-fluid text-center">
+            <div class="container-fluid text-center d-flex justify-content-between align-items-center flex-row">
+              
                 <h1 class="dashboardtitle">
                     {{ \Morilog\Jalali\Jalalian::now()->format('%A  %d') }} 
                     {{ ['حمل', 'ثور', 'جوزا', 'سرطان', 'اسد', 'سنبله', 'میزان', 'عقرب', 'قوس', 'جدی', 'دلو', 'حوت'][\Morilog\Jalali\Jalalian::now()->getMonth() - 1] }}
                     {{ \Morilog\Jalali\Jalalian::now()->format('%Y | %I:%M') }} 
                     {{ \Morilog\Jalali\Jalalian::now()->format('a') == 'am' ? 'قبل از ظهر' : 'بعد از ظهر' }}
                 </h1>
+                <form  id="filter-form" action="{{ route('admin.dashboard') }}" method="GET">
+                    <div  id="reservationdate"
+                                class="d-flex align-items-center justify-content-between">
+                                <input value="{{ isset($afghaniStartDate) ? $afghaniStartDate : '' }}" type="text"
+                                    name="start_date" id="start_date" class="form-control" placeholder="Start Date"
+                                     required />
+
+                                <span style="margin: 0 10px; font-weight: bold;">to</span>
+
+                                <input value="{{ isset($afghaniEndDate) ? $afghaniEndDate : '' }}" type="text"
+                                    name="end_date" id="end_date" class="form-control" placeholder="End Date"
+                                      required />
+                            </div>
+                </form>
             </div>
         </div>
 
+             
 
         <section class="content">
             <div class="container-fluid">
+
+                <div class="row">
+                    @foreach($products as $product)
+                    <div class="col-lg-3 col-6 mb-4">
+                        <div class="small-box {{ $product['bg_color'] }}">
+                            <div class="inner">
+                                <h3>{{ number_format($product['total_value']) }}</h3>
+                                <h4>{{ $product['name'] }}</h4>
+                                <div class="amount-display">
+                                    @if(!$product['is_money'])
+                                    {{ number_format($product['total_amount']) }}
+                                        <small>L</small>
+                                    @else
+                                        {{-- {{ number_format($product['total_amount']) }} --}}
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="icon">
+                                <i class="fas {{ $product['icon'] }}"></i>
+                            </div>
+                            <a href="" class="small-box-footer">
+                                More info <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
 
                 <div class="row">
                     <div class="col-lg-3 col-6">
@@ -50,36 +93,6 @@
                             
                         </div>
                     </div>
-                    <div class="col-lg-3 col-6">                           
-
-                        <div class="small-box bg-info">
-                            <div class="inner">
-                                <h3>150</h3>
-                                <p>Total Purchase</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-bag"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-6">
-
-                        <div class="small-box bg-success">
-                            <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
-                                <p>Total Expenses</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
                     <div class="col-lg-3 col-6">
 
                         <div class="small-box bg-warning">
@@ -95,79 +108,9 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-6">
-
-                        <div class="small-box bg-danger">
-                            <div class="inner">
-                                <h3>65</h3>
-                                <p>Total Sales</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box petrol-bg">
-                            <div class="inner">
-                                <h3>150</h3>
-                                <p>Petrol</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-gas-pump"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box super-petrol-bg">
-                            <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
-                                <p>Super Petrol</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-oil-can"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box diesel-bg">
-                            <div class="inner">
-                                <h3>23</h3>
-                                <p>Diesel</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-truck-pickup"></i>
-                            </div>
-                            <a href="" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-6">
-                        <div class="small-box gas-bg">
-                            <div class="inner">
-                                <h3>65</h3>
-                                <p>Gas</p>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-burn"></i>
-                            </div>
-                            <a href="#" class="small-box-footer">More info <i
-                                    class="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-                </div>
+                
 
             </div>
         </section>

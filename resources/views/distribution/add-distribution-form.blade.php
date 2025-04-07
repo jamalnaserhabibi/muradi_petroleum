@@ -32,7 +32,10 @@
         <div class="form-group mr-2">
             <input placeholder="Details" type="text" class="form-control" id="details" name="details">
         </div>
+        @if(Auth::user()->usertype !== 'guest')
         <button type="submit" class="btn brannedbtn h-9">Add</button>
+        @endif
+       
     </div>
 </form>
 
