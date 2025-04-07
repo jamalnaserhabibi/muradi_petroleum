@@ -454,8 +454,57 @@
     <!-- Persian Datepicker JS -->
     <script src="{{ mix('node_modules/persian-datepicker/dist/js/persian-datepicker.min.js') }}"></script>
     <script src="{{ mix('node_modules/persian-date/dist/persian-date.min.js') }}"></script>
-
+    <script src="{{ asset('admin-lte/plugins/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('admin-lte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <script>
+        $(function() {
+            bsCustomFileInput.init();
+            
+            // Get chart data from PHP
+            var productLabels = @json($chartLabels);
+            var productValues = @json($chartValues);
+            console.log(productLabels, productValues);
+            // Area chart
+            var ctx = document.getElementById('productChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: productLabels,
+                    datasets: [{
+                        label: 'Distribution Amount (Liters)',
+                        backgroundColor: 'rgba(255,0,128,0.9)',
+                        borderColor: 'rgba(255,0,128,0.8)',
+                        pointRadius: false,
+                        pointColor: '#ff0080',
+                        pointStrokeColor: 'rgba(255,0,128,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(255,0,128,1)',
+                        data: productValues
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+   
         $(function() {
             $(document).ready(function() {
                 $('#date').persianDatepicker({

@@ -30,9 +30,9 @@ class AdminController extends Controller
             $startOfMonth = $monthRange['start'];
             $endOfMonth = $monthRange['end'];
             $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($startOfMonth);
-            $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($endOfMonth);
+            $afghaniEndDate = AfghanCalendarHelper::toAfghanDateFormat($endOfMonth);
         }
-
+    
         $sarafiPayments = DB::table('sarafi_payments')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->select(
@@ -40,30 +40,25 @@ class AdminController extends Controller
                 DB::raw('COALESCE(SUM(amount_dollar), 0) as total_amount_dollar')
             )
             ->first();
-
+    
         $sarafiPickups = DB::table('sarafi_pickup')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
-            ->select(
-                DB::raw('COALESCE(SUM(amount), 0) as total_amount'),
-            )
+            ->select(DB::raw('COALESCE(SUM(amount), 0) as total_amount'))
             ->first();
-
-        // Calculate the balance
+    
         $balance = ($sarafiPayments->total_equivalent_dollar + $sarafiPayments->total_amount_dollar) - $sarafiPickups->total_amount;
-
-
-
+    
         $products = Product::leftJoin('towers', 'towers.product_id', '=', 'products.id')
             ->leftJoin('distribution', function ($join) use ($startOfMonth, $endOfMonth) {
                 $join->on('distribution.tower_id', '=', 'towers.id')
                     ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth]);
             })
             ->selectRaw('
-        products.id,
-        products.product_name,
-        COALESCE(SUM(distribution.rate * distribution.amount), 0) as total_value,
-        COALESCE(SUM(distribution.amount), 0) as total_amount
-    ')
+                products.id,
+                products.product_name,
+                COALESCE(SUM(distribution.rate * distribution.amount), 0) as total_value,
+                COALESCE(SUM(distribution.amount), 0) as total_amount
+            ')
             ->groupBy('products.id', 'products.product_name')
             ->orderBy('products.id')
             ->get()
@@ -80,10 +75,24 @@ class AdminController extends Controller
                     'month_end' => $endOfMonth,
                 ];
             });
-
-
-        return view('admin.dashboard', compact('sarafiPayments', 'sarafiPickups', 'balance', 'products', 'afghaniStartDate', 'afghaniEndDate'));
+    
+        // Chart Data
+        $nonMoneyProducts = $products->filter(fn($product) => !$product['is_money']);
+        $chartLabels = $nonMoneyProducts->pluck('name');
+        $chartValues = $nonMoneyProducts->pluck('total_amount');
+    
+        return view('admin.dashboard', compact(
+            'sarafiPayments',
+            'sarafiPickups',
+            'balance',
+            'products',
+            'afghaniStartDate',
+            'afghaniEndDate',
+            'chartLabels',
+            'chartValues'
+        ));
     }
+    
 
 
     private function getProductIcon($name)
