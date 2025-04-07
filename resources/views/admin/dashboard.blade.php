@@ -32,32 +32,40 @@
 
         <section class="content">
             <div class="container-fluid">
-
-                <div class="row">
+                {{-- products statistics --}}
+             <div class="row">
                     @foreach($products as $product)
-                    <div class="col-lg-3 col-6 mb-4">
-                        <div class="small-box {{ $product['bg_color'] }}">
-                            <div class="inner">
-                                <h3>{{ number_format($product['total_value']) }}</h3>
-                                <h4>{{ $product['name'] }}</h4>
-                                <div class="amount-display">
-                                    @if(!$product['is_money'])
-                                    {{ number_format($product['total_amount']) }}
-                                        <small>L</small>
-                                    @else
-                                        {{-- {{ number_format($product['total_amount']) }} --}}
-                                    @endif
+                    <div class="col-lg-2 col-4 mb-3"> {{-- Changed from col-lg-3 col-6 to make cards smaller --}}
+                        <div class="small-box {{ $product['bg_color'] }}" style="height: 120px;"> {{-- Reduced height --}}
+                            <div class="inner p-2"> {{-- Added padding --}}
+                                <h4 style="font-size: 1.2rem; margin-bottom: 5px;">{{ number_format($product['total_value']) }}</h4>
+                                <p style="font-size: 0.9rem; margin-bottom: 3px;">{{ $product['name'] }}</p>
+                                @if(!$product['is_money'])
+                                <div style="font-size: 0.8rem;">
+                                    {{ number_format($product['total_amount']) }} <small>L</small>
                                 </div>
+                                @endif
                             </div>
-                            <div class="icon">
+                            <div class="icon" style="font-size: 1.5rem; bottom: 5px; right: 5px;">
                                 <i class="fas {{ $product['icon'] }}"></i>
                             </div>
-                            <a href="" class="small-box-footer">
-                                More info <i class="fas fa-arrow-circle-right"></i>
-                            </a>
                         </div>
                     </div>
                     @endforeach
+                </div>
+
+                {{-- Linear Chart for Non-Money Products --}}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Fuel Products Distribution</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="fuelChart" style="height: 300px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -107,7 +115,6 @@
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-
                 </div>
 
                 

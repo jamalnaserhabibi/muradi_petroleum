@@ -267,7 +267,7 @@
                                 <i class="fas fa-gas-pump nav-icon"></i>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('backup') }}" class="nav-link">
                                 <p>
                                     Backup And Restore
@@ -275,7 +275,7 @@
                                 <i class="nav-icon fas fa-database"></i>
 
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a href="{{route('reminders')}}" class="nav-link">
                                 <p>
