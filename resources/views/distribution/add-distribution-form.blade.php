@@ -18,7 +18,7 @@
                 <option value="">Select Contract</option>
                 @foreach($contracts as $contract)
                     <option value="{{ $contract->id }}" data-rate="{{ $contract->rate }}" data-product-id="{{ $contract->product_id }}">
-                        {{ $contract->customer->name }} - {{ $contract->customer->company }} - {{ $contract->product->product_name }}
+                        {{ $contract->customer->name }}  {{ $contract->customer->company }}
                     </option>
                 @endforeach
             </select>
