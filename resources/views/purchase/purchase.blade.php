@@ -84,7 +84,7 @@
                                             <th>تن</th>
                                             <th>سقلت</th>
                                             <th>نرخ فی تن</th>
-                                            <th>مجموعه مقدار</th>
+                                            <th>مجموعه نرخ</th>
                                             <th>مجموع لیتر</th>
                                             <th>فروشنده</th>
                                             <th>پارچه</th>
@@ -153,6 +153,8 @@
                                             <th></th> <!-- Empty cell to keep alignment -->
                                             <th id="total-footer-amount"></th> <!-- Total Amount column -->
                                             <th id="total-footer-liter"></th> <!-- Total Liter column -->
+                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
+                                            <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->

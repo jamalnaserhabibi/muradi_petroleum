@@ -457,75 +457,76 @@
     <script src="{{ asset('admin-lte/plugins/chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('admin-lte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <script>
-     $(function() {
-    bsCustomFileInput.init();
-    // Get chart data from PHP
-    var productLabels = @json($chartLabels ?? []);
-    var productValues = @json($chartValues ?? []);
-    // Area chart
-    var ctx = document.getElementById('productChart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: productLabels,
-            datasets: [{
-                label: 'Distribution Amount (Liters)',
-                backgroundColor: 'rgba(255,0,128,0.9)',
-                borderColor: 'rgba(255,0,128,0.8)',
-                pointRadius: 4, // Visible points always
-                pointHoverRadius: 8, // Larger radius on hover
-                pointBackgroundColor: '#ff0080',
-                pointBorderColor: '#ffffff',
-                pointBorderWidth: 2,
-                pointHoverBackgroundColor: '#ff0080',
-                pointHoverBorderColor: '#ffffff',
-                pointHoverBorderWidth: 2,
-                data: productValues
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true,
-            legend: {
-                display: true,
-                position: 'top',
-            },
-            hover: {
-                mode: 'nearest',
-                intersect: true
-            },
-            tooltips: {
-                mode: 'index',
-                intersect: false,
-                backgroundColor: 'rgba(0,0,0,0.7)',
-                titleFontSize: 14,
-                titleFontColor: '#fff',
-                bodyFontColor: '#fff',
-                bodyFontSize: 12,
-                displayColors: false,
-                xPadding: 10,
-                yPadding: 10,
-                callbacks: {
-                    label: function(tooltipItem, data) {
-                        return data.datasets[tooltipItem.datasetIndex].label + ': ' + tooltipItem.yLabel + 'L';
-                    }
-                }
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        callback: function(value) {
-                            if (Number.isInteger(value)) {
-                                return value;
+        $(function() {
+            bsCustomFileInput.init();
+            // Get chart data from PHP
+            var productLabels = @json($chartLabels ?? []);
+            var productValues = @json($chartValues ?? []);
+            // Area chart
+            var ctx = document.getElementById('productChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: productLabels,
+                    datasets: [{
+                        label: 'Sales Amount (Liters)',
+                        backgroundColor: 'rgba(255,0,128,0.9)',
+                        borderColor: 'rgba(255,0,128,0.8)',
+                        pointRadius: 4, // Visible points always
+                        pointHoverRadius: 8, // Larger radius on hover
+                        pointBackgroundColor: '#ff0080',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointHoverBackgroundColor: '#ff0080',
+                        pointHoverBorderColor: '#ffffff',
+                        pointHoverBorderWidth: 2,
+                        data: productValues
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    legend: {
+                        display: true,
+                        position: 'top',
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(0,0,0,0.7)',
+                        titleFontSize: 14,
+                        titleFontColor: '#fff',
+                        bodyFontColor: '#fff',
+                        bodyFontSize: 12,
+                        displayColors: false,
+                        xPadding: 10,
+                        yPadding: 10,
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return data.datasets[tooltipItem.datasetIndex].label + ': ' +
+                                    tooltipItem.yLabel + 'L';
                             }
                         }
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value) {
+                                    if (Number.isInteger(value)) {
+                                        return value;
+                                    }
+                                }
+                            }
+                        }]
                     }
-                }]
-            }
-        }
-    });
-});
+                }
+            });
+        });
 
         $(function() {
             $(document).ready(function() {

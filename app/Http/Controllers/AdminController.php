@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\AfghanCalendarHelper;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Contract;
 use App\Models\type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,7 @@ class AdminController extends Controller
             $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($startOfMonth);
             $afghaniEndDate = AfghanCalendarHelper::toAfghanDateFormat($endOfMonth);
         }
-    
+
         $sarafiPayments = DB::table('sarafi_payments')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->select(
@@ -40,14 +41,45 @@ class AdminController extends Controller
                 DB::raw('COALESCE(SUM(amount_dollar), 0) as total_amount_dollar')
             )
             ->first();
-    
+
         $sarafiPickups = DB::table('sarafi_pickup')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->select(DB::raw('COALESCE(SUM(amount), 0) as total_amount'))
             ->first();
-    
+
         $balance = ($sarafiPayments->total_equivalent_dollar + $sarafiPayments->total_amount_dollar) - $sarafiPickups->total_amount;
-    
+
+        $purchases = DB::table('purchase')
+            ->whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->select(
+                'product_id',
+                'products.product_name',
+                DB::raw('COALESCE(SUM(rate * amount), 0) as total_purchase_value'),
+                DB::raw('COALESCE(SUM(amount), 0) as total_purchase_amount'),
+                DB::raw('CASE 
+                    WHEN products.product_name = "Gas" THEN COALESCE(SUM(amount * heaviness), 0)
+                    ELSE COALESCE(SUM((1000000 / heaviness) * amount), 0)
+                END as total_liters')
+            )
+            ->leftJoin('products', 'products.id', '=', 'purchase.product_id')
+            ->groupBy('product_id', 'products.product_name')
+            ->get()
+            // ->keyBy('product_id');
+            ->map(function ($purchases) use ($startOfMonth, $endOfMonth) {
+                return [
+                    'product_id' => $purchases->product_id,
+                    'name' => $purchases->product_name,
+                    'total_purchase_value' => $purchases->total_purchase_value,
+                    'total_purchase_amount' => $purchases->total_purchase_amount,
+                    'total_purchase_liters' => $purchases->total_liters,
+                    'icon' => $this->getProductIcon($purchases->product_name),
+                    'bg_color' => $this->getProductColor($purchases->product_name),
+                    'is_money' => in_array($purchases->product_id, [13, 14, 15]),
+                    'month_start' => $startOfMonth,
+                    'month_end' => $endOfMonth,
+                ];
+            });
+
         $products = Product::leftJoin('towers', 'towers.product_id', '=', 'products.id')
             ->leftJoin('distribution', function ($join) use ($startOfMonth, $endOfMonth) {
                 $join->on('distribution.tower_id', '=', 'towers.id')
@@ -75,12 +107,46 @@ class AdminController extends Controller
                     'month_end' => $endOfMonth,
                 ];
             });
-    
+
+
+
         // Chart Data
+
         $nonMoneyProducts = $products->filter(fn($product) => !$product['is_money']);
         $chartLabels = $nonMoneyProducts->pluck('name');
         $chartValues = $nonMoneyProducts->pluck('total_amount');
-    
+
+        $PaymentTotalbalance = Contract::join('customers', 'contracts.customer_id', '=', 'customers.id')
+            ->leftJoinSub(
+                DB::table('distribution')
+                    ->join('towers', 'distribution.tower_id', '=', 'towers.id')
+                    ->where('towers.product_id', '!=', 14) // Sales (not payments)
+                    ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
+                    ->select('distribution.contract_id', DB::raw('SUM(distribution.amount * distribution.rate) as total_sales'))
+                    ->groupBy('distribution.contract_id'),
+                'sales_summary',
+                'contracts.id',
+                '=',
+                'sales_summary.contract_id'
+            )
+            ->leftJoinSub(
+                DB::table('distribution')
+                    ->join('towers', 'distribution.tower_id', '=', 'towers.id')
+                    ->where('towers.product_id', 14) // Payments only
+                    ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
+                    ->select('distribution.contract_id', DB::raw('SUM(distribution.amount * distribution.rate) as total_payments'))
+                    ->groupBy('distribution.contract_id'),
+                'payments_summary',
+                'contracts.id',
+                '=',
+                'payments_summary.contract_id'
+            )
+            ->select(
+                DB::raw('SUM(COALESCE(payments_summary.total_payments, 0) - COALESCE(sales_summary.total_sales, 0)) as total_balance')
+            )
+            ->where('contracts.isActive', 1)
+            ->first();
+
         return view('admin.dashboard', compact(
             'sarafiPayments',
             'sarafiPickups',
@@ -89,10 +155,12 @@ class AdminController extends Controller
             'afghaniStartDate',
             'afghaniEndDate',
             'chartLabels',
-            'chartValues'
+            'chartValues',
+            'purchases',
+            'PaymentTotalbalance'
         ));
     }
-    
+
 
 
     private function getProductIcon($name)
@@ -143,7 +211,7 @@ class AdminController extends Controller
 
     public function table()
     {
-        
+
         $type = type::all();
         return view('admin.table', compact('type'));
     }
