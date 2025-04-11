@@ -72,8 +72,7 @@
                                                 </td>
                                                 <td>{{ $employee->description }}</td>
                                                 <td>
-                        @if(Auth::user()->usertype !== 'guest')
-
+                                                    @if(Auth::user()->usertype == 'admin')
                                                     <a href="{{ route('editemployee', $employee->id) }}" title="Edit"
                                                         class="btn btn-warning pt-0 pb-0  fa fa-edit">
 

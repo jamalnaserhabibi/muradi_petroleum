@@ -69,7 +69,7 @@
                                                 <a href="{{ route('tower.seeksale', $tower->id) }}"
                                                     class="btn pt-0 pb-0 btn-info fa fa-eye " title="Search">
                                                 </a>
-                                                @if(Auth::user()->usertype !== 'guest')
+                                                @if(Auth::user()->usertype == 'admin')
                             
                                              
                                                 <a href="{{ route('tower.edit', $tower->id) }}"

@@ -89,10 +89,15 @@
                                                 @endif
                                                 <td>
                                                     <a href="{{ route('distribution', ['contract' => [$balance->id], 'product' => [14]]) }}"
+                                                        class="btn pt-0 pb-0 btn-info" title="Payments">  پرداخت                                                   
+                                                    </a>
                                                     
-                                                        class="btn pt-0 pb-0 btn-info" title="Payments">  پرداخت                                                   </a>
-                                                    <a href="{{ route('distribution', ['contract' => [$balance->id], 'product' => [0]]) }}"
+                                                    <a href="{{ route('distribution', ['contract' => [$balance->id], 'product' => [0],'notMoneyIn'=>[0]]) }}"
                                                         class="btn pt-0 pb-0 btn-success " title="Sales"> توزیع
+                                                    </a>
+                                                    
+                                                    <a href="{{ route('distribution', ['contract' => [$balance->id]]) }}"
+                                                        class="btn pt-0 pb-0 btn-primary " title="Sales"> همه
                                                     </a>
 
                                                     {{-- <form action="{{ route('saledelete', $balance->id) }}" method="POST"

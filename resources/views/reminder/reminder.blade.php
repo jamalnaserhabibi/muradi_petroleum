@@ -113,7 +113,7 @@
                                                 {{-- <p class="status"><strong>Status:</strong> {{ $remind->status }}</p> --}}
                                             </div>
                                             <div class="reminder-actions">  
-                                                @if(Auth::user()->usertype !== 'guest')
+                                                @if(Auth::user()->usertype == 'admin')
                                                 
                                                 <button type="button" class="btn btn-warning btn-sm edit-reminder-btn" data-toggle="modal" data-target="#editReminderModal" data-id="{{ $remind->id }}" data-note="{{ $remind->note }}" data-reminder-date="{{  $remind->reminder_date   }}">
                                                     <i class="fas fa-edit"></i>

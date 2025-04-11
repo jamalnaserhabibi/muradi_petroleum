@@ -277,7 +277,7 @@
                                     @foreach ($distributionsGroup as $distribution)
                                         <div class="distribution-item">
                                             <div class="actions">
-                                                @if(Auth::user()->usertype !== 'guest')
+                                                @if(Auth::user()->usertype == 'admin')
                                                 <form action="{{ route('distribution_delete', $distribution->id) }}"
                                                     method="POST"  >
                                                     @csrf
@@ -288,8 +288,6 @@
                                                     </button>
                                                 </form>
                                                 @endif
-
-                                              
                                             </div>
                                             <div class="details">
                                                 <div class="detail-row">
@@ -316,9 +314,18 @@
                                                     <div class="detail-item">
                                                         <strong>توضیحات:</strong> {{ $distribution->details }}
                                                     </div>
+                                                    <div class="detail-item">
+                                                        <strong>بیلانس:</strong>  
+
+                                                    @if ($distribution->running_balance < 0)
+                                                        <span class="redcolor">{{ number_format($distribution->running_balance, 1) }}</span>
+                                                    @else
+                                                        <span >{{ number_format($distribution->running_balance,1) }}</span>
+                                                    @endif
+
+                                                    </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     @endforeach
                                 </div>
@@ -355,7 +362,7 @@
                                 </div>
                             </div>
                             </div>
-                        </div>
+                       
                     @endforeach
 
                     <!-- Display Grand Total -->

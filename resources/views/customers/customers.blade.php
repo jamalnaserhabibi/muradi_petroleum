@@ -94,7 +94,7 @@
                                                     <a href="{{ route('singlecustomersalescustomer', $customer->contract->id) }}"
                                                         class="btn pt-0 pb-0 btn-success  fa fa-eye " title="Search">
                                                     </a>
-                        @if(Auth::user()->usertype !== 'guest')
+                                                @if(Auth::user()->usertype == 'admin')
                                                     
                                                     <a href="{{ route('customer.edit', $customer) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">

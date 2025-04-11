@@ -99,7 +99,7 @@
                                                     {{-- <a href="{{ route('purchaseedit', $Payments->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
                                                     </a> --}}
-                                                    @if(Auth::user()->usertype !== 'guest')
+                                                    @if(Auth::user()->usertype == 'admin')
                             
                                                     <form action="{{ route('sarafi_payment.destroy', $Payments->id) }}" method="POST"
                                                         style="display:inline;">

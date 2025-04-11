@@ -24,7 +24,7 @@
                         </a>
                         @endif
  
-                        <a href="{{ route('distribution') }}" class="btn btn-success ml-3">
+                        <a href="{{ route('distribution', ['cardView' => 1]) }}" class="btn btn-success ml-3">
                             نمایش کارت <i class="fas fa-th-large"></i>
                         </a>
                         @if (session('success'))
@@ -38,8 +38,8 @@
                             </script>
                         @endif
                     </div>
-                    <h2>توزیع ماه
-                        {{ isset($distributions) && isset($distributions[0]) ? \App\Helpers\AfghanCalendarHelper::getAfghanMonth($distributions[0]->date) : 'No Data' }}
+                    <h2>توزیع شروع از 
+                        {{ isset($distributions) && isset($distributions[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($distributions[0]->date) : 'No Data' }}
                     </h2>
                 </div>
             </div>
@@ -61,6 +61,7 @@
                                             <th>نرخ</th>
                                             <th>مقدار</th>
                                             <th>مجموع</th>
+                                            <th>بیلانس</th>
                                             <th>تاریخ</th>
                                             <th>توضیحات</th>
                                             <th>.</th>
@@ -78,11 +79,20 @@
                                                 <td>{{ number_format($distribution->amount, 0) }}</td>
                                                 <td>{{ number_format($distribution->amount * $distribution->rate, 1) }}
                                                 </td>
+
+                                                @if ($distribution->running_balance < 0)
+                                                    <td class="redcolor">{{ number_format($distribution->running_balance, 1) }} </td>
+                                                @elseif ($distribution->running_balance == 0)
+                                                    <td style="background-color: rgb(0, 179, 0); color: white;" >{{ number_format($distribution->running_balance) }}</td>
+                                                @else
+                                                    <td>{{ number_format($distribution->running_balance,1) }}</td>
+                                                @endif
+
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($distribution->date) }}
                                                 </td>
                                                 <td>{{ $distribution->details }}</td>
                                                 <td>
-                                                    @if(Auth::user()->usertype !== 'guest')
+                                                    @if(Auth::user()->usertype == 'admin')
                                                     <form action="{{ route('distribution_delete', $distribution->id) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
@@ -104,6 +114,7 @@
                                             <th colspan="4" style="text-align:right">مجموع:</th>
                                             <th id="totalAmount"></th>
                                             <th id="totalSum"></th>
+                                            <th id="totalbalance"></th>
                                             <th colspan="3"></th>
                                         </tr>
                                     </tfoot>
@@ -270,8 +281,17 @@
                         .reduce((a, b) => {
                             return a + parseFloat(b.replace(/,/g, ''));
                         }, 0);
+                    let totalbalance = api
+                        .column(6, {
+                            search: 'applied'
+                        }) // Column index for Total
+                        .data()
+                        .reduce((a, b) => {
+                            return a + parseFloat(b.replace(/,/g, ''));
+                        }, 0);
                     $('#totalAmount').html(totalAmount.toLocaleString());
                     $('#totalSum').html(totalSum.toLocaleString());
+                    // $('#totalbalance').html(totalbalance.toLocaleString());
                 }
             });
 

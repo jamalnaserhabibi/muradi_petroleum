@@ -123,7 +123,7 @@
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($purchase->date); }}</td>
                                                 <td>{{ $purchase->details }}</td>
                                                 <td>
-                                                    @if(Auth::user()->usertype !== 'guest')
+                                                    @if(Auth::user()->usertype == 'admin')
 
                                                     <a href="{{ route('purchaseedit', $purchase->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">

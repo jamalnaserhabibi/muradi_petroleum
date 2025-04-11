@@ -23,124 +23,186 @@ class DistributionController extends Controller
             $query->where('employee_id', $distributerId);
         })->get();
 
-        $contracts = Contract::with(['customer','Product'])->get();
-        
+        $contracts = Contract::with(['customer', 'Product'])->get();
+
         // Return the form view with towers and contracts data
         return view('distribution.add-distribution-form', compact('towers', 'contracts'))->render();
     }
-    public function adddestributionform(){
+    public function adddestributionform()
+    {
         $distributions = Distribution::with(['contract.customer', 'distributer', 'tower'])->get();
         // Fetch distributers and contracts for dropdowns
         $distributers = Employee::whereHas('distributers')->get(); // Assuming distributers are employees
-        $contracts = Contract::with(['customer','Product'])->get();
+        $contracts = Contract::with(['customer', 'Product'])->get();
         // Pass the data to the view
         return view('distribution.form', compact('distributions', 'distributers', 'contracts'));
     }
 
     public function index(Request $request)
     {
-        // Handle date filtering
         if (isset($request->start_date) && isset($request->end_date)) {
-                $afghaniStartDate = $request->start_date;
-                $afghaniEndDate = $request->end_date;
-                $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
-                $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
-            } else {
-                $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-                $start_date = $monthRange['start'];
-                $end_date = $monthRange['end'];
-                $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
-                $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
+            $afghaniStartDate = $request->start_date;
+            $afghaniEndDate = $request->end_date;
+            $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+            $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+        } else {
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $start_date = $monthRange['start'];
+            $end_date = $monthRange['end'];
+            $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
+            $afghaniEndDate = AfghanCalendarHelper::toAfghanDateFormat($end_date);
         }
-        // Fetch distribution data with relationships
-        $distributions = Distribution::whereBetween('date', [$start_date, $end_date])
-            ->with(['contract.customer', 'distributer', 'tower'])
-            ->orderBy('date', 'asc');
-    
-        // Apply distributer filter if selected
-        if ($request->has('distributer') && !empty($request->distributer)) {
-            $distributions->whereIn('distributer_id', $request->distributer);
-        }
-    
-        // Apply product filter if selected
-        if ($request->has('product') && !empty($request->product)) {
-            $distributions->whereHas('tower.product', function ($query) use ($request) {
-                if ($request->product == [0]) {
-                    $query->where('id', '!=', 14);
-                } else {
-                    $query->whereIn('id', $request->product);
-                }
-            });
-        }
-    
-        // Apply contract filter if selected
-        if ($request->has('contract') && !empty($request->contract)) {
 
-            $distributions->whereIn('contract_id', $request->contract);
-        }
-    
-        // Get the filtered distributions
-        $distributions = $distributions->get();
-    
-        // Fetch distributers and contracts for dropdowns
-        $distributers = Employee::all(); // Assuming distributers are employees
-        $contracts = Contract::with(['customer', 'product'])->get();
-    
-        // Return the view with the necessary data
-        return view('distribution.distribution', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
-    }
-    public function indexfortable(Request $request)
-    {
-        // Handle date filtering
-        if (isset($request->start_date) && isset($request->end_date)) {
-                $afghaniStartDate = $request->start_date;
-                $afghaniEndDate = $request->end_date;
-                $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
-                $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
-            } else {
-                $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-                $start_date = $monthRange['start'];
-                $end_date = $monthRange['end'];
-                $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
-                $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
-        }
         // Fetch distribution data with relationships
         $distributions = Distribution::whereBetween('date', [$start_date, $end_date])
             ->with(['contract.customer', 'distributer', 'tower'])
-            ->orderBy('date', 'asc');
-    
+            ->orderBy('date', 'asc')
+            ->orderBy('id', 'asc'); // Add secondary sort for consistent ordering
         // Apply distributer filter if selected
         if ($request->has('distributer') && !empty($request->distributer)) {
             $distributions->whereIn('distributer_id', $request->distributer);
         }
-    
+
         // Apply product filter if selected
         if ($request->has('product') && !empty($request->product)) {
-            if($request->has('notMoneyIn') && !empty($request->notMoneyIn)){
-                dd($request->all());
-            }else{
+            if ($request->has('notMoneyIn') && !empty($request->notMoneyIn)) {
+                $distributions->whereHas('tower.product', function ($query) use ($request) {
+                    $query->where('id', '!=', 14);
+                });
+            } else {
                 $distributions->whereHas('tower.product', function ($query) use ($request) {
                     $query->whereIn('id', $request->product);
                 });
             }
         }
-    
+
         // Apply contract filter if selected
         if ($request->has('contract') && !empty($request->contract)) {
-
             $distributions->whereIn('contract_id', $request->contract);
         }
-    
+
         // Get the filtered distributions
         $distributions = $distributions->get();
-    
+
+        // Calculate running balance per contract
+        $contractBalances = [];
+
+        foreach ($distributions as $distribution) {
+            $contractId = $distribution->contract_id;
+
+            // Initialize balance for contract if not set
+            if (!isset($contractBalances[$contractId])) {
+                $contractBalances[$contractId] = 0;
+            }
+
+            // Calculate amount for this distribution
+            $amount = $distribution->amount * $distribution->rate;
+
+            // Reverse sign for payments (product_id 14)
+            if ($distribution->tower->product_id == 14) {
+                $amount = -$amount;
+            }
+
+            // Update running balance
+            $contractBalances[$contractId] -= $amount;
+
+            // Attach running balance to distribution
+            $distribution->running_balance = $contractBalances[$contractId];
+        }
+
+
         // Fetch distributers and contracts for dropdowns
         $distributers = Employee::all(); // Assuming distributers are employees
         $contracts = Contract::with(['customer', 'product'])->get();
-    
+
+        if ($request->has('cardView')) {
+            return view('distribution.distribution', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
+        }
+        // Return the view with the necessary data
+        if ($request->has('product') && $request->filled('product')) {
+            return view('distribution.distribution', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
+        } else {
+            return view('distribution.distribution_table', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
+        }
+    }
+    public function indexfortable(Request $request)
+    {
+        // Handle date filtering
+        if (isset($request->start_date) && isset($request->end_date)) {
+            $afghaniStartDate = $request->start_date;
+            $afghaniEndDate = $request->end_date;
+            $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+            $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+        } else {
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $start_date = $monthRange['start'];
+            $end_date = $monthRange['end'];
+            $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
+            $afghaniEndDate = AfghanCalendarHelper::toAfghanDateFormat($end_date);
+        }
+
+        // Fetch distribution data with relationships
+        $distributions = Distribution::whereBetween('date', [$start_date, $end_date])
+            ->with(['contract.customer', 'distributer', 'tower'])
+            ->orderBy('date', 'asc')
+            ->orderBy('id', 'asc'); // Add secondary sort for consistent ordering
+        // Apply distributer filter if selected
+        if ($request->has('distributer') && !empty($request->distributer)) {
+            $distributions->whereIn('distributer_id', $request->distributer);
+        }
+
+        // Apply product filter if selected
+        if ($request->has('product') && !empty($request->product)) {
+            if ($request->has('notMoneyIn') && !empty($request->notMoneyIn)) {
+                dd($request->all());
+            } else {
+                $distributions->whereHas('tower.product', function ($query) use ($request) {
+                    $query->whereIn('id', $request->product);
+                });
+            }
+        }
+
+        // Apply contract filter if selected
+        if ($request->has('contract') && !empty($request->contract)) {
+            $distributions->whereIn('contract_id', $request->contract);
+        }
+
+        // Get the filtered distributions
+        $distributions = $distributions->get();
+
+        // Calculate running balance per contract
+        $contractBalances = [];
+
+        foreach ($distributions as $distribution) {
+            $contractId = $distribution->contract_id;
+
+            // Initialize balance for contract if not set
+            if (!isset($contractBalances[$contractId])) {
+                $contractBalances[$contractId] = 0;
+            }
+
+            // Calculate amount for this distribution
+            $amount = $distribution->amount * $distribution->rate;
+
+            // Reverse sign for payments (product_id 14)
+            if ($distribution->tower->product_id == 14) {
+                $amount = -$amount;
+            }
+
+            // Update running balance
+            $contractBalances[$contractId] -= $amount;
+
+            // Attach running balance to distribution
+            $distribution->running_balance = $contractBalances[$contractId];
+        }
+
+
+        // Fetch distributers and contracts for dropdowns
+        $distributers = Employee::all(); // Assuming distributers are employees
+        $contracts = Contract::with(['customer', 'product'])->get();
+
         // Return the view with the necessary data
         return view('distribution.distribution_table', compact('distributions', 'distributers', 'contracts', 'afghaniStartDate', 'afghaniEndDate'));
-       
     }
 
     public function destroy($id)
@@ -157,17 +219,17 @@ class DistributionController extends Controller
     public function getContractsAndTowers(Request $request)
     {
         $distributerId = $request->input('distributer_id');
-    
+
         // Fetch towers related to the distributer
         $towers = Tower::whereHas('distributers', function ($query) use ($distributerId) {
             $query->where('employee_id', $distributerId);
         })->get();
-    
+
         // Fetch contracts related to the distributer (if applicable)
         $contracts = Contract::whereHas('distributer', function ($query) use ($distributerId) {
             $query->where('id', $distributerId);
         })->get();
-    
+
         // Return the data as JSON
         return response()->json([
             'towers' => $towers,
@@ -192,26 +254,26 @@ class DistributionController extends Controller
     public function getTowers(Request $request)
     {
         $distributerId = $request->input('distributer_id');
-    
+
         // Fetch towers related to the distributer
         $towers = Tower::whereHas('distributers', function ($query) use ($distributerId) {
             $query->where('employee_id', $distributerId);
         })->get();
-    
+
         // Fetch meter reading information and total amount for each tower (for today's date)
         $towersWithMeterReading = $towers->map(function ($tower) {
             $meterReading = $this->getMeterReadingForTower($tower->id);
-    
+
             // Calculate total amount from the distribution table for this tower (today's date only)
             $totalAmount = Distribution::where('tower_id', $tower->id)
                 ->whereDate('date', now()->toDateString()) // Filter for today's date
                 ->sum('amount');
-    
+
             $tower->meter_reading = $meterReading;
             $tower->total_amount = $totalAmount; // Add total amount to the tower object
             return $tower;
         });
-    
+
         // Return the view with towers data
         return view('distribution.towers-list', compact('towersWithMeterReading'))->render();
     }

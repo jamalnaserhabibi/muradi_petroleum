@@ -95,7 +95,7 @@
                                                 <td>{{ $serialNumber->serial}}</td>
                                                 <td>{{  \App\Helpers\AfghanCalendarHelper::toAfghanDateTime($serialNumber->date)}}</td>
                                                 <td>
-                                                   
+                                                    @if(Auth::user()->usertype == 'admin')
                                                     <form action="{{ route('deleteserialnumber', $serialNumber->id) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
@@ -105,6 +105,7 @@
                                                             <li class="fas fa-trash"></li>
                                                         </button>
                                                     </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

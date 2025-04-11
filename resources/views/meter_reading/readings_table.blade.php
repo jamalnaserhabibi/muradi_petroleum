@@ -162,6 +162,7 @@
                                                     <a href="{{ route('singletowereadings', ['tower_id' => $row['tower_id']]) }}"
                                                         class="btn pt-0 pb-0 btn-success  fa fa-eye " title="Search">
                                                     </a>
+                                                    @if(Auth::user()->usertype == 'admin')
                                                     <form action="{{ route('deleteserialnumber', $row['id']) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf
@@ -172,6 +173,8 @@
                                                             <li class="fas fa-trash"></li>
                                                         </button>
                                                     </form>
+                                                    @endif
+
                                                 </td>
                                             </tr>
                                         @endforeach
