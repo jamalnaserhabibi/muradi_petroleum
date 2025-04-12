@@ -1,7 +1,25 @@
 @extends('admin.layout')
 @section('content')
     <div class="content-wrapper">
+        <style>
+            .progress {
+                height: 20px;
+                background-color: #e9ecef;
+                border-radius: 5px;
+                overflow: hidden;
+            }
 
+            .progress-bar {
+                height: 100%;
+                background-color: #28a745;
+                transition: width 0.6s ease;
+            }
+
+            .amount-display small {
+                font-size: 0.8rem;
+                opacity: 0.8;
+            }
+        </style>
         <div class="content-header">
             <div class="container-fluid text-center d-flex justify-content-between align-items-center flex-row">
 
@@ -78,7 +96,7 @@
                                     <i class="fas fa-coins text-success"></i>
                                 @endif
                             </div>
-                            
+
                             <a href="{{ route('admin.useraccounts') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
 
@@ -156,7 +174,7 @@
                                 <div class="inner">
                                     <h3>{{ number_format($product['total_purchase_amount']) }} T</h3>
 
-                                    {{ number_format($product['total_purchase_value']) }} L
+                                    {{ number_format($product['total_purchase_value']) }}
 
 
                                     <h4>{{ $product['name'] }}</h4>
@@ -179,6 +197,112 @@
                         </div>
                     @endforeach
                 </div>
+
+                <h1>Tankers Status</h1>
+                {{--
+                each tower one cart
+                <div class="row">
+                    @foreach ($tankersLevel as $tanker)
+                        <div class="col-lg-3 col-6 mb-4">
+                            <div class="small-box {{ $tanker['bg_color'] }}">
+                                <div class="inner">
+                                    <h3>{{ number_format($tanker['remaining'], 0) }} <small>L</small></h3>
+                                    <h4>{{ $tanker['name'] }}</h4>
+                                    <div class="progress">
+                                        @php
+                                            $percentage = $tanker['total_purchased'] > 0 
+                                                ? ($tanker['remaining'] / $tanker['total_purchased']) * 100 
+                                                : 0;
+                                        @endphp
+                                        <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%" 
+                                             aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">{{number_format($percentage)}}%</div>
+                                    </div>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas {{ $tanker['icon'] }}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div> --}}
+                {{-- petrol gas diesl carts --}}
+                <div class="row">
+                    @foreach ($tankersLevel as $tanker)
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="small-box {{ $tanker['bg_color'] }}">
+                                <div class="inner">
+                                    <h3>{{ number_format($tanker['remaining'], 0) }} <small>L</small></h3>
+                                    <h4>{{ $tanker['name'] }}</h4>
+                                    <div class="progress">
+                                        @php
+                                            $percentage =
+                                                $tanker['total_purchased'] > 0
+                                                    ? ($tanker['remaining'] / $tanker['total_purchased']) * 100
+                                                    : 0;
+                                        @endphp
+                                        <div class="progress-bar" role="progressbar" style="width: {{ $percentage }}%"
+                                            aria-valuenow="{{ $percentage }}" aria-valuemin="0" aria-valuemax="100">
+                                            {{ number_format($percentage) }}%</div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <small>Purchased: {{ number_format($tanker['total_purchased'], 0) }}</small>
+                                        <small>Sold: {{ number_format($tanker['total_sold'], 0) }} </small>
+                                    </div>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas {{ $tanker['icon'] }}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+
+                {{-- Benefits Card --}}
+<h1>Financial Summary</h1>
+<div class="row">
+    <div class="col-md-4">
+        <div class="small-box {{ $metrics['benefitsValue'] >= 0 ? 'bg-success' : 'bg-danger' }}">
+            <div class="inner">
+                <h3>{{ number_format(abs($metrics['benefitsValue']), 0) }} <small></small></h3>
+                <h4>Net Benefits</h4>
+                <p>Total Sales: {{ number_format($metrics['totalSalesValue'], 0) }}</p>
+                <p>Total Purchases: {{ number_format($metrics['totalPurchaseValue'], 0) }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas {{ $metrics['benefitsValue'] >= 0 ? 'fa-chart-line' : 'fa-chart-bar' }}"></i>
+            </div>
+        </div>
+    </div>
+ 
+    <div class="col-md-4">
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>{{ number_format($metrics['fuelBalanceValue'],0) }} <small> L</small></h3>
+                <h4>Fuel Balance</h4>
+                <p>Total Purchased: {{ number_format($metrics['totalPurchasedLiters'], 0) }} L</p>
+                <p>Total Sold: {{ number_format($metrics['totalSoldLiters'], 0) }} L</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-gas-pump"></i>
+            </div>
+        </div>
+    </div>
+    
+    {{-- <div class="col-md-4">
+        <div class="small-box {{ $metrics['valueBalance'] >= 0 ? 'bg-warning' : 'bg-danger' }}">
+            <div class="inner">
+                <h3>{{ number_format(abs($metrics['valueBalance']), 0) }} <small></small></h3>
+                <h4>Value Balance</h4>
+                <p>Total Purchase Value: {{ number_format($metrics['totalPurchaseValue'], 0) }}</p>
+                <p>Total Sales Value: {{ number_format($metrics['totalSalesValue'], 0) }}</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+        </div>
+    </div> --}}
+</div>
             </div>
             <script src="{{ asset('admin-lte/plugins/chart.js/Chart.min.js') }}"></script>
             <script src="{{ asset('admin-lte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>

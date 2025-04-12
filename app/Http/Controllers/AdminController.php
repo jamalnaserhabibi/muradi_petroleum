@@ -116,6 +116,142 @@ class AdminController extends Controller
         $chartLabels = $nonMoneyProducts->pluck('name');
         $chartValues = $nonMoneyProducts->pluck('total_amount');
 
+        // Tankers Level Calculation - each tower 
+        // $tankersLevel = DB::table('purchase')
+        //     // ->whereBetween('date', [$startOfMonth, $endOfMonth])
+        //     ->whereNotIn('product_id', [13, 14, 15]) // Exclude non-fuel products
+        //     ->select(
+        //         'product_id',
+        //         'products.product_name',
+        //         DB::raw('CASE 
+        //     WHEN products.product_name = "Gas" THEN COALESCE(SUM(amount * heaviness), 0)
+        //     ELSE COALESCE(SUM((1000000 / heaviness) * amount), 0)
+        //     END as total_purchased_liters')
+        //     )
+        //     ->leftJoin('products', 'products.id', '=', 'purchase.product_id')
+        //     ->groupBy('product_id', 'products.product_name')
+        //     ->get()
+        //     ->map(function ($purchase) {
+        //         // Get sales for each product
+        //         $sales = DB::table('distribution')
+        //             ->join('towers', 'distribution.tower_id', '=', 'towers.id')
+        //             ->where('towers.product_id', $purchase->product_id)
+        //             // ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
+        //             ->select(DB::raw('COALESCE(SUM(amount), 0) as total_sales_liters'))
+        //             ->first();
+
+        //         return [
+        //             'product_id' => $purchase->product_id,
+        //             'name' => $purchase->product_name,
+        //             'total_purchased' => $purchase->total_purchased_liters,
+        //             'total_sold' => $sales->total_sales_liters,
+        //             'remaining' => $purchase->total_purchased_liters - $sales->total_sales_liters,
+        //             'icon' => $this->getProductIcon($purchase->product_name),
+        //             'bg_color' => $this->getProductColor($purchase->product_name),
+        //         ];
+        //     }
+        // );
+
+        // Calculate Benefits (Sales Value - Purchase Value)
+        $benefits = DB::table('distribution')
+            ->join('towers', 'distribution.tower_id', '=', 'towers.id')
+            ->whereNotIn('towers.product_id', [13, 14, 15]) // Exclude non-fuel products
+            ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
+            ->select(DB::raw('COALESCE(SUM(distribution.rate * distribution.amount), 0) as total_sales_value'))
+            ->first();
+
+        $purchaseCost = DB::table('purchase')
+            ->whereNotIn('product_id', [13, 14, 15]) // Exclude non-fuel products
+            ->whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->select(DB::raw('COALESCE(SUM(rate * amount), 0) as total_purchase_value'))
+            ->first();
+
+        $benefitsValue = $benefits->total_sales_value - $purchaseCost->total_purchase_value;
+
+        // Calculate Fuel Balance (Total Purchased Liters - Total Sold Liters)
+        $fuelBalance = DB::table('purchase')
+            ->whereNotIn('product_id', [13, 14, 15])
+            ->whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->leftJoin('products', 'products.id', '=', 'purchase.product_id')
+            ->select(DB::raw(
+                '
+    COALESCE(SUM(
+        CASE 
+            WHEN products.product_name = "Gas" THEN amount * heaviness
+            ELSE (1000000 / heaviness) * amount
+        END
+    ), 0) as total_purchased_liters'
+            ))
+            ->first();
+
+        $soldLiters = DB::table('distribution')
+            ->join('towers', 'distribution.tower_id', '=', 'towers.id')
+            ->whereNotIn('towers.product_id', [13, 14, 15])
+            ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
+            ->select(DB::raw('COALESCE(SUM(amount), 0) as total_sold_liters'))
+            ->first();
+
+        $fuelBalanceValue = $fuelBalance->total_purchased_liters - $soldLiters->total_sold_liters;
+
+        // Calculate Value Balance (Total Purchase Value - Total Sales Value)
+        $valueBalance = $purchaseCost->total_purchase_value - $benefits->total_sales_value;
+
+        // Tankers Level Calculation - Grouped by product categories
+        $tankersLevel = collect([
+            [
+                'name' => 'Diesel Products',
+                'product_ids' => [4, 5],
+                'icon' => 'fa-gas-pump',
+                'bg_color' => 'bg-secondary'
+            ],
+            [
+                'name' => 'Petrol Products',
+                'product_ids' => [1, 2, 6],
+                'icon' => 'fa-gas-pump',
+                'bg_color' => 'bg-danger'
+            ],
+            [
+                'name' => 'Gas',
+                'product_ids' => [3],
+                'icon' => 'fa-fire',
+                'bg_color' => 'bg-warning'
+            ]
+        ])->map(function ($category) use ($startOfMonth, $endOfMonth) {
+            // Calculate total purchased liters for this category
+            $purchased = DB::table('purchase')
+                ->whereBetween('date', [$startOfMonth, $endOfMonth])
+                ->whereIn('product_id', $category['product_ids'])
+                ->leftJoin('products', 'products.id', '=', 'purchase.product_id')
+                ->select(DB::raw(
+                    '
+            COALESCE(SUM(
+                CASE 
+                    WHEN products.product_name = "Gas" THEN amount * heaviness
+                    ELSE (1000000 / heaviness) * amount
+                END
+            ), 0) as total_purchased_liters'
+                ))
+                ->first();
+
+            // Calculate total sold liters for this category
+            $sold = DB::table('distribution')
+                ->join('towers', 'distribution.tower_id', '=', 'towers.id')
+                ->whereIn('towers.product_id', $category['product_ids'])
+                ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
+                ->select(DB::raw('COALESCE(SUM(amount), 0) as total_sales_liters'))
+                ->first();
+
+            return [
+                'name' => $category['name'],
+                'product_ids' => $category['product_ids'],
+                'total_purchased' => $purchased->total_purchased_liters ?? 0,
+                'total_sold' => $sold->total_sales_liters ?? 0,
+                'remaining' => ($purchased->total_purchased_liters ?? 0) - ($sold->total_sales_liters ?? 0),
+                'icon' => $category['icon'],
+                'bg_color' => $category['bg_color']
+            ];
+        });
+
         $PaymentTotalbalance = Contract::join('customers', 'contracts.customer_id', '=', 'customers.id')
             ->leftJoinSub(
                 DB::table('distribution')
@@ -146,7 +282,42 @@ class AdminController extends Controller
             )
             ->where('contracts.isActive', 1)
             ->first();
+        // Calculate financial metrics
+        $financialData = DB::table('distribution')
+            ->join('towers', 'distribution.tower_id', '=', 'towers.id')
+            ->whereNotIn('towers.product_id', [13, 14, 15])
+            ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
+            ->select(
+                DB::raw('COALESCE(SUM(distribution.rate * distribution.amount), 0) as total_sales_value'),
+                DB::raw('COALESCE(SUM(distribution.amount), 0) as total_sold_liters')
+            )
+            ->first();
 
+        $purchaseData = DB::table('purchase')
+            ->whereNotIn('product_id', [13, 14, 15])
+            ->whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->leftJoin('products', 'products.id', '=', 'purchase.product_id')
+            ->select(
+                DB::raw('COALESCE(SUM(rate * amount), 0) as total_purchase_value'),
+                DB::raw('COALESCE(SUM(
+            CASE 
+                WHEN products.product_name = "Gas" THEN amount * heaviness
+                ELSE (1000000 / heaviness) * amount
+            END
+        ), 0) as total_purchased_liters')
+            )
+            ->first();
+
+        // Calculate all metrics
+        $metrics = [
+            'benefitsValue' => $financialData->total_sales_value - $purchaseData->total_purchase_value,
+            'fuelBalanceValue' => $purchaseData->total_purchased_liters - $financialData->total_sold_liters,
+            'valueBalance' => $purchaseData->total_purchase_value - $financialData->total_sales_value,
+            'totalSalesValue' => $financialData->total_sales_value,
+            'totalPurchaseValue' => $purchaseData->total_purchase_value,
+            'totalPurchasedLiters' => $purchaseData->total_purchased_liters,
+            'totalSoldLiters' => $financialData->total_sold_liters
+        ];
         return view('admin.dashboard', compact(
             'sarafiPayments',
             'sarafiPickups',
@@ -157,7 +328,12 @@ class AdminController extends Controller
             'chartLabels',
             'chartValues',
             'purchases',
-            'PaymentTotalbalance'
+            'PaymentTotalbalance',
+            'tankersLevel',
+            'benefitsValue',
+            'fuelBalanceValue',
+            'valueBalance',
+            'metrics'
         ));
     }
 
