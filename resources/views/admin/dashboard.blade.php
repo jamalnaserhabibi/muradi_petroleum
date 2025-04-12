@@ -280,8 +280,8 @@
             <div class="inner">
                 <h3>{{ number_format($metrics['fuelBalanceValue'],0) }} <small> L</small></h3>
                 <h4>Fuel Balance</h4>
-                <p>Total Purchased: {{ number_format($metrics['totalPurchasedLiters'], 0) }} L</p>
                 <p>Total Sold: {{ number_format($metrics['totalSoldLiters'], 0) }} L</p>
+                <p>Total Purchased: {{ number_format($metrics['totalPurchasedLiters'], 0) }} L</p>
             </div>
             <div class="icon">
                 <i class="fas fa-gas-pump"></i>
