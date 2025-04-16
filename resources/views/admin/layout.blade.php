@@ -312,6 +312,35 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <p>
+                                    حساب شرکت
+                                    {{-- <i class="right fas fa-angle-left"></i> --}}
+                                </p>
+                                <i class="nav-icon fas fa-industry"></i>
+
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('hesabSherkat_payment') }}" class="nav-link">
+                                        <p>
+                                            پرداخت
+                                        </p>
+                                        <i class="nav-icon fas fa-money-check-alt"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('hesabSherkat_purchase') }}" class="nav-link">
+                                        <p>
+                                            خریداری
+                                        </p>
+                                        <i class="nav-icon fas fa-shopping-cart"></i>
+
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link">
                                 <i class=" "></i>

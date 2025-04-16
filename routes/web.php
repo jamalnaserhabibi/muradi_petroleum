@@ -17,6 +17,7 @@ use App\Http\Controllers\serial_numbersController;
 use App\Models\Serial_Numbers;
 use App\Http\Controllers\DistributerController;
 use App\Http\Controllers\DistributionController;
+use App\Http\Controllers\hesabSherkatController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SarafiController;
 
@@ -193,4 +194,18 @@ Route::middleware('auth')->group(function () {
     //debits
     Route::get('/debits', [ExpenseController::class, 'debits'])->name('debits');
 
+
+
+
+    //hesabSherkat_purchase
+    Route::get('/hesabsherkat/purchase', [hesabSherkatController::class, 'index'])->name('hesabSherkat_purchase');
+    Route::post('/hesabsherkat/purchase/store', [hesabSherkatController::class, 'store'])->name('hesabSherkat_purchase.store');
+    Route::delete('/hesabsherkat/purchase/delete{id}', [hesabSherkatController::class, 'destroy'])->name('hesabSherkat_purchase.destroy');
+
+
+    //hesabSherkat_payment
+    Route::get('/hesabsherkat/payment', [hesabSherkatController::class, 'index_payment'])->name('hesabSherkat_payment');
+    Route::post('/hesabsherkat/payment/store', [hesabSherkatController::class, 'store_payment'])->name('hesabSherkat_payment.store');
+    Route::delete('/hesabsherkat/payment/delete{id}', [hesabSherkatController::class, 'destroy_payment'])->name('hesabSherkat_payment.destroy');
+    
 require __DIR__.'/auth.php';
