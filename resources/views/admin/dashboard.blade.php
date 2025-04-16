@@ -52,10 +52,42 @@
                 {{-- sarafi balance --}}
                 <div class="row">
                     <div class="col-lg-3 col-6">
+                        <div class="small-box bg-info ">
+                            <div class="inner">
+                                <h3>{{ number_format((($hesabSherkatPaymentTotal->total_payment_value) - ($hesabSherkatPurchaseTotal->total_purchase_value)), 1) }}</h3>
+                                <p>بیلانس شرکت</p>
+                            </div>
+                            <div class="icon">
+                                @if ((($hesabSherkatPaymentTotal->total_payment_value) - ($hesabSherkatPurchaseTotal->total_purchase_value)) <= 0)
+                                    <i class="fas fa-industry text-danger"></i>
+                                @else
+                                    <i class="fas fa-industry text-success"></i>
+                                @endif
+                            </div>
+                            <div class="small-box-footer d-flex justify-content-between pl-3 pr-3">
+                                <span>
+                                    <i class="fas fa-arrow-up text-success"></i>
+                                </span>
+                                <span>
+                                    {{ number_format($hesabSherkatPaymentTotal->total_payment_value, 0) }}
+                                    {{-- {{ $sarafiPayments->latest_payment_date ? \App\Helpers\AfghanCalendarHelper::toAfghanDateFormat($sarafiPayments->latest_payment_date) : 'N/A' }} --}}
+                                </span>
+                                <span>
+                                    {{ number_format($hesabSherkatPurchaseTotal->total_purchase_value, 0) }}
+                                    {{-- {{ $sarafiPickups->latest_pickup_date ? \App\Helpers\AfghanCalendarHelper::toAfghanDateFormat($sarafiPickups->latest_pickup_date) : 'N/A' }} --}}
+                                </span>
+                                <span>
+                                    <i class="fas fa-arrow-down text-danger"></i>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
                         <div class="small-box bg-primary ">
                             <div class="inner">
                                 <h3>{{ number_format($balance, 1) }}</h3>
-                                <p>Sarafi Balance</p>
+                                <p>بیلانس صرافی</p>
                             </div>
                             <div class="icon">
                                 @if ($balance <= 0)
@@ -87,7 +119,7 @@
                         <div class="small-box bg-info ">
                             <div class="inner">
                                 <h3>{{ number_format($PaymentTotalbalance->total_balance, 1) }}</h3>
-                                <p>Customers Balance</p>
+                                <p>بیلانس مشتریان</p>
                             </div>
                             <div class="icon">
                                 @if ($PaymentTotalbalance->total_balance <= 0)

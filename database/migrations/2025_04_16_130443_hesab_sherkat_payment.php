@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hesabSherkat_purchase', function (Blueprint $table) {
+        Schema::create('hesabSherkat_payment', function (Blueprint $table) {
             $table->id(); 
+            $table->string('fromPerson');
+            $table->string('fromChannel');
             $table->string('supplier');
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');  
             $table->decimal('amount', 10, 2);  
-            $table->decimal('heaviness', 10, 2);  
-            $table->decimal('rate', 10, 2);   
-            $table->string('submitted_to');
-            $table->date('date')->default(now()); 
+            $table->date('date')->default(now()); // Current date by default 
             $table->text('details')->nullable();  
             $table->timestamps();  
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hesabSherkat_purchase');
+        Schema::dropIfExists('hesabSherkat_payment');
     }
 };

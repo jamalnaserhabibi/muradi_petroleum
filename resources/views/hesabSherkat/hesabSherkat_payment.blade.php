@@ -15,7 +15,7 @@
                 <div class="totalamount searchBar row mb-1" dir="rtl">
                     <h2>
                         پرداخت به شرکت شروع از
-                        {{-- {{ isset($sarafiPickup) && isset($sarafiPickup[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($sarafiPickup[0]->date) : 'No Data' }} --}}
+                        {{ isset($hesabSherkat_payment) && isset($hesabSherkat_payment[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($hesabSherkat_payment[0]->date) : 'No Data' }}
                     </h2>
                     <form id="filter-form" action="{{ route('hesabSherkat_purchase') }}" method="GET">
                         <div class="form-group d-flex">
@@ -64,30 +64,33 @@
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
-                                            <th>مقدار </th>
-                                            <th>به حساب</th>
+                                            <th>فروشنده </th>
+                                            <th>از</th>
                                             <th>از درک</th>
+                                            <th>مقدار</th>
                                             <th>تاریخ</th>
                                             <th>ملاحظات</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                   {{-- <tbody>
-                                        @foreach ($sarafiPickup as $Payments)
+                                 <tbody>
+                                        @foreach ($hesabSherkat_payment as $Payments)
                                             <tr>
+                                                <td>{{ $Payments->supplier }}</td>
+                                                <td>{{ $Payments->fromPerson }}</td>
+                                                <td>{{ $Payments->fromChannel }}</td>
                                                 <td>{{ number_format($Payments->amount,1) }}</td>
-                                                <td>{{ $Payments->toAccount }}</td>
-                                                <td>{{ $Payments->az_darak }}</td>
                                                 <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($Payments->date); }}</td>
                                                 <td>{{ $Payments->details }}</td>
                                                 <td>
                                                     {{-- <a href="{{ route('purchaseedit', $Payments->id) }}"
                                                         class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
-                                                    </a>
+                                                    </a> --}}
+                                                    
                                                   
                                             @if(Auth::user()->usertype !== 'guest')
                             
-                                                    <form action="{{ route('sarafi_pickup.destroy', $Payments->id) }}" method="POST"
+                                                    <form action="{{ route('hesabSherkat_payment.destroy', $Payments->id) }}" method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
@@ -102,13 +105,14 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    </tbody> --}}
+                                    </tbody> 
                                 
                                     <tfoot>
                                          <tr>
+                                             <th></th> <!-- Empty cell to keep alignment -->
+                                             <th></th> <!-- Empty cell to keep alignment -->
+                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                              <th id="total-footer-ton"></th> <!-- Ton column -->
-                                             <th></th> <!-- Empty cell to keep alignment -->
-                                             <th></th> <!-- Empty cell to keep alignment -->
                                              <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                              <th>مجموع</th>
                                              <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
@@ -143,9 +147,27 @@
                  </button>
              </div>
              <div class="modal-body">
-                {{-- <form action="{{ route('hesabSherkat_purchase.store') }}" method="POST">
+                 <form action="{{ route('hesabSherkat_payment.store') }}" method="POST">
                     @csrf
-            
+                    
+                    <div class="form-group">
+                        <select name="supplier" class="form-control" required>
+                            <option value="" disabled selected> فروشنده</option>
+                            @foreach ($suppliers as $supplier)
+                                <option value="{{ $supplier->supplier }}">{{ $supplier->supplier }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" placeholder="از" name="fromPerson" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" placeholder="از درک" name="fromChannel" class="form-control" required>
+                    </div>
+
+
                     <div class="form-group">
                         <input type="number" placeholder="مقدار" step="0.01" name="amount" class="form-control" required>
                     </div>
@@ -154,14 +176,6 @@
                             <input type="text" name="date" id="date" class="form-control mb-3" value={{ $afghancurrentdate }} required />
                     </div>
             
-                    <div class="form-group">
-                         
-                        <input type="text" placeholder="به حساب" name="toAccount" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                
-                        <input type="text" placeholder="از درک" name="az_darak" class="form-control" required>
-                    </div>
             
                     <div class="form-group">
                       
@@ -172,7 +186,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
                         <button type="submit" class="btn btn-primary">ثبت</button>
                     </div>
-                </form> --}}
+                </form> 
             </div>
             
          </div>
@@ -262,7 +276,7 @@
 
                 // Update the footer with calculated totals
                 function updateFooterTotals() {
-                    const tonTotal = calculateColumnTotal(0); // Ton column
+                    const tonTotal = calculateColumnTotal(3); // Ton column
                     
 
                     // Format the totals

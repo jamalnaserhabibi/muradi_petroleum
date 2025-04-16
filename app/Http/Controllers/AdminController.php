@@ -206,7 +206,15 @@ class AdminController extends Controller
             )
             ->where('contracts.isActive', 1)
             ->first();
-    
+
+        $hesabSherkatPurchaseTotal = DB::table('hesabSherkat_purchase')
+            ->select(DB::raw('COALESCE(SUM(amount * rate), 0) as total_purchase_value'))
+            ->first();
+
+        $hesabSherkatPaymentTotal = DB::table('hesabSherkat_payment')
+            ->select(DB::raw('COALESCE(SUM(amount), 0) as total_payment_value'))
+            ->first();
+        
         return view('admin.dashboard', compact(
             'sarafiPayments',
             'sarafiPickups',
@@ -219,7 +227,9 @@ class AdminController extends Controller
             'purchases',
             'PaymentTotalbalance',
             'tankersLevel',
-            'metrics'
+            'metrics',
+            'hesabSherkatPurchaseTotal',
+            'hesabSherkatPaymentTotal'
         ));
     }
 

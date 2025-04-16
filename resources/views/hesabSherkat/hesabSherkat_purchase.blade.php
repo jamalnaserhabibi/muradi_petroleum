@@ -66,65 +66,72 @@
                                 <table id="example1" class="table table-bordered table-striped useraccounts">
                                     <thead>
                                         <tr>
-                                            <th>مقدار افغانی</th>
-                                            <th>معادل به دالر</th>
-                                            <th>نرخ دالر</th>
-                                            <th>مقدار دالر</th>
-                                            <th>معادل به افغانی</th>
-                                            <th>نرخ دالر</th>
-                                            <th>از درک</th>
+                                            <th>محصول</th>
+                                            <th>تن</th>
+                                            <th>سقلت</th>
+                                            <th>نرخ فی تن</th>
+                                            <th>مجموعه نرخ</th>
+                                            <th>مجموع لیتر</th>
+                                            <th>فروشنده</th>
                                             <th>تاریخ</th>
                                             <th>ملاحظات</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    {{-- <tbody>
-                                        @foreach ($hesabSherkat_purchase as $purchase)
-                                            <tr>
-                                                <td>{{ number_format($Payments->amount_afghani,1) }}</td>
-                                                <td>{{ number_format($Payments->equivalent_dollar,1) }}</td>
-                                            
-                                                <td>
-                                                    {{ $Payments->amount_afghani != 0 ? number_format($Payments->amount_afghani / $Payments->equivalent_dollar,1) : 0 }}
-                                                </td>
-                                                <td>{{ number_format($Payments->amount_dollar,1) }}</td>
-                                                <td>{{ number_format($Payments->moaadil_afghani,1) }}</td>
-                                                <td>
-                                                    {{ $Payments->amount_dollar != 0 ? number_format($Payments->moaadil_afghani / $Payments->amount_dollar, 1) : 0 }}
-                                                </td>
-                                                <td>{{ $Payments->az_darak}}</td>
-                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($Payments->date); }}</td>
-                                                <td>{{ $Payments->details }}</td>
-                                                <td>
-                                             
-                                                    @if(Auth::user()->usertype == 'admin')
-                            
-                                                    <form action="{{ route('sarafi_payment.destroy', $Payments->id) }}" method="POST"
-                                                        style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn pt-0 pb-0 btn-danger"
-                                                            title="Delete"
-                                                            onclick="return confirm('Are you sure you want to delete this?')">
-                                                            <li class="fas fa-trash"></li>
-                                                        </button>
-                                                    </form>
-                                                    @endif
 
+                                    <tbody>
+                                        @foreach ($hesabSherkat_Purchase as $purchase)
+                                            <tr>
+                                                <td>{{ $purchase->product->product_name }}</td>
+                                                <td>{{ $purchase->amount }}</td>
+                                                <td>{{ $purchase->heaviness }}</td>
+                                                <td>{{ $purchase->rate}}</td>
+                                                <td>{{ number_format($purchase->rate * $purchase->amount, 0) }}</td>
+                                                <td>
+                                                @if ($purchase->product->product_name === "Gas")
+                                                {{ number_format($purchase->amount * $purchase->heaviness,0)}}
+                                                @else
+                                                {{ number_format((1000000 / $purchase->heaviness) * $purchase->amount, 0) }}
+                                                @endif
+                                                </td>
+                                                <td>{{ $purchase->supplier }}</td>
+ 
+
+                                                <td>{{ \App\Helpers\AfghanCalendarHelper::toAfghanDate($purchase->date); }}</td>
+                                                <td>{{ $purchase->details }}</td>
+                                                <td>
+                                                    @if(Auth::user()->usertype == 'admin')
+
+                                                    {{-- <a href="{{ route('purchaseedit', $purchase->id) }}"
+                                                        class="btn pt-0 pb-0 btn-warning fa fa-edit" title="Edit">
+                                                    </a> --}}
+
+                                                    <form action="{{ route('hesabSherkat_purchase.destroy', $purchase) }}" method="POST"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn pt-0 pb-0 btn-danger"
+                                                        title="Delete"
+                                                        onclick="return confirm('Are you sure you want to delete this purchase?')">
+                                                        <li class="fas fa-trash"></li>
+                                                    </button>
+                                                </form>
+                                                    @endif
+                                                  
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    </tbody> --}}
+                                    </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th id="total-footer-amountAfghani"></th> <!-- Empty cell to keep alignment -->
+                                            <th>Total</th>
                                             <th id="total-footer-ton"></th> <!-- Ton column -->
                                             <th></th> <!-- Empty cell to keep alignment -->
-                                            <th id="total-footer-liter"></th> <!-- Total Liter column -->
+                                            <th></th> <!-- Empty cell to keep alignment -->
                                             <th id="total-footer-amount"></th> <!-- Total Amount column -->
+                                            <th id="total-footer-liter"></th> <!-- Total Liter column -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
-                                            <th>مجموع</th>
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                             <th></th> <!-- Empty cells for the other columns (Details, Edit, Delete) -->
                                         </tr>
@@ -161,33 +168,48 @@
                 <form action="{{ route('hesabSherkat_purchase.store') }}" method="POST">
                     @csrf
             
+                    <select class="form-control mb-3" name="product_id" id="product" required>
+                        <option value="" disabled {{ isset($purchase) ? '' : 'selected' }}>محصول</option>
+                        @foreach ($products as $product)
+                            <option value="{{ $product->id }}" {{ old('product_id', $purchase->product_id ?? '') == $product->id ? 'selected' : '' }}>
+                                {{ $product->product_name }}
+                            </option>
+                            
+                        @endforeach
+                    </select>
+
                     <div class="form-group">
-                        <input type="number" placeholder="مقدار افغانی" step="0.01" name="amount_afghani" class="form-control" required>
+                        <input class="form-control form-control mb-3" name="amount" type="number" step="0.001"
+                            id="purchasefromsherkatamount" placeholder="مقدار" required>
+                    </div>
+
+                   
+
+                    <div class="form-group">
+                        <input class="form-control form-control mb-3" name="rate" type="rate"
+                             id="tonrate" placeholder="نرخ فی تن"  required>              
                     </div>
             
                     <div class="form-group">
-                        <input type="number" placeholder="معادل دالر" step="0.01" name="equivalent_dollar" class="form-control" required>
-                    </div>
+                        <input class="form-control form-control mb-3" name="heaviness" type="number"   min="700" 
+                        max="2500" 
+                        step="1" 
+                            id="heavinesss" placeholder="ثقلت"
+                           required>                    
+                        </div>
             
+                        <div class="form-group">
+                            <input class="form-control form-control mb-3" name="submitted_to" type="text" 
+                                id="submitted_to" placeholder="تخلیه به" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control form-control mb-3" name="supplier" type="text" 
+                                id="supplier" placeholder="فروشنده" required>
+                        </div>
+                        <div>
+                            <input type="text" name="date" id="date" class="form-control mb-3" value={{ $afghancurrentdate }} required />
+                    </div>
                     <div class="form-group">
-                        <input type="number" placeholder="مقدار دالر" step="0.01" name="amount_dollar" class="form-control" required>
-                    </div>
-            
-                    <div class="form-group">
-                        <input type="number" placeholder="معادل افغانی" step="0.01" name="moaadil_afghani" class="form-control" required>
-                    </div>
-            
-                    <div>
-                            {{-- <input type="text" name="date" id="date" class="form-control mb-3" value={{ $afghancurrentdate }} required /> --}}
-                    </div>
-            
-                    <div class="form-group">
-                        
-                        <input type="text" placeholder="از درک" name="az_darak" class="form-control" required>
-                    </div>
-            
-                    <div class="form-group">
-                       
                         <textarea name="details" placeholder="تفصیلات" class="form-control" rows="3"></textarea>
                     </div>
             
@@ -288,7 +310,7 @@
                 function updateFooterTotals() {
                     const tonTotal = calculateColumnTotal(1); // Ton column
                     const amountTotal = calculateColumnTotal(4); // Total Amount column
-                    const literTotal = calculateColumnTotal(3); // Total Liter column
+                    const literTotal = calculateColumnTotal(5); // Total Liter column
                     const totalfooteramountAfghani = calculateColumnTotal(0); // Total Liter column
 
                     // Format the totals
