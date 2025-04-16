@@ -15,7 +15,7 @@
                 <div class="totalamount searchBar row mb-1" dir="rtl">
                     <h2>
                         خریداری از شرکت شروع از
-                        {{-- {{ isset($hesabSherkat_purchase) && isset($hesabSherkat_purchase[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($hesabSherkat_purchase[0]->date) : 'No Data' }} --}}
+                        {{ isset($hesabSherkat_Purchase) && isset($hesabSherkat_Purchase[0]) ? \App\Helpers\AfghanCalendarHelper::toAfghanDate($hesabSherkat_Purchase[0]->date) : 'No Data' }}
 
                     </h2>
                     <form id="filter-form" action="{{ route('hesabSherkat_purchase') }}" method="GET">

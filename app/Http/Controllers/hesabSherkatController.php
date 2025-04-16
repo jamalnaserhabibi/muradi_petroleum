@@ -12,7 +12,7 @@ use Morilog\Jalali\Jalalian;
 
 class hesabSherkatController extends Controller
 {
-    function index()
+    function index(Request $request)
     {   
         if (isset($request->start_date) && isset($request->end_date)) {
             $afghaniStartDate = $request->start_date;
@@ -25,6 +25,7 @@ class hesabSherkatController extends Controller
             $end_date = $monthRange['end'];
             $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
             $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
+
     }
     $products = Product::select('id', 'product_name')
     ->whereNotIn('id', [13, 14, 15])
