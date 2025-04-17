@@ -296,7 +296,7 @@
     <div class="col-md-4">
         <div class="small-box {{ $metrics['benefitsValue'] >= 0 ? 'bg-success' : 'bg-danger' }}">
             <div class="inner">
-                <h3>{{ number_format(abs($metrics['benefitsValue']), 0) }} <small></small></h3>
+                <h3>{{ number_format(($metrics['benefitsValue']), 0) }} <small></small></h3>
                 <h4>Net Benefits</h4>
                 <p>Total Sales: {{ number_format($metrics['totalSalesValue'], 0) }}</p>
                 <p>Total Purchases: {{ number_format($metrics['totalPurchaseValue'], 0) }}</p>

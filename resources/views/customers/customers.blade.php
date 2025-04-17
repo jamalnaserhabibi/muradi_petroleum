@@ -55,7 +55,7 @@
                                             {{-- <th>ID</th> --}}
                                             <th>نام</th>
                                             <th>تخلص</th>
-                                            <th>نرخ</th>
+                                            {{-- <th>نرخ</th> --}}
                                             <th>دریافت توضیغ</th>
                                             <th>فعال</th>
                                             <th>.</th>
@@ -66,7 +66,7 @@
                                             <tr>
                                                 <td>{{ $customer->name }}</td>
                                                 <td>{{ $customer->company }}</td>
-                                                <td>{{ $customer->contract->rate }}</td>
+                                                {{-- <td>{{ $customer->contract->rate }}</td> --}}
                                                 <td>{{number_format( $customer->current_month_sales_total,0)  }}</td>
                                                 <td>
                                                     <div class="custom-control custom-switch">

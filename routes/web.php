@@ -207,5 +207,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/hesabsherkat/payment', [hesabSherkatController::class, 'index_payment'])->name('hesabSherkat_payment');
     Route::post('/hesabsherkat/payment/store', [hesabSherkatController::class, 'store_payment'])->name('hesabSherkat_payment.store');
     Route::delete('/hesabsherkat/payment/delete{id}', [hesabSherkatController::class, 'destroy_payment'])->name('hesabSherkat_payment.destroy');
+    Route::get('/hesabsherkat/payment/balance', [hesabSherkatController::class, 'hesabSherkat_balance'])->name('hesabSherkat_balance');
     
 require __DIR__.'/auth.php';

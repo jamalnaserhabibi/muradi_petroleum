@@ -8,6 +8,7 @@ use App\Helpers\AfghanCalendarHelper;
 use App\Models\hesabSherkat_payment;
 use App\Models\hesabSherkat_Purchase;
 use App\Models\Product;
+use Illuminate\Support\Facades\DB;
 use Morilog\Jalali\Jalalian;
 
 class hesabSherkatController extends Controller
@@ -150,4 +151,44 @@ class hesabSherkatController extends Controller
         // Redirect with success message
         return redirect()->route('hesabSherkat_payment')->with('success', 'Payment deleted successfully!');
     }
+
+    public function hesabSherkat_balance()
+    {
+        // Get purchases grouped by supplier
+        $purchases = hesabSherkat_purchase::select([
+                'supplier',
+                DB::raw('SUM(amount * rate) as total_purchases'),
+                DB::raw('MIN(id) as id')
+            ])
+            ->groupBy('supplier')
+            ->get();
+    
+        // Get payments grouped by supplier (adjust based on your payment table structure)
+        $payments = hesabSherkat_payment::select([
+                DB::raw('supplier'), // Adjust if your payment table stores suppliers differently
+                DB::raw('SUM(amount) as total_payments')
+            ])
+            ->groupBy('supplier')
+            ->get()
+            ->keyBy('supplier');
+    
+        // Combine data and return as collection of objects
+        $balances = $purchases->map(function ($purchase) use ($payments) {
+            $payment = $payments->get($purchase->supplier);
+            
+            return (object)[
+                'supplier' => $purchase->supplier,
+                'total_purchases' => $purchase->total_purchases,
+                'total_payments' => $payment ? $payment->total_payments : 0,
+                'balance' => ($payment ? $payment->total_payments : 0) - $purchase->total_purchases,
+                'id' => $purchase->id
+            ];
+        });
+    
+        // Sort by balance
+        $balances = $balances->sortByDesc('balance');
+    
+        return view('hesabSherkat.balance', ['balances' => $balances]);
+    }
 }
+

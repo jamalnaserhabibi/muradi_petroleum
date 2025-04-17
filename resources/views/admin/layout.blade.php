@@ -339,6 +339,15 @@
 
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('hesabSherkat_balance') }}" class="nav-link">
+                                        <p>
+                                            بیلانس
+                                        </p>
+                                        <i class="nav-icon fas fa-shopping-cart"></i>
+
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item">
