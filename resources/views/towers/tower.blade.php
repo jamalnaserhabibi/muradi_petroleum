@@ -49,7 +49,7 @@
                                     <table id="example1" class="table table-bordered table-striped useraccounts">
                                         <thead>
                                             <tr>
-                                                <th>نام</th>
+                                                <th>آی دی</th>
                                                 <th>محصول</th>
                                                 <th>توزیع ماه فعلی</th>
                                                 <th>جزیات</th>

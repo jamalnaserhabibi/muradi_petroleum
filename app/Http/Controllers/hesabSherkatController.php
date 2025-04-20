@@ -26,19 +26,23 @@ class hesabSherkatController extends Controller
             $end_date = $monthRange['end'];
             $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
             $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
+        }
 
-    }
-    $products = Product::select('id', 'product_name')
-    ->whereNotIn('id', [13, 14, 15])
-    ->orderBy('product_name', 'asc')
-    ->get();
+        $query = hesabSherkat_Purchase::whereBetween('date', [$start_date, $end_date]);
 
-    // Fetch distribution data with relationships
-         $hesabSherkat_Purchase = hesabSherkat_Purchase::whereBetween('date', [$start_date, $end_date])
-        ->orderBy('date', 'asc')->get();
+        if (isset($request->supplier)) {
+            $query->where('supplier', $request->supplier);
+        }
+
+        $products = Product::select('id', 'product_name')
+            ->whereNotIn('id', [13, 14, 15])
+            ->orderBy('product_name', 'asc')
+            ->get();
+
+        $hesabSherkat_Purchase = $query->orderBy('date', 'asc')->get();
         $afghancurrentdate = AfghanCalendarHelper::getCurrentShamsiDate();
 
-    return view('hesabSherkat.hesabSherkat_purchase', compact('hesabSherkat_Purchase','products', 'afghaniStartDate', 'afghaniEndDate','afghancurrentdate'));
+        return view('hesabSherkat.hesabSherkat_purchase', compact('hesabSherkat_Purchase', 'products', 'afghaniStartDate', 'afghaniEndDate', 'afghancurrentdate'));
     }
 
     function store(Request $request)
@@ -91,25 +95,30 @@ class hesabSherkatController extends Controller
     {
         // Handle date filtering
         if (isset($request->start_date) && isset($request->end_date)) {
-                $afghaniStartDate = $request->start_date;
-                $afghaniEndDate = $request->end_date;
-                $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
-                $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
-            } else {
-                $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
-                $start_date = $monthRange['start'];
-                $end_date = $monthRange['end'];
-                $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
-                $afghaniEndDate =  AfghanCalendarHelper::toAfghanDateFormat($end_date);
+            $afghaniStartDate = $request->start_date;
+            $afghaniEndDate = $request->end_date;
+            $start_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniStartDate)->toDateString();
+            $end_date = CalendarUtils::createCarbonFromFormat('Y/m/d', $afghaniEndDate)->toDateString();
+        } else {
+            $monthRange = AfghanCalendarHelper::getCurrentShamsiMonthRange();
+            $start_date = $monthRange['start'];
+            $end_date = $monthRange['end'];
+            $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($start_date);
+            $afghaniEndDate = AfghanCalendarHelper::toAfghanDateFormat($end_date);
         }
-        // Fetch distribution data with relationships
-             $hesabSherkat_payment = hesabSherkat_payment::whereBetween('date', [$start_date, $end_date])
-            ->orderBy('date', 'asc')->get();
-            $afghancurrentdate = AfghanCalendarHelper::getCurrentShamsiDate();
-    
-            $suppliers = hesabSherkat_Purchase::select('supplier')->distinct()->get();
 
-        return view('hesabSherkat.hesabSherkat_payment', compact('hesabSherkat_payment','suppliers', 'afghaniStartDate', 'afghaniEndDate','afghancurrentdate'));
+        $query = hesabSherkat_payment::whereBetween('date', [$start_date, $end_date]);
+
+        if (isset($request->supplier)) {
+            $query->where('supplier', $request->supplier);
+        }
+
+        $hesabSherkat_payment = $query->orderBy('date', 'asc')->get();
+        $afghancurrentdate = AfghanCalendarHelper::getCurrentShamsiDate();
+
+        $suppliers = hesabSherkat_Purchase::select('supplier')->distinct()->get();
+
+        return view('hesabSherkat.hesabSherkat_payment', compact('hesabSherkat_payment', 'suppliers', 'afghaniStartDate', 'afghaniEndDate', 'afghancurrentdate'));
     }
 
     function store_payment(Request $request)

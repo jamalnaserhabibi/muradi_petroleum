@@ -97,7 +97,7 @@
                                     @error('tower_id')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                    <select class="form-control mb-3" name="tower_id" id="tower_id" required>
+                                    <select class="form-control mb-3 ml-3" name="tower_id" id="tower_id" required>
                                         <option value="" disabled {{ isset($serialNumber) ? '' : 'selected' }}>انتخاب
                                             پایه</option>
                                         @foreach ($towers as $tower)
@@ -114,7 +114,7 @@
                                     @error('serial')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                    <input class="form-control form-control mb-2 mr-3" name="serial" type="number"
+                                    <input class="form-control form-control mb-2 ml-3" name="serial" type="number"
                                         step="1" id="serial" placeholder="نمبر میتر"
                                         value="{{ old('serial', $serialNumber->serial ?? request('serial')) }}" required>
 
@@ -122,7 +122,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
 
-                                    <div dir="ltr" class="input-group date mr-3" id="reservationdate">
+                                    <div dir="ltr" class="input-group date ml-3" id="reservationdate">
                                         <input type="text" name="date" id="date" class="form-control"
                                             value={{ $afghancurrentdate }} required />
                                         <div class="input-group-append h-10">

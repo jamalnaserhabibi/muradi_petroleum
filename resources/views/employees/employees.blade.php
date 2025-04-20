@@ -94,6 +94,7 @@
                                     <tfoot>
                                         <tr>
                                             <th colspan="1">مجموعه:</th>
+                                            <th></th>
                                             <th id="total-footer"></th>
                                             <!-- Footer for the total amount -->
                                             <th colspan="4"></th>
@@ -174,7 +175,7 @@
                     search: 'applied'
                 }).every(function() {
                     const rowData = this.data();
-                    const amount = parseFloat(rowData[1].replace(/,/g, '')); // Assuming 'Amount' is the 2nd column (index 1)
+                    const amount = parseFloat(rowData[2].replace(/,/g, '')); // Assuming 'Amount' is the 2nd column (index 1)
                     if (!isNaN(amount)) {
                         total += amount;
                     }

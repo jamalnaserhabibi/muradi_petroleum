@@ -47,6 +47,7 @@
                                             <th>مجموعه خریداری</th>
                                             <th>مجموع پرداخت</th>
                                             <th>بیلانس</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                 
@@ -61,7 +62,16 @@
                                                 @else
                                                     <td>{{ number_format($balance->balance, 0) }}</td>
                                                 @endif
-                                               
+                                               <td>
+                                                <a href="{{ route('hesabSherkat_purchase', ['supplier' => e($balance->supplier)]) }}"
+                                                    class="btn btn-sm btn-success" title="Purchase">خریداری
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="{{ route('hesabSherkat_payment', ['supplier' => e($balance->supplier)]) }}"
+                                                    class="btn btn-sm btn-info" title="Payments">پرداخت
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                               </td>
                                             </tr>
                                         @endforeach
                                     </tbody> 
@@ -71,6 +81,7 @@
                                             <th id="total-sales"></th>
                                             <th id="total-payment"></th>
                                             <th id="total-balance"></th>
+                                            <td></td>
                                         </tr>
                                     </tfoot>
                                 </table>

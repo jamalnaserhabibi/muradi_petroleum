@@ -329,7 +329,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <div class="total-summary">
+                                <div class="total-summary" >
                                     {{-- <div class="detail-row">
                                         <div class="detail-item">
                                             <strong>مقدار:</strong> {{ number_format($totalAmount, 0) }}
@@ -354,9 +354,9 @@
                                             <strong>عواید پایه:</strong> {{ number_format($totalOther, 1) }}
                                         </div>
                                     </div>
-                                    <div class="detail-row">
-                                        <div class="detail-item custombadge">
-                                            <strong>نقد: {{ number_format($netTotal, 1) }}</strong>
+                                    <div class="detail-row" >
+                                        <div class="detail-item custombadge" >
+                                            <strong >نقد: {{ number_format($netTotal, 1) }}</strong>
                                         </div>
                                     </div>
                                 </div>
