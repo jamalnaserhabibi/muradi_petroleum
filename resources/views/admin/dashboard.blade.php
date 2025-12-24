@@ -54,11 +54,12 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-info ">
                             <div class="inner">
-                                <h3>{{ number_format((($hesabSherkatPaymentTotal->total_payment_value) - ($hesabSherkatPurchaseTotal->total_purchase_value)), 1) }}</h3>
+                                <h3>{{ number_format($hesabSherkatPaymentTotal->total_payment_value - $hesabSherkatPurchaseTotal->total_purchase_value, 1) }}
+                                </h3>
                                 <p>بیلانس شرکت</p>
                             </div>
                             <div class="icon">
-                                @if ((($hesabSherkatPaymentTotal->total_payment_value) - ($hesabSherkatPurchaseTotal->total_purchase_value)) <= 0)
+                                @if ($hesabSherkatPaymentTotal->total_payment_value - $hesabSherkatPurchaseTotal->total_purchase_value <= 0)
                                     <i class="fas fa-industry text-danger"></i>
                                 @else
                                     <i class="fas fa-industry text-success"></i>
@@ -291,51 +292,189 @@
 
 
                 {{-- Benefits Card --}}
-<h1>Financial Summary</h1>
-<div class="row">
-    <div class="col-md-4">
-        <div class="small-box {{ $metrics['benefitsValue'] >= 0 ? 'bg-success' : 'bg-danger' }}">
-            <div class="inner">
-                <h3>{{ number_format(($metrics['benefitsValue']), 0) }} <small></small></h3>
-                <h4>Net Benefits</h4>
-                <p>Total Sales: {{ number_format($metrics['totalSalesValue'], 0) }}</p>
-                <p>Total Purchases: {{ number_format($metrics['totalPurchaseValue'], 0) }}</p>
+                <h1>Financial Summary</h1>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="small-box {{ $metrics['benefitsValue'] >= 0 ? 'bg-success' : 'bg-danger' }}">
+                            <div class="inner">
+                                <h3>{{ number_format($metrics['benefitsValue'], 0) }} <small></small></h3>
+                                <h4>Net Benefits</h4>
+                                <p>Total Sales: {{ number_format($metrics['totalSalesValue'], 0) }}</p>
+                                <p>Total Purchases: {{ number_format($metrics['totalPurchaseValue'], 0) }}</p>
+                            </div>
+                            <div class="icon">
+                                <i
+                                    class="fas {{ $metrics['benefitsValue'] >= 0 ? 'fa-chart-line' : 'fa-chart-bar' }}"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{ number_format($metrics['fuelBalanceValue'], 0) }} <small> L</small></h3>
+                                <h4>Fuel Balance</h4>
+                                <p>Total Sold: {{ number_format($metrics['totalSoldLiters'], 0) }} L</p>
+                                <p>Total Purchased: {{ number_format($metrics['totalPurchasedLiters'], 0) }} L</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-gas-pump"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- <div class="col-md-4">
+                        <div class="small-box {{ $metrics['valueBalance'] >= 0 ? 'bg-warning' : 'bg-danger' }}">
+                            <div class="inner">
+                                <h3>{{ number_format(abs($metrics['valueBalance']), 0) }} <small></small></h3>
+                                <h4>Value Balance</h4>
+                                <p>Total Purchase Value: {{ number_format($metrics['totalPurchaseValue'], 0) }}</p>
+                                <p>Total Sales Value: {{ number_format($metrics['totalSalesValue'], 0) }}</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                        </div>
+                        </div> --}}
+                </div>
+
+             
+                {{-- <h1>خرید دولتی</h1>
+                @if ($dolatiPurchasesByProduct->count() > 0)
+                    <div class="row">
+                        @foreach ($dolatiPurchasesByProduct as $product)
+                            <div class="col-lg-3 col-6 mb-4">
+                                <div class="small-box bg-secondary">
+                                    <div class="inner">
+                                        <h4>{{ $product->product_name }}</h4>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Liters:</span>
+                                            <strong>{{ number_format($product->total_liters, 0) }} L</strong>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Tons:</span>
+                                            <strong>{{ number_format($product->total_amount, 0) }} T</strong>
+                                        </div>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-cube"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="alert alert-info">
+                        <h5><i class="icon fas fa-info"></i> No دولتی Purchases Found</h5>
+                        No products were purchased from دولتی supplier in the selected date range.
+                    </div>
+                @endif
+          
+
+                <h1>توضیع دولتی</h1>
+                @if ($dolatiDistribution->count() > 0)
+                    <div class="row">
+
+
+                        @foreach ($dolatiDistribution as $product)
+                            <div class="col-lg-3 col-6 mb-4">
+                                <div class="small-box bg-primary">
+                                    <div class="inner">
+                                        <h4>{{ $product->product_name }}</h4>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>Amount:</span>
+                                            <strong>{{ number_format($product->total_amount, 0) }} L</strong>
+                                        </div>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+
+
+                    </div>
+                @else
+                    <div class="alert alert-info">
+                        <h5><i class="icon fas fa-info"></i> No دولتی Distribution Found</h5>
+                        No products were distributed to دولتی company in the selected date range.
+                    </div>
+                @endif --}}
+
+
+                <h1>بیلانس دولتی</h1>
+
+@if(count($dolatiRemainingByProduct) > 0)
+    <div class="row">
+        @foreach($dolatiRemainingByProduct as $product)
+            @php
+                $remainingClass = $product['remaining_liters'] >= 0 ? 'bg-success' : 'bg-danger';
+                $remainingIcon = $product['remaining_liters'] >= 0 ? 'fa-check-circle' : 'fa-exclamation-triangle';
+            @endphp
+            
+            <div class="col-lg-3 col-6 mb-4">
+                <div class="small-box {{ $remainingClass }}">
+                    <div class="inner">
+                        <h4>{{ $product['product_name'] }}</h4>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <small>خرید:</small>
+                            <small>{{ number_format($product['purchase_liters'], 0) }} L</small>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <small>توضیع:</small>
+                            <small>{{ number_format($product['distribution_liters'], 0) }} L</small>
+                        </div>
+                        
+                        <hr class="my-1">
+                        
+                        <div class="d-flex justify-content-between">
+                            <strong>مانده:</strong>
+                            <strong>{{ number_format($product['remaining_liters'], 0) }} L</strong>
+                        </div>
+                        
+                        @if($product['remaining_liters'] < 0)
+                            <small class="text-white">(کمبود)</small>
+                        @endif
+                    </div>
+                    <div class="icon">
+                        <i class="fas {{ $remainingIcon }}"></i>
+                    </div>
+                </div>
             </div>
-            <div class="icon">
-                <i class="fas {{ $metrics['benefitsValue'] >= 0 ? 'fa-chart-line' : 'fa-chart-bar' }}"></i>
-            </div>
-        </div>
-    </div>
- 
-    <div class="col-md-4">
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>{{ number_format($metrics['fuelBalanceValue'],0) }} <small> L</small></h3>
-                <h4>Fuel Balance</h4>
-                <p>Total Sold: {{ number_format($metrics['totalSoldLiters'], 0) }} L</p>
-                <p>Total Purchased: {{ number_format($metrics['totalPurchasedLiters'], 0) }} L</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-gas-pump"></i>
-            </div>
-        </div>
+        @endforeach
     </div>
     
-    {{-- <div class="col-md-4">
-        <div class="small-box {{ $metrics['valueBalance'] >= 0 ? 'bg-warning' : 'bg-danger' }}">
-            <div class="inner">
-                <h3>{{ number_format(abs($metrics['valueBalance']), 0) }} <small></small></h3>
-                <h4>Value Balance</h4>
-                <p>Total Purchase Value: {{ number_format($metrics['totalPurchaseValue'], 0) }}</p>
-                <p>Total Sales Value: {{ number_format($metrics['totalSalesValue'], 0) }}</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-money-bill-wave"></i>
+    {{-- Total Summary
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="small-box {{ $totalRemainingLiters >= 0 ? 'bg-primary' : 'bg-warning' }}">
+                <div class="inner">
+                    <div class="row">
+                        <div class="col-md-">
+                            <h3>مجموع مانده لیتر: {{ number_format($totalRemainingLiters, 0) }} L</h3>
+                            <p>{{ $totalRemainingLiters >= 0 ? 'باقی' : 'کمبود' }}</p>
+                        </div>
+                      
+                    </div>
+                </div>
+                <div class="icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
             </div>
         </div>
     </div> --}}
-</div>
+@else
+    <div class="alert alert-info">
+        <h5><i class="icon fas fa-info"></i> No دولتی Data Found</h5>
+        No دولتی purchase or distribution data found.
+    </div>
+@endif
             </div>
+
+
             <script src="{{ asset('admin-lte/plugins/chart.js/Chart.min.js') }}"></script>
             <script src="{{ asset('admin-lte/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
 

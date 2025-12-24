@@ -34,7 +34,7 @@ class AdminController extends Controller
             $afghaniStartDate = AfghanCalendarHelper::toAfghanDateFormat($startOfMonth);
             $afghaniEndDate = AfghanCalendarHelper::toAfghanDateFormat($endOfMonth);
         }
-    
+
         // 1. Get all financial data in one query
         $financialData = DB::table('purchase')
             ->select([
@@ -51,7 +51,7 @@ class AdminController extends Controller
             ->leftJoin('products', 'products.id', '=', 'purchase.product_id')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->first();
-    
+
         // 2. Get all sales data in one query
         $salesData = DB::table('distribution')
             ->join('towers', 'distribution.tower_id', '=', 'towers.id')
@@ -62,7 +62,7 @@ class AdminController extends Controller
             ])
             ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
             ->first();
-    
+
         // 3. Get sarafi data (unchanged)
         $sarafiPayments = DB::table('sarafi_payments')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
@@ -71,13 +71,13 @@ class AdminController extends Controller
                 DB::raw('COALESCE(SUM(amount_dollar), 0) as total_amount_dollar')
             )
             ->first();
-    
+
         $sarafiPickups = DB::table('sarafi_pickup')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->select(DB::raw('COALESCE(SUM(amount), 0) as total_amount'))
             ->first();
-    
-        // 4. Get products data (optimized)
+
+
         $productsQuery = Product::leftJoin('towers', 'towers.product_id', '=', 'products.id')
             ->leftJoin('distribution', function ($join) use ($startOfMonth, $endOfMonth) {
                 $join->on('distribution.tower_id', '=', 'towers.id')
@@ -91,7 +91,7 @@ class AdminController extends Controller
             ')
             ->groupBy('products.id', 'products.product_name')
             ->orderBy('products.id');
-    
+
         $products = $productsQuery->get()->map(function ($product) use ($startOfMonth, $endOfMonth) {
             return [
                 'id' => $product->id,
@@ -105,8 +105,8 @@ class AdminController extends Controller
                 'month_end' => $endOfMonth,
             ];
         });
-    
-        // 5. Get purchases data (optimized)
+
+
         $purchases = DB::table('purchase')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->select(
@@ -136,14 +136,14 @@ class AdminController extends Controller
                     'month_end' => $endOfMonth,
                 ];
             });
-    
+
         // 6. Calculate metrics
         $balance = ($sarafiPayments->total_equivalent_dollar + $sarafiPayments->total_amount_dollar) - $sarafiPickups->total_amount;
-        
+
         $nonMoneyProducts = $products->filter(fn($product) => !$product['is_money']);
         $chartLabels = $nonMoneyProducts->pluck('name');
         $chartValues = $nonMoneyProducts->pluck('total_amount');
-    
+
         // Tankers Level Calculation - Grouped by product categories
         $tankersLevel = collect([
             ['name' => 'Diesel Products', 'product_ids' => [4, 5], 'icon' => 'fa-gas-pump', 'bg_color' => 'bg-secondary'],
@@ -152,7 +152,7 @@ class AdminController extends Controller
         ])->map(function ($category) use ($purchases, $products) {
             $purchased = $purchases->whereIn('product_id', $category['product_ids'])->sum('total_purchase_liters');
             $sold = $products->whereIn('id', $category['product_ids'])->sum('total_amount');
-            
+
             return [
                 'name' => $category['name'],
                 'product_ids' => $category['product_ids'],
@@ -163,7 +163,7 @@ class AdminController extends Controller
                 'bg_color' => $category['bg_color']
             ];
         });
-    
+
         // Calculate all metrics from the consolidated data
         $metrics = [
             'benefitsValue' => $salesData->fuel_sales_value - $financialData->fuel_purchase_value,
@@ -174,7 +174,7 @@ class AdminController extends Controller
             'totalPurchasedLiters' => $financialData->total_purchased_liters,
             'totalSoldLiters' => $salesData->total_sold_liters
         ];
-    
+
         // Customer balance query (unchanged)
         $PaymentTotalbalance = Contract::join('customers', 'contracts.customer_id', '=', 'customers.id')
             ->leftJoinSub(
@@ -214,7 +214,90 @@ class AdminController extends Controller
         $hesabSherkatPaymentTotal = DB::table('hesabSherkat_payment')
             ->select(DB::raw('COALESCE(SUM(amount), 0) as total_payment_value'))
             ->first();
-        
+
+        $dolatiDistribution = DB::table('distribution')
+            ->join('towers', 'distribution.tower_id', '=', 'towers.id')
+            ->join('products', 'towers.product_id', '=', 'products.id')
+            ->join('contracts', 'distribution.contract_id', '=', 'contracts.id')
+            ->join('customers', 'contracts.customer_id', '=', 'customers.id')
+            ->whereBetween('distribution.date', [$startOfMonth, $endOfMonth])
+            ->where('customers.name', 'دولتی')
+            ->select(
+                'products.id',
+                'products.product_name',
+                DB::raw('COALESCE(SUM(distribution.amount), 0) as total_amount'),
+                // DB::raw('COALESCE(SUM(distribution.rate * distribution.amount), 0) as total_value')
+            )
+            ->groupBy('products.id', 'products.product_name')
+            ->orderBy('products.product_name')
+            ->get();
+
+        // Get all products purchased from "دولتی" supplier with details
+        $dolatiPurchasesByProduct = DB::table('purchase')
+            ->leftJoin('products', 'products.id', '=', 'purchase.product_id')
+            ->whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->where('supplier', 'دولتی')
+            ->select(
+                'products.id',
+                'products.product_name',
+                DB::raw('COALESCE(SUM(purchase.amount), 0) as total_amount'),
+                // DB::raw('COALESCE(SUM(purchase.rate * purchase.amount), 0) as total_value'),
+                DB::raw('COALESCE(SUM(
+            CASE 
+                WHEN products.product_name = "Gas" THEN purchase.amount * purchase.heaviness
+                ELSE (1000000 / purchase.heaviness) * purchase.amount
+            END
+        ), 0) as total_liters')
+            )
+            ->groupBy('products.id', 'products.product_name')
+            ->orderBy('products.product_name')
+            ->get();
+
+// Calculate total remaining for دولتی
+$totalDolatiPurchaseLiters = $dolatiPurchasesByProduct->sum('total_liters');
+$totalDolatiDistributionLiters = $dolatiDistribution->sum('total_amount'); // Assuming distribution amount is in liters
+$dolatiRemainingLiters = $totalDolatiPurchaseLiters - $totalDolatiDistributionLiters;
+
+
+// Calculate product-wise remaining for دولتی
+$dolatiRemainingByProduct = [];
+
+// Loop through all دولتی purchases
+foreach ($dolatiPurchasesByProduct as $purchaseProduct) {
+    // Find corresponding distribution for this product
+    $distributionProduct = $dolatiDistribution->firstWhere('id', $purchaseProduct->id);
+    
+    $distributionLiters = $distributionProduct->total_amount ?? 0; // Assuming total_amount is in liters
+    $remainingLiters = $purchaseProduct->total_liters - $distributionLiters;
+    
+    $dolatiRemainingByProduct[] = [
+        'id' => $purchaseProduct->id,
+        'product_name' => $purchaseProduct->product_name,
+        'purchase_liters' => $purchaseProduct->total_liters,
+        'distribution_liters' => $distributionLiters,
+        'remaining_liters' => $remainingLiters
+    ];
+}
+
+// Also check for products that exist only in distribution (no purchase)
+foreach ($dolatiDistribution as $distributionProduct) {
+    $existsInPurchases = $dolatiPurchasesByProduct->contains('id', $distributionProduct->id);
+    
+    if (!$existsInPurchases) {
+        $dolatiRemainingByProduct[] = [
+            'id' => $distributionProduct->id,
+            'product_name' => $distributionProduct->product_name,
+            'purchase_liters' => 0,
+            'distribution_liters' => $distributionProduct->total_amount,
+            'remaining_liters' => -$distributionProduct->total_amount // Negative since no purchase
+        ];
+    }
+}
+
+// Calculate totals
+$totalRemainingLiters = collect($dolatiRemainingByProduct)->sum('remaining_liters');
+
+
         return view('admin.dashboard', compact(
             'sarafiPayments',
             'sarafiPickups',
@@ -224,6 +307,15 @@ class AdminController extends Controller
             'afghaniEndDate',
             'chartLabels',
             'chartValues',
+            'dolatiPurchasesByProduct',
+          'totalDolatiPurchaseLiters',
+    'totalDolatiDistributionLiters',
+    'dolatiRemainingLiters',
+
+    'dolatiRemainingByProduct',
+    'totalRemainingLiters',
+
+            'dolatiDistribution',
             'purchases',
             'PaymentTotalbalance',
             'tankersLevel',
